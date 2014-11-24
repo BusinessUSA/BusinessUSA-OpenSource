@@ -1,0 +1,70 @@
+name = bizusa
+description = The new business usa theme.
+screenshot = images/screenshot.png
+core = "7.x"
+project = "bizusa"
+engine = phptemplate
+
+regions[navigation] = Navigation
+regions[page_top] = Page top
+regions[header] = Header
+regions[highlight] = Highlight
+regions[title_area] = Title Area
+regions[help] = Help
+regions[content] = Content
+regions[frontcontent] = Front Page Content
+regions[sidebar_first] = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer] = Footer
+regions[page_bottom] = Page bottom
+
+features[] = logo
+features[] = name
+features[] = slogan
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = search
+features[] = favicon
+features[] = main_menu
+features[] = secondary_menu
+
+
+stylesheets[all][] = theme/dist/css/bootstrap.css
+stylesheets[all][] = theme/dist/css/theme.css
+
+;stylesheets[all][] = css/jquery.mmenu.css
+;stylesheets[all][] = css/jquery.bxslider.css
+
+;stylesheets[all][] = css/dropkick.css
+stylesheets[all][] = theme/lib/dropkick-2.0.1/css/dropkick.css
+
+stylesheets[all][] = css/prettyCheckable.css
+stylesheets[print][] = css/print.css
+
+scripts[] = theme/dist/js/bootstrap.min.js
+
+scripts[] = scripts/plugins/jquery-scrolltofixed-min.js
+scripts[] = scripts/plugins/jquery.positioner.js
+scripts[] = scripts/plugins/jquery.mmenu.min.js
+
+;scripts[] = scripts/plugins/jquery.dropkick-min.js
+scripts[] = theme/lib/dropkick-2.0.1/dropkick.min.js
+scripts[] = theme/lib/dropkick-2.0.1/plugins/dropkick.jquery.js
+
+scripts[] = scripts/plugins/jquery.hoverIntent.minified.js
+scripts[] = scripts/plugins/jquery.color.js
+scripts[] = scripts/plugins/jquery.bxslider.min.js
+scripts[] = scripts/plugins/prettyCheckable.js
+scripts[] = scripts/plugins/jquery.effects.core.js
+scripts[] = scripts/plugins/jquery.effects.slide.js
+scripts[] = scripts/global.js
+scripts[] = scripts/plugins/jquery.data.js
+scripts[] = scripts/plugins/jquery.watermark.js
+scripts[] = scripts/plugins/jquery.watermark.min.js
+scripts[] = scripts/plugins/jquery.colorbox.js
+scripts[] = scripts/plugins/jquery.colorbox-min.js
+scripts[] = scripts/plugins/federated-analytics.js
+
+
+settings[clear_registry] = 0
+

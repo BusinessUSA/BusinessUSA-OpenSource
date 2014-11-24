@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * Implementation of hook_schema().
+ */
+function govdelivery_splash_schema() {
+  $schema['govdelivery_topics'] = array(
+    'description' => t('Lists the topics from GovDelivery for SBA'),
+    'fields' => array(
+      'topic_id' => array(
+        'description' => t('Lists the Topic IDs from GovDelivery for SBA'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'topic_name' => array(
+        'description' => t('Lists the names of topics from GovDelivery for SBA'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('topic_id'),
+  );
+
+  $schema['govdelivery_subscribers'] = array(
+    'description' => t('Lists the subscribers through the website from GovDelivery for SBA'),
+    'fields' => array(
+      'email' => array(
+        'description' => t('Lists the emails for GovDelivery to process'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'topics' => array(
+        'description' => t('Lists the topics corresponding to the emails for GovDelivery to process'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'flag' => array(
+        'description' => t('Boolean for determining whether or not this email has been processed.'),
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('email'),
+  );
+
+  $schema['govdelivery_categories'] = array(
+    'description' => t('List of categories for the GovDelivery system.'),
+    'fields' => array(
+      'code' => array(
+        'description' => t('The GovDelivery code for the corresponding category name.'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => t('The GovDelivery name for the corresponding category code.'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+    ),
+  );
+
+  $schema['govdelivery_topics_categories'] = array(
+    'description' => t('List of categories for the GovDelivery system.'),
+    'fields' => array(
+      'topic_id' => array(
+        'description' => t('The GovDelivery code for the corresponding topic code.'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'category_id' => array(
+        'description' => t('The GovDelivery code for the corresponding category code.'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function govdelivery_splash_uninstall() {
+  // remove variables
+  variable_del('govdelivery_user');
+  variable_del('govdelivery_password');
+  variable_del('govdelivery_domain');
+  variable_del('govdelivery_period');
+  variable_del('govdelivery_execution_time_limit');
+  variable_del('govdelivery_cron_timer');
+  variable_del('govdelivery_base_topics');
+}
+
+
+/**
+ * Implementation of hook_install().
+ */
+function govdelivery_splash_install() {
+  drupal_set_message(t('Gov Delivery Module installed. Please configure permissions and settings first. After data loaded place GovDelivery Splash block where needed.'), 'warning');
+}

@@ -1,0 +1,53 @@
+//
+// List groups
+// --------------------------------------------------
+
+
+//
+// List group - Clean
+// --------------------------------------------------
+// TODO: Change name to .basic
+// Used in export news block in /export
+
+.list-group.clean{
+  .list-group-item{
+    border:none;
+    background-color: transparent;
+    padding: 10px 0px;
+    color: @brand-primary;
+    &:hover{
+      color: darken(@brand-primary-blue, 20%);
+    }
+    .glyphicon.glyphicon-chevron-right{
+      color: @brand-primary-red;
+    }
+  }
+}
+
+
+//
+// List group - Yellow
+// --------------------------------------------------
+// Used in explore exporting
+
+.list-group.yellow-list{
+  .list-group-item{
+    background-color: @brand-primary-yellow;
+    border-color: #fff;
+    &:hover{
+      background-color: @brand-primary;
+      .list-group-item-heading{
+        color:#fff;
+      }
+    }
+    .list-group-item-heading{
+      font-size: @font-size-h5;
+      font-family: @font-family-sans-serif-bold-italic;
+      color: #624c11;
+    }
+    .list-group-item-text{
+      font-family: @font-family-sans-serif-italic;
+    }
+  }
+}
+

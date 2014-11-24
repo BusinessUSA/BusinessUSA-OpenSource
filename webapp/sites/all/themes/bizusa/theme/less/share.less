@@ -1,0 +1,137 @@
+//
+// Share Widget
+// --------------------------------------------------
+
+#shareWidget {
+  margin-top: 5px;
+  position: relative;
+  > a {
+    color: @brand-primary;
+    font-family: @font-family-sans-serif-bold;
+    text-transform: uppercase;
+    float: right;
+    background: url("/sites/all/themes/bizusa/images/icons/shareArrow-teal.png") no-repeat 50px center transparent;
+    span {
+      .badge();
+      background-color: #97E8C1;
+      font-family: @font-family-sans-serif;
+      margin-left: 20px;
+    }
+  }
+
+  .sharewidget-popup {
+    position: absolute;
+    top: 46px;
+    right: 40px;
+    display: block;
+    height: 100px;
+    width: 265px;
+    padding-top: 15px;
+    z-index: 9;
+    background: transparent url('/sites/all/themes/bizusa/images/shareTipTop.png') no-repeat 235px 6px;
+    .sharewidget-popup-body{
+      float: left;
+      border: 1px solid #f1f1f1;
+      border-top: none;
+    }
+    a {
+      display: block;
+      height: 80px;
+      padding-top: 50px;
+      width: 65px;
+      float: left;
+      color: #989898;
+      text-align: center;
+      span {
+        .badge();
+        background-color: #d0d0d0;
+      }
+    }
+
+    a.email {
+      background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll center 10px #FFFFFF;
+      &:hover {
+        background-image: url("/sites/all/themes/bizusa/images/share-btn/mail_clicked.png");
+      }
+    }
+    a.facebook {
+      background: url("/sites/all/themes/bizusa/images/share-btn/facebook.png") no-repeat scroll center 10px #FFFFFF;
+      &:hover {
+        background-image: url("/sites/all/themes/bizusa/images/share-btn/facebook_clicked.png");
+      }
+    }
+    a.twitter {
+      background: url("/sites/all/themes/bizusa/images/share-btn/twitter.png") no-repeat scroll center 10px #FFFFFF;
+      &:hover {
+        background-image: url("/sites/all/themes/bizusa/images/share-btn/twitter_clicked.png");
+      }
+    }
+    a.linkedin {
+      background: url("/sites/all/themes/bizusa/images/share-btn/linkedin.png") no-repeat scroll center 10px #FFFFFF;
+      &:hover {
+        background-image: url("/sites/all/themes/bizusa/images/share-btn/linkedin_clicked.png");
+      }
+    }
+
+  }
+}
+
+//
+// Share Widget in header (mobile)
+// --------------------------------------------------
+
+.visible-xs-block{
+	#shareWidget{
+		margin-top: 10px;
+		> a {
+			display: none;
+		}
+		.sharewidget-popup {
+			display: block !important;
+			position: static;
+			background: none;
+			padding-top: 5px;
+			width: 100%;
+			a{
+				width: 25%;
+			}
+			.sharewidget-popup-body{
+				width: 100%;
+				background-color: #fff;
+			}
+		}
+	}
+}
+
+//
+// Share Widget in wizard splash page
+// --------------------------------------------------
+
+body > .wrapper #contentArea .wizard.current-slide-is-0{
+  #shareWidget{
+    display: none;
+    @media (min-width: @screen-sm-min) {
+      display: block;
+      margin-top: 0;
+      right: 0;
+      > a {
+        color: #fff;
+        padding: 20px;
+        background: url("/sites/all/themes/bizusa/images/share-btn/arrow_teal.png") no-repeat 74px center transparent;
+        background-position: 69px center;
+        span {
+          color: #000;
+        }
+        &:hover{
+          background-color: #97E8C1;
+          color: #000;
+          text-decoration: none;
+          background: url('/sites/all/themes/bizusa/images/share-btn/arrow_white.png') no-repeat 69px center #97E8C1;
+          span {
+            background-color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

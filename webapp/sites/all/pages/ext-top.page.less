@@ -1,0 +1,51 @@
+#toolBar {
+    overflow: hidden;
+    background-color: rgb(47,47,47);
+    .logo-container {
+        float: left;
+        img {
+            padding: 7px 20px;
+        }
+    }
+    ul#toolbarButtons {
+        list-style: none;
+        float: right;
+        overflow: hidden;
+        li {
+            float: left;
+            a {
+                color: white;
+                margin: 0px 5px;
+                color: white;
+                padding: 5px 15px;
+                display: block;
+                overflow: hidden;
+                font-size: 11px;
+                line-height: 12px;
+                &.background-color-change {
+                    background-color: rgb(68, 68, 68);
+                    img {
+                        padding: 0px 10px;
+                    }
+                }
+                &.fedinfo {
+                    color: darkgray;
+                    font-size: 20px;
+                    padding-top: 10px;
+                }
+                &.backbtn, &.closebtn {
+                    padding-left: 0px;
+                    padding-right: 0px;
+                    padding-top: 10px;
+                }
+                img {
+                    float: left;
+                }
+                .bar-text {
+                    float: right;
+                    padding-top: 5px;
+                }
+            }
+        }
+    }
+}

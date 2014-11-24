@@ -1,0 +1,49 @@
+//
+// Panels
+// --------------------------------------------------
+// Create a new panel style by using the mixin below
+//.panel-variant(@border; @heading-text-color; @heading-bg-color; @heading-border);
+
+
+// Colors
+@gray-darker:            #3b3b3b; 
+@gray-light:             #e2e2e2; 
+
+//
+// Panel - Use this for default block style
+// --------------------------------------------------
+
+.panel-block{
+  .panel-variant(@gray-light; @gray-darker; @gray-light; @gray-light);
+  border:none;
+  
+  .panel-heading{
+    padding: 15px 30px;  
+    .panel-title{
+      text-transform: uppercase;
+      font-size: @font-size-base;
+      letter-spacing: -.5px;
+    }
+  }
+
+  .panel-body{
+    padding: 15px 30px;
+  }
+}
+
+
+//
+// Panel - Basic styling
+// --------------------------------------------------
+.panel.panel-basic{
+  box-shadow: none;
+  .panel-heading{
+    border-bottom: 1px solid #f0f0f0;
+    .panel-title{
+      font-size: @font-size-h4;
+      a{
+        color: @brand-primary-blue;
+      }
+    }
+  }
+}

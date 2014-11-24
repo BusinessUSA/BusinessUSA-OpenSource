@@ -1,0 +1,6 @@
+name = Feeds Tampers - Markup Manipulation
+description = Plugins for the Feeds Tamper module for altering markup as it is imported (useful with screen scraping Feed Importers) 
+package = REI
+dependencies[] = feeds_tamper
+files[] = feeds_tamper_markup_manip.module
+core = 7.x

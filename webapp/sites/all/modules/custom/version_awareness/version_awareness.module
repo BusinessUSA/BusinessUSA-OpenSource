@@ -1,0 +1,321 @@
+<?php
+
+/*
+	Version 2
+	
+	ChangeLog
+        2
+            2014/03/14
+            Refactored this module7
+        1.?
+            2013/06/24
+            notifyOnRelease() to only send an email when version_awareness_env() returns 'prod', 'staging', or 'unknown'
+
+*/
+
+// To run durring Drupal bootstrap...
+version_awareness_setenv();
+
+/**
+ * Implements HOOK_menu()
+ */
+function version_awareness_menu() {
+  
+  $items['admin/config/version_awareness'] = array(
+    'title' => 'Version Awareness',
+    'description' => 'Configure Version-Awareness and Environment detection',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('version_awareness_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * boolean version_awareness_environment_isproduction().
+ * Return TRUE/FALSE based on if this environment has been flagged at the production server
+ */
+function version_awareness_environment_isproduction() {
+    return ( version_awareness_env() === 'prod' );
+}
+
+/**
+ * string version_awareness_env().
+ * Return a string representing the name this environment has been flagged as (dev/qa/staging/prod/etc)
+ */
+function version_awareness_env() {
+    if ( variable_get('version_awareness_detectmode', 'aut') === 'forceprod' ) {
+        return 'prod';
+    }
+    if ( variable_get('version_awareness_env_settime', 0) < time() - 18000  ) { // 18000 seconds = 5 hours
+        return 'unknown';
+    }
+    return variable_get('version_awareness_env', 'unknown');
+}
+
+/**
+ * void version_awareness_setenv()
+ * Check auto-detect what environment this is based on the domain-name this used used to conect to this site (if enabeled)
+ */
+function version_awareness_setenv() {
+    
+    if ( empty($_SERVER['HTTP_HOST']) || variable_get('version_awareness_detectmode', 'aut') !== 'aut' ) {
+        return;
+    }
+    
+    $envPatterns = array(
+        'prod' => explode(chr(10), str_replace(chr(13), chr(10), variable_get('version_awareness_patternsprod', ''))),
+        'dev' => explode(chr(10), str_replace(chr(13), chr(10), variable_get('version_awareness_patternsdev', ''))),
+        'qa' => explode(chr(10), str_replace(chr(13), chr(10), variable_get('version_awareness_patternsqa', ''))),
+        'uat' => explode(chr(10), str_replace(chr(13), chr(10), variable_get('version_awareness_patternsuat', ''))),
+    );
+    
+    $hostTracker = variable_get('version_awareness_host_tracker', array());
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if ( !empty($_SERVER['HTTP_TRUE_CLIENT_IP']) ) {
+        $ip = $_SERVER['HTTP_TRUE_CLIENT_IP'];
+    }
+    // Check if this user (IP address) has contributed to the hostTracker before, don't allow a single user to flood the hostTracker values
+    if ( !isset($hostTracker[$ip . '_' . date('i')]) ) {
+        
+        // Add new hostname to the $hostTracker
+        $hostTracker[$ip . '_' . date('i')] = $_SERVER['HTTP_HOST'];
+        
+        // We'll only keep track of the host-name of the last 10 requests to this site
+        if ( count($hostTracker) > 10 ) {
+            array_shift($hostTracker);
+        }
+        
+        variable_set('version_awareness_host_tracker', $hostTracker);
+        
+        // If all host-names in the $hostTracker are the same, we shall assume that is the true domain-name for this site
+        foreach ( $hostTracker as $pastHostName ) {
+            if ( !isset($checkValue) ) {
+                $checkValue = $pastHostName;
+            } else {
+                if ( $checkValue !== $pastHostName ) {
+                    return; // Then not all the hot-names in the $hostTracker are the same
+                }
+            }
+        }
+        // If this line is hit (if we have not returned by now), then all host-names (elements) within the $hostTracker array are the same
+        
+        $setEnvTo = 'unknown';
+        foreach ( $envPatterns as $patternsForEvnironment => $patterns) {
+            foreach ( $patterns as $pattern ) {
+                if ( trim($_SERVER['HTTP_HOST']) !== '' && trim($pattern) !== '' && strpos($_SERVER['HTTP_HOST'], trim($pattern)) !== false ) {
+                    $setEnvTo = $patternsForEvnironment;
+                }
+            }
+        }
+        variable_set('version_awareness_env', $setEnvTo);
+        variable_set('version_awareness_env_settime', time());
+        
+    }
+
+}
+
+function version_awareness_init() {
+    
+    // We shall detect this environment title (if enabeled) - do this after Drupal shuts-down so we dont waste time in HOOK_init()
+    drupal_register_shutdown_function('version_awareness_setenv');
+    
+	// Let repsoitory-state synch into a javascript variable for debuging purposes
+	$statJson = json_encode( codebaseStatus() );
+	
+	drupal_add_js("codebaseStatus = $statJson; // JavaScript from the Version Awareness module", "inline");
+	
+    drupal_register_shutdown_function('version_awareness_notifyOnRelease');
+}
+
+/**
+ * Returns SVN information about the current running code-base (last commit to this code base)
+ *
+ * This is mainly used to verify how recent or old the current code-base is, and gives us the 
+ * ability to create dynamic hotifxes (hotfixes may expire based on what version the code-base is).
+ * In addition, this function also injects a javascript into the output page that stores a variable stating
+ * the SVN status information, making it possible for javascript/jQueries to tell what revision the site 
+ * is up to.
+ * 
+ * NOTICE: This function loads its information from codebase-status.json - This file is expected
+ * to be updated upon commit. Running codebase-update.php will do this.
+ *
+ * @param $returnField
+ *   By default will return an associative array of following-
+ *   If a string is supplied, only the element in the array with the given key is returned-
+ *     - "Repository UUID" => RUUID - i.e. "948744eb-f611-4f28-8820-250fb6d8f47d"
+ *     - "Revision" => The last revision (version) commited to this code base - i.e. 2028
+ *     - "Last Changed Author" => The name of the individual who applied the last commit to this code base - i.e. "dfrey", or "mton"
+ *     - "Last Changed Rev" => The last revision (version) commited to this code base - i.e. 2028
+ *     - "Last Changed Date" => The date when the last revision to thie current codebase was applied - i.e. "2012-04-02 14:21:29 -0400 (Mon, 02 Apr 2012)"
+ */
+function codebaseStatus($returnField = '_ALL_FIELDS_') {
+	
+    // Load the code base status report from global-variable cache if it is there
+    global $codebaseStatusReport;
+    if ( !empty($codebaseStatusReport) ) {
+        $statArray = $codebaseStatusReport;
+    } else {
+        // Load the code base status report on file since it is not in variable-cache
+        $filePath = DRUPAL_ROOT . '/codebase-status.json';
+        if ( !file_exists($filePath) ) { return false; } 
+        $statJson = file_get_contents($filePath);
+        $statArray = json_decode($statJson, true);
+        $codebaseStatusReport = $statArray;
+	}
+    
+	// Return all information from codebase-status.json, or a spesific field if requested
+	if ( $returnField === '_ALL_FIELDS_' ) {
+		return $statArray;
+	} else {
+		return $statArray[$returnField];
+	}
+}
+
+/**
+ * Since this web-app is SVN aware, check the codebaseStatus() periodically and when the
+ * revision number increases more than 10, email REI stating production has been updated.
+ * We are only triggering this email when the revision jumps more than 10 commits because
+ * we dont want REI Dev/QA/Local environments to trigger this (and gernerally they get built 
+ * after every commit).
+ */
+function version_awareness_notifyOnRelease() {
+
+    // We should only care about running this code on the production or staging server
+    $thisEnv = version_awareness_env();
+    if ( $thisEnv !== 'prod' && $thisEnv !== 'staging' ) {
+        return;
+    }
+    
+	// Because this function is getting triggered on every page load, only do this check every $checkDelay mins
+	$checkDelay = 10;
+	$lastCheck = (integer) variable_get("CodeBaseNotification_LastCheck", 0);
+	if ( $lastCheck === 0 || time() - $lastCheck > $checkDelay * 60 ) {
+		// Its been a little while since last check, so lets go ahead
+		$currentRevision = (integer) codebaseStatus('Revision');
+		$lastCheckRevision = (integer) variable_get("CodeBaseNotification_Revision", 0);
+		if ( $lastCheckRevision + 10 < $currentRevision  ) {
+            $targetAddresses = array(
+                'dfrey@reisys.com',
+                'BizUSA@reisys.com',
+                '15713328007@tmomail.net'
+            );
+            foreach ( $targetAddresses as $targetAddress ) {
+                // Send an email to REI statting prod has been updated
+                $my_module = 'custom';
+                $my_mail_token = microtime();
+                $from = get_current_user() . '@' . gethostname();
+                $message = "This is an automated notification from the Version Awareness module. A Drupal application has been updated on the machine " . 
+                      gethostname() . "\n" . 
+                      "If you are expecting a release to this environment sometime soon, it may have been done. \n\n" . 
+                      "codebase-status.json information is as follows:\n\n" . print_r(codebaseStatus(), true) . "\n\n" . 
+                      '$_SERVER information is as follows:' . "\n\n" . print_r($_SERVER, true);
+                $message = array(
+                    'id' => $my_module . '_' . $my_mail_token,
+                    'to' => $targetAddress,
+                    'subject' => 'Code base updated.',
+                    'body' => array($message),
+                    'headers' => array(
+                        'From' => $from, 
+                        'Sender' => $from, 
+                        'Return-Path' => $from,
+                    )
+                );
+                $system = drupal_mail_system($my_module, $my_mail_token);
+                $message = $system->format($message);
+                $system->mail($message);
+            }
+		}
+		variable_set("CodeBaseNotification_Revision", $currentRevision);
+		variable_set("CodeBaseNotification_LastCheck", time());
+	}
+}
+
+function version_awareness_form($form, $form_state) {
+    
+    dsm( variable_get('version_awareness_host_tracker', array()) );
+    
+    if ( !empty($_POST['op']) && $_POST['op'] == 'Save' ) {
+    
+        variable_set('version_awareness_detectmode', $_POST['detectmode']);
+        variable_set('version_awareness_patternsprod', $_POST['patternsprod']);
+        variable_set('version_awareness_patternsdev', $_POST['patternsdev']);
+        variable_set('version_awareness_patternsqa', $_POST['patternsqa']);
+        variable_set('version_awareness_patternsuat', $_POST['patternsuat']);
+        
+        if ( $_POST['detectmode'] == 'forceprod' ) {
+            variable_set('version_awareness_env', 'prod');
+            variable_set('version_awareness_env_settime', time());
+            drupal_set_message('This environment has been flagged as the Production environment.', 'status');
+        }
+    }
+    
+    $form = array();
+    
+    $form['detectmode'] = array(
+        '#type' => 'radios',
+        '#title' => 'Environment Mode',
+        '#default_value' => variable_get('version_awareness_detectmode', 'aut'),
+        '#options' => array(
+            'forceprod' => 'Force this environment to always it is the production environment.',
+            'aut' => 'Detect the environment [title] based on the hostname users use when connecting to this site.',
+        )
+    );
+    
+    $form['patternsprod'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Assume this is the Production environment, when users are connecting to this site using a domain-name that contains:',
+        '#default_value' => variable_get('version_awareness_patternsprod', 'business.usa.gov'),
+        '#description' => 'Seperate multiple patters by a new-line',
+        '#states' => array(
+            'visible' => array(
+                'input[name="settings[detectmode]"]' => array( 'value' => 'aut' )
+            )
+        )
+    );
+    
+    $form['patternsdev'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Assume this is the Dev environment, when users are connecting to this site using a domain-name that contains:',
+        '#default_value' => variable_get('version_awareness_patternsdev', 'dev.business.usa.reisys.com'),
+        '#description' => 'Seperate multiple patters by a new-line',
+        '#states' => array(
+            'visible' => array(
+                'input[name="settings[detectmode]"]' => array( 'value' => 'aut' )
+            )
+        )
+    );
+    
+    $form['patternsqa'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Assume this is the QA environment, when users are connecting to this site using a domain-name that contains:',
+        '#default_value' => variable_get('version_awareness_patternsqa', 'qa.business.usa.reisys.com'),
+        '#description' => 'Seperate multiple patters by a new-line',
+        '#states' => array(
+            'visible' => array(
+                'input[name="settings[detectmode]"]' => array( 'value' => 'aut' )
+            )
+        )
+    );
+    
+    $form['patternsuat'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Assume this is the UAT environment, when users are connecting to this site using a domain-name that contains:',
+        '#default_value' => variable_get('version_awareness_patternsuat', 'uat.business.usa.reisys.com'),
+        '#description' => 'Seperate multiple patters by a new-line',
+        '#states' => array(
+            'visible' => array(
+                'input[name="settings[detectmode]"]' => array( 'value' => 'aut' )
+            )
+        )
+    );
+    
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    
+    return $form;
+}

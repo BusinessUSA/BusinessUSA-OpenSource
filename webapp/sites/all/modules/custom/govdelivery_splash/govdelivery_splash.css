@@ -1,0 +1,389 @@
+#block-govdelivery_splash-govdelivery_splash_block {margin:auto;position: relative;display:none;z-index: 8888;}
+*+html #block-govdelivery_splash-govdelivery_splash_block{z-index: 9999999;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .govdelivery-checkbox-list div {margin:3px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo {right: -1px;top: 110px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepthree {right: -1px;top: 110px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .topic-checkbox { margin:3px;}
+#govdelivery-title-step-two {color: #336699;float: left;font-family: Times New Roman,sans-serif;font-size: 20px;left: 53px;margin: 0 0 20px;position: absolute;top: 23px;}
+#govdelivery-title-step-three {color: #336699;display: block;float: left;font-family: Times New Roman,sans-serif;font-size: 20px;font-style: italic;left: 92px;position: absolute;top: 157px;}
+#govdelivery-email, #govdelivery-privacy {float:left;clear:both;margin-left:25px;margin-top:10px;color:#587bcc;font-size:9px;}
+#govdelivery-privacy {bottom: 27px;color: #9EACCC;left: 2px;position: absolute;text-transform: uppercase;}
+#govdelivery-privacy a {color: #666666;text-transform: uppercase;}
+#govdelivery-email {background: #ffffff;height: 20px;left: 45px;position: absolute;filter:none;top: 105px;width: 250px;z-index:9999999999999; /* IE7 MADNESS */padding: 5px;outline: none;border:0;}
+#govdelivery-submit, #govdelivery-no-thanks {float:right;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo #govdelivery-submit {float:left;display:inline-block;}
+#govdelivery-title-step-two {color: #336699;float: left;font-family: Times New Roman,sans-serif;font-size: 18px;left: 50px;margin: 0 0 20px;position: absolute;top: 25px;}
+#govdelivery-label-step-two {color: #6a6a6d;float: left;font-family: Times New Roman,sans-serif;font-size: 12px;left: 27px;margin: 0 0 20px;position: absolute;top: 49px;}
+#govdelivery-select-all {bottom: 16px;position: absolute;right: 240px;display:none;}
+#govdelivery-select-all label {display: inline;font-weight: normal;color: #336699;font-family: Helvetica,arial;font-size: 11px;}
+form#govdelivery-splash-form .inactive{ display: none;}
+form#govdelivery-splash-form .active{display: block;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo,
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepthree {padding:15px;padding-bottom:20px;padding-top:85px;}
+#govdelivery-close-window {width:96px;height:17px;position:absolute;top:20px;cursor:pointer;background-image: url("images/close-window.jpg");right: 10px;}
+#govdelivery-arrow {background-image: url("images/arrow.png");height: 20px;position: absolute;right: 31px;top: -9px;width: 34px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form span.govdel-title {color: #336699;font-family: Times New Roman,sans-serif;font-size: 12px;font-style: italic;left: 394px;position: absolute;top: 77px;}
+#govdelivery-title {color: #336699;float: left;font-family: Times New Roman,sans-serif;font-size: 23px;left: 32px;margin: 0 0 20px;position: absolute;top: 50px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo #govdelivery-submit {bottom: 20px;right: 22px;position: absolute;width: 60px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone #govdelivery-submit input.form-submit {position: absolute;right: 25px;top: 116px;width: 90px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone {
+    background-image: url("images/sprite_delivery.png"); /* allows preload for next slides */
+    background-position: -19px -394px;
+    background-repeat: no-repeat;
+    height: 258px;
+    position: absolute;
+    width: 468px;
+    z-index: 999999;
+}
+/*
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone {top: 90px;right: 0px;}
+*/
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone{left : 260px\9;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone{top : 90px\9;}
+@media screen and (min-width:0\0) {#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone{right:0px;left:auto;}}
+*+html #block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone {top: 90px;left: 260px;z-index: 999999;position:absolute;}/*ie7 position*/
+/*
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepthree {
+    background-image: url("images/sprite_delivery.png");
+    background-position: 400px -17px;
+    background-repeat: repeat;
+    color: #FFFFFF;
+    float: left;
+    font-family: Times New Roman,sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    height: 255px;
+    padding: 50px;
+    position: absolute;
+    right: 285px;
+    text-align: center;
+    width: 341px;
+    z-index: 999999;
+}
+*/
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepthree {
+    background-image: url("images/sprite_delivery.png");
+    background-position: -612px -21px;
+    background-repeat: repeat;
+    color: #FFFFFF;
+    float: left;
+    font-family: Times New Roman,sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    height: 355px;
+    padding: 0;
+    position: absolute;
+    right: 90px;
+	text-align: center;
+	top: -17px;
+    width: 355px;
+    z-index: 999999;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo {
+    background-image: url("images/sprite_delivery.png"); /* allows preload for next slides */
+    background-position: -12px -20px;
+    background-repeat: no-repeat;
+    border: 0 none;
+    height: 254px;
+    position: absolute;
+    right: 32px;
+    width: 546px;
+    z-index: 999999;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.checkboxes-states {
+    background-color: transparent;
+    border: 1px solid #CACBC7;
+    left: 26px;
+    overflow: auto;
+    padding: 5px 10px 5px 5px;
+    position: absolute;
+    width: 152px;
+    height: 197px;
+    top: 96px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.checkboxes-subtopics {
+    background-color: transparent;
+    border: 1px solid #CACBC7;
+    left: 206px;
+    overflow: auto;
+    padding: 5px 10px 5px 5px;
+    position: absolute;
+    width: 152px;
+    height: 197px;
+    top: 96px;
+    /*display:none;*/
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.form-checkboxes div {color: #336699;float: left;font-family: Helvetica,arial;font-size: 9px;padding: 0;width: 130px;}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .govdelivery-checkbox-list {
+    background-color: transparent;
+    border: 1px solid #CACBC7;
+    color: #336699;
+    float: right;
+    font-family: helvetica,arial;
+    font-size: 10px;
+    height: 196px;
+    line-height: 17px;
+    margin-top: 45px;
+    overflow: auto;
+    padding: 5px;
+    position: absolute;
+    right: 21px;
+    top: 52px;
+    width: 157px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .form-item-user-email .description {
+    color: #6a6a6a;
+    float: left;
+    font-family: Times New Roman,sans-serif;
+    font-size: 12px;
+    left: 33px;
+    margin: 0 0 20px;
+    position: absolute;
+    top: 86px;
+}
+#govdelivery-ask-later {
+    background: -moz-linear-gradient(top, #e9e9e9 0%, #dddddd 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e9e9e9), color-stop(100%,#dddddd));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* IE10+ */
+    background: linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9e9e9', endColorstr='#dddddd',GradientType=0 );/* IE6-9 */
+    border: 0 none;
+    border-radius: 0 0 0 0;
+    bottom: 82px;
+    color: #336699;
+    cursor: pointer;
+    font-size: 10px;
+    left: 125px;
+    padding: 0;
+    position: absolute;
+    width: 120px;
+    border-radius: 3px 3px 3px 3px;
+    border:0;
+    text-transform: uppercase;
+    height: 30px;
+    line-height: 30px;
+    top:160px;
+}
+#govdelivery-ask-later:hover {
+    background: #336699;/* Old browsers */
+    background: -moz-linear-gradient(top, #336699 0%, #3399cc 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#336699), color-stop(100%,#3399cc));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #336699 0%,#3399cc 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #336699 0%,#3399cc 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #336699 0%,#3399cc 100%);/* IE10+ */
+    background: linear-gradient(top, #336699 0%,#3399cc 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#336699', endColorstr='#3399cc',GradientType=0 );/* IE6-9 */border: 0 none;
+    color: #ffffff;
+    bottom: 82px;
+    cursor: pointer;
+    font-size: 10px;
+    left: 125px;
+    padding: 0;
+    position: absolute;
+    width: 120px;
+    border-radius: 3px 3px 3px 3px;
+    border:0;
+    text-transform: uppercase;
+}
+#govdelivery-no-thanks {
+    background: -moz-linear-gradient(top, #e9e9e9 0%, #dddddd 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e9e9e9), color-stop(100%,#dddddd));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* IE10+ */
+    background: linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9e9e9', endColorstr='#dddddd',GradientType=0 );/* IE6-9 */
+    border: 0 none;
+    border-radius: 0 0 0 0;
+    bottom: 82px;
+    color: #336699;
+    cursor: pointer;
+    font-size: 10px;
+    left: 32px;
+    padding: 0;
+    position: absolute;
+    text-transform: uppercase;
+    width: 83px;
+    border-radius: 3px 3px 3px 3px;
+    border:0;
+    height: 30px;
+    line-height: 30px;
+    top:160px;
+}
+#govdelivery-no-thanks:hover {
+    background: #336699;/* Old browsers */
+    background: -moz-linear-gradient(top, #336699 0%, #3399cc 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#336699), color-stop(100%,#3399cc));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #336699 0%,#3399cc 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #336699 0%,#3399cc 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #336699 0%,#3399cc 100%);/* IE10+ */
+    background: linear-gradient(top, #336699 0%,#3399cc 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#336699', endColorstr='#3399cc',GradientType=0 );/* IE6-9 */border: 0 none;
+    color: #ffffff;
+    bottom: 82px;
+    cursor: pointer;
+    font-size: 10px;
+    left: 32px;
+    padding: 0;
+    position: absolute;
+    text-transform: uppercase;
+    width: 83px;
+    border-radius: 3px 3px 3px 3px;
+    border:0;
+}
+#govdelivery-submit input.form-submit {
+    border: 1px solid #235A8F;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font: bold 12px arial;
+    letter-spacing: 0.04em;
+    margin: 0;
+    padding: 5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    background: #336699;/* Old browsers */
+    background: -moz-linear-gradient(top, #336699 0%, #3399cc 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#336699), color-stop(100%,#3399cc));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #336699 0%,#3399cc 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #336699 0%,#3399cc 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #336699 0%,#3399cc 100%);/* IE10+ */
+    background: linear-gradient(top, #336699 0%,#3399cc 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#336699', endColorstr='#3399cc',GradientType=0 );/* IE6-9 */
+}
+#govdelivery-submit input.form-submit:hover {
+    background: #066dab;/* Old browsers */
+    background: -moz-linear-gradient(top, #066dab 0%, #8abbd7 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#066dab), color-stop(100%,#8abbd7));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #066dab 0%,#8abbd7 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #066dab 0%,#8abbd7 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #066dab 0%,#8abbd7 100%);/* IE10+ */
+    background: linear-gradient(top, #066dab 0%,#8abbd7 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#066dab', endColorstr='#8abbd7',GradientType=0 );/* IE6-9 */
+}
+#govdelivery-no-thanks-again {
+    bottom: 20px;
+    left: 94px;
+    position: absolute;
+    width: 100px;
+    background: -moz-linear-gradient(top, #e9e9e9 0%, #dddddd 100%);/* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e9e9e9), color-stop(100%,#dddddd));/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* IE10+ */
+    background: linear-gradient(top, #e9e9e9 0%,#dddddd 100%);/* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9e9e9', endColorstr='#dddddd',GradientType=0 );/* IE6-9 */
+    border: 0 none;
+    border-radius: 0 0 0 0;
+    bottom: 27px;
+    color: #336699;
+    cursor: pointer;
+    font-size: 10px;
+    left: 22px;
+    padding: 0;
+    position: absolute;
+    text-transform: uppercase;
+    width: 83px;
+    border-radius: 3px 3px 3px 3px;
+    border:0;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .progress .bar {
+    background:none;
+    background-image:url('images/loading.gif');
+    height:24px;
+    width:24px;
+    position:absolute;
+    bottom:22px;
+    right:9px;
+    border:0px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .govdeliver-steptwo .progress .bar {
+    background:none;
+    background-image:url('images/loading.gif');
+    height:24px;
+    width:24px;
+    position:absolute;
+    bottom:22px;
+    right:89px;
+    border:0px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form .govdeliver-stepone div.error {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    bottom: 72px;
+    color: red;
+    font-size: 9px;
+    height: 15px;
+    left: 35px;
+    line-height: 15px;
+    padding: 0;
+    position: absolute;
+    text-transform: capitalize;
+    width: 267px;
+    top:195px;
+    font: normal 12px arial;
+}
+
+
+/* style overrides */
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form{
+    /*border: 1px solid #ff4400;*/
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form #splash-content{
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form #splash-content #edit-govdelivery{
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-stepone{
+    margin: 0;
+    padding: 0;
+    right: 90px;
+    top: -10px;
+    position: relative;
+    float:right;
+}
+#govdelivery-title{
+    left:18px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo{
+    background-position:-19px 0px;
+    width:180px;
+    height:290px;
+    top: -18px;
+    right: 90px;
+}
+#govdelivery-title-step-two{
+    top:37px;
+    left:44px;
+    font-size: 16px;
+}
+#govdelivery-label-step-two{
+    width:170px;
+    top:58px;
+    left:18px;
+}
+#govdelivery-no-thanks-again{
+    height: 33px;
+    top: 350px;
+}
+#govdelivery-submit input.form-submit{
+    height: 33px;
+    top: 350px;  
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.govdeliver-steptwo #govdelivery-submit{
+    bottom:12px;
+}
+#block-govdelivery_splash-govdelivery_splash_block #govdelivery-splash-form div.checkboxes-subtopics{
+    left:19px;
+    top:133px;
+}

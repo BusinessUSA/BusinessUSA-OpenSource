@@ -1,0 +1,12 @@
+; All lines that start with a semicolon in this document are comments.
+; The syntax for all *.page.info files is the INI syntax - refer to: http://en.wikipedia.org/wiki/INI_file
+
+; "render mode" usage:
+;     normal = Render the file normal, as if it was a Basic Page
+;     body = The HTML/[PHP] in this file will be the ONLY markup between the <body> and </body> tag. ALL other markup within the <body> tag is destroyed. Note that this option preserves the <head> tag. 
+;     solo = Drupal's rendering engine with no be used. ONLY the HTML/[PHP] in this file will be returned to the client-browser. Note, this requieres the usage of the drupal_output_buffering module.
+
+title = Preferred Lenders
+index in solr = true
+inject dev note = true
+render mode = normal

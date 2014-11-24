@@ -1,0 +1,193 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import (reference) "../../../themes/bizusa/theme/bootstrap/less/bootstrap.less";
+
+//
+// Swimlane General Styles
+//---------------------------------------------------
+body {
+    &.edit-mode {
+        .swimlane-edit-never {
+            display: none;
+        }
+    }
+    &.not-edit-mode {
+        .swimlane-edit-only {
+            display: none;
+        }
+    }
+    .editting-options {
+        text-align: right;
+    }
+}
+body > .wrapper .region.region-content #block-system-main{
+    padding:0px !important;
+}
+@media (min-width: @screen-sm-min) {
+    body > .wrapper .region.region-content{
+        padding:0px !important;
+        background-color: transparent !important;
+        #block-system-main {
+            padding: 0px !important;
+        }
+    }
+}
+.legacyswimlane-bodycontainer {
+    position: relative;
+    float: left;
+    clear: both;
+}
+.legacyswimlane-section {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    float: left;
+    clear: both;
+    width: 100%;
+    @media (min-width: @screen-sm-min) {
+        padding: 35px 35px 35px 175px;
+    }
+    @media (min-width: @screen-md-min) {
+        padding: 35px 35px 35px 135px;
+    }
+    h2 {
+        margin-top: 0px;
+        font-size: 28px;
+    }
+    ul {
+        float: left;
+        width: 100%;
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        li {
+            float: left;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            border-top: 2px solid #97e8c1;
+            min-height: 140px;
+            @media (min-width: @screen-md-min) {
+                width: 45%;
+            }
+        }
+        li.odd {
+            @media (min-width: @screen-md-min) {
+                margin-right: 10%;
+            }
+        }
+    }
+    .swimlane-morelink-container {
+        float: right;
+        background-color: #6885a2;
+        a {
+            color: #fff;
+            padding: 16px;
+            line-height: 40px;
+            text-transform: uppercase;
+        }
+    }
+}
+.subnav-container{
+    display:none;
+    position: fixed;
+    z-index: 998;
+    @media (min-width: @screen-sm-min) {
+        display:block;
+
+        ul {
+            list-style-type: none;
+            padding: 0px;
+            margin: 40px 0px 0px 20px;
+            background: none;
+            @media (min-width: @screen-md-min) {
+                margin: 40px 0px 0px -40px;
+                background: transparent url("/sites/all/themes/bizusa/images/swimlane_menu_shadow.png") left bottom no-repeat;
+            }
+            padding-bottom: 25px;
+            li {
+                background-color: #7791ab;
+                color: #fff;
+                font-size: 12px;
+                font-family: 'latoblack', sans-serif;
+                a,
+                a:hover,
+                a:focus{
+                    color: #fff;
+                    display: block;
+                    line-height: 37px;
+                    padding: 0px 10px;
+                }
+            }
+            li.even {
+                background-color: #6885a2;
+            }
+            li.subnav-header {
+                background-color: #324150;
+                text-transform: uppercase;
+                line-height: 28px;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    }
+}
+
+.legacyswimlane-foot-container{
+    display:none;
+    @media (min-width: @screen-sm-min) {
+        display:block;
+        float: left;
+        clear: both;
+        width: 100%;
+        h2{
+            background-color: #97e8c1;
+            font-size: 12px;
+            line-height: 32px;
+            margin: 0px;
+            padding: 0px 0px 0px 25px;
+            text-transform: uppercase;
+            color: #1a4168;
+        }
+        .legacyswimlane-foot-blocks-container{
+            margin: 0px;
+            padding: 0px;
+            list-style-type: none;
+            li{
+                .make-sm-column(4);
+                height: 284px;
+                float: left;
+                .imgcontainer {
+                    max-height: 80px;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                    }
+                }
+                a {
+                    background-color: #fff;
+                    font-family: 'latolight', sans-serif;
+                    font-size: 25px;
+                    display: block;
+                    padding: 25px;
+                    color: #6885a2;
+                    line-height: 1em;
+                    font-weight: bold;
+                    min-height: 200px;
+                    @media (min-width: @screen-md-min) {
+                        font-size: 30px;
+                    }
+                }
+                a:hover{text-decoration: none;}
+            }
+            li:first-child{
+                padding-left:0px;
+            }
+            li + li + li{
+                padding-right:0px;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,410 @@
+<?php
+
+/* implements HOOK_init()
+ *
+ */
+function jquery_codescanner_init() {
+
+    // Include main library
+    drupal_add_js(
+        drupal_get_path('module', 'jquery_codescanner') . '/jquery_codescanner.js',
+        array(
+            'type' => 'file',
+            'group' => 'JS_LIBRARY'
+        )
+    );
+    
+    // Update the jquery_codescanner object to know if this is the production environment or not
+    drupal_add_js(
+        "jquery_codescanner['environmentIsProduction'] = " . ( version_awareness_environment_isproduction() ? 'true' : 'false' ),
+        "inline"
+    );
+    
+    jquery_codescanner_add_scripts();
+
+}
+
+/**
+ * Implements hook_cron().
+ * Hook to periodically trigger jquery_codescanner_emailreports()
+ */
+function jquery_codescanner_cron () {
+    jquery_codescanner_emailreports();
+}
+
+/**
+ * Implements HOOK_menu()
+ */
+function jquery_codescanner_menu() {
+  
+  $items['jquery_codescanner/report'] = array(
+    'title' => 'jQuery CodeScanner Reporting Callback',
+    'description' => 'jQuery CodeScanner Reporting Callback',
+    'page callback' => 'jquery_codescanner_report_callback',
+    'access arguments' => true,
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['admin/config/jquery_codescanner'] = array(
+    'title' => 'jQuery CodeScanner Settings',
+    'description' => 'Configure the CodeScanner',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jquery_codescanner_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+function jquery_codescanner_form() {
+    
+    if ( !empty($_POST['op']) && $_POST['op'] == 'Save' ) {
+        variable_set('jquery_codescanner_doemail', $_REQUEST['doemail']);
+        variable_set('jquery_codescanner_emails', $_REQUEST['emailtargets']);
+        variable_set('jquery_codescanner_emailfrequency', $_REQUEST['emailfrequency']);
+        drupal_set_message('Your configuration has been saved', 'status');
+    }
+    
+    $form = array();
+    
+    $form['doemail'] = array(
+        '#type' => 'checkbox',
+        '#title' => 'EMail Code-Scan Reports',
+        '#default_value' => variable_get('jquery_codescanner_doemail', false)
+    );
+    
+    $form['emailtargets'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Periodically E-Mail reports to:',
+        '#default_value' => variable_get('jquery_codescanner_emails', ''),
+        '#description' => 'Separate multiple email addresses with a comma.',
+        '#states' => array(
+            'invisible' => array(
+                ':input[name="doemail"]' => array('checked' => false),
+            ),
+        )
+    );
+    
+    $form['emailfrequency'] = array(
+        '#type' => 'select',
+        '#title' => 'EMail Code-Scan [no more than] Every:',
+        '#default_value' => variable_get('jquery_codescanner_emailfrequency', 12),
+        '#options' => array(
+            12 => 'Twice a day',
+            23 => 'Once a day',
+            167 => 'Once a week',
+        ),
+        '#states' => array(
+            'invisible' => array(
+                ':input[name="doemail"]' => array('checked' => false),
+            ),
+        )
+    );
+    
+	$form['allscripts'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'JavaScripts this module will run',
+		'#collapsible' => 1,
+		'#collapsed' => 1
+    );
+    
+    $scriptTable = '
+        <table border="1">
+            <tr>
+                <th>drupal_add_js() Param 1</th>
+                <th>drupal_add_js() Param 2</th>
+            </tr>
+    ';
+    foreach ( jquery_codescanner_get_scripts() as $script ) {
+        $scriptTable .= "
+            <tr>
+                <td><pre>" . var_export ($script['DrupalAddJsParam1'], true) . "</pre></td>
+                <td><pre>" . var_export ($script['DrupalAddJsParam2'], true) . "</pre></td>
+            </tr>
+        ";
+    }
+    $scriptTable .= "</table>";
+    
+	$form['allscripts']['scriptslist'] = array(
+        '#type' => 'item',
+        '#title' => t("Scripts found in this module's ~/script/ directory"),
+        '#markup' => $scriptTable
+    );
+    
+    
+	$form['currentreports'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Current report submitted to the server',
+		'#collapsible' => 1,
+		'#collapsed' => 1
+    );
+    
+	$form['currentreports']['reportlist'] = array(
+        '#type' => 'item',
+        '#title' => 'Reports',
+        '#markup' => jquery_codescanner_getReportsInHTML(true)
+    );
+    
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    
+    return $form;
+}
+
+/* string jquery_codescanner_getReportsInHTML()
+ *
+ * Gets a list of all jquery_codescanner reports in the system in an HTML table.
+ */
+function jquery_codescanner_getReportsInHTML($truncateSubAndMsg = 0, $onlyUnsentEmails = false, $limit = 0, $markAsEmailed = false) {
+
+    $reportTableHTML = '
+        <table border="1">
+            <tr>
+                <th>ts</th>
+                <th>subject</th>
+                <th>message</th>
+                <th>url</th>
+            </tr>
+    ';
+    $where = '';
+    if ( $onlyUnsentEmails ) {
+        $where .= ' WHERE email_sent = 0 ';
+    }
+    $query = "SELECT * FROM jquery_codescanner {$where} ORDER BY ts DESC";
+    
+    jquery_codescanner_ensure_mysql_tabel();
+    
+    $counter = 0;
+    foreach ( db_query($query) as $record ) {
+    
+        $counter++;
+        
+        if ( $markAsEmailed ) {
+            db_query("UPDATE jquery_codescanner SET email_sent = 1 WHERE id = {$record->id} LIMIT 1");
+        }
+        
+        $rptDate = date('Y-m-d g:ia', $record->ts);
+        
+        if ( $truncateSubAndMsg === true || intval($truncateSubAndMsg) === 1 ) {
+            $truncateSubAndMsg = 150;
+        }
+        
+        $rptSub = $record->subject;
+        if ( $truncateSubAndMsg > 0 ) {
+            $rptSub = truncate_utf8($rptSub, $truncateSubAndMsg, true, true);
+        }
+        
+        $rptMsg = $record->message;
+        if ( $truncateSubAndMsg > 0 ) {
+            $rptMsg = truncate_utf8($rptMsg, $truncateSubAndMsg, true, true);
+        }
+        
+        $reportTableHTML .= "
+            <tr>
+                <td>{$rptDate}</td>
+                <td>{$rptSub}</td>
+                <td>{$rptMsg}</td>
+                <td>{$record->url}</td>
+            </tr>
+        ";
+        
+        if ( $limit > 0 && $counter > $limit ) {
+            break;
+        }
+    }
+    $reportTableHTML .= "</table>";
+    
+    return $query . $reportTableHTML;
+}
+
+/* void jquery_codescanner_emailreports()
+ *
+ * Sends out email(s) of the reports in this system (as per settings)
+ */
+function jquery_codescanner_emailreports() {
+    
+    // If the settings dictate we should email reports...
+    if ( intval(variable_get('jquery_codescanner_doemail', 1)) === 1 ) {
+        
+        // If we havent sent an email in a while...
+        $periodicTimeframe = intval(variable_get('jquery_codescanner_emailfrequency', 0)) * 3600;
+        $lastEmailSent = variable_get('jquery_codescanner_lastemailsent', 0);
+        if ( $lastEmailSent + $periodicTimeframe < time() ) {
+            
+            if ( function_exists('dispatchEmails') ) {
+            
+                dispatchEmails(
+                    explode(',', variable_get('jquery_codescanner_emails', '')), 
+                    'no-reply@businessusa.gov', 
+                    'jquery_codescanner module report', 
+                    "The following are new reports from the jquery_codescanner script<br/><br/>" . jquery_codescanner_getReportsInHTML(0, true, 100, true)
+                );
+                
+            }
+            
+            // Set a variable stating we most recently sent an email, now.
+            variable_set('jquery_codescanner_lastemailsent', time());
+        }
+        
+    }
+}
+
+/* void jquery_codescanner_add_scripts()
+ *
+ * A menu callback function for the URL: /jquery_codescanner/report/
+ */
+function jquery_codescanner_report_callback() {
+    
+    @ob_end_clean();
+    while(@ob_end_clean());
+    header('Content-Type: application/json');
+    
+    // Parameter validation
+    if ( empty($_REQUEST['subject']) ) {
+        exit(
+            json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'Missing subject argument'
+                )
+            )
+        );
+    }
+    if ( empty($_REQUEST['message']) ) {
+        exit(
+            json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'missing message argument'
+                )
+            )
+        );
+    }
+    if ( empty($_REQUEST['url']) ) {
+        exit(
+            json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'missing url argument'
+                )
+            )
+        );
+    }
+    
+    // We do not want to create duplicates in the jquery_codescanner table
+    $recordAlreadyExists = db_select('jquery_codescanner', 'J')
+        ->fields('J')
+        ->condition('subject', $_REQUEST['subject'],'=')
+        ->condition('message', $_REQUEST['message'],'=')
+        ->condition('url', $_REQUEST['url'],'=')
+        ->execute()
+        ->rowCount();
+    if ( intval($recordAlreadyExists) > 0 ) {
+        exit(
+            json_encode(
+                array(
+                    'success' => true,
+                    'message' => 'this report has been previously submitted',
+                )
+            )
+        );
+    }
+    
+    // Insert report into the jquery_codescanner table
+    jquery_codescanner_ensure_mysql_tabel();
+    db_insert('jquery_codescanner')->fields(
+        array(
+            'url' => $_REQUEST['url'],
+            'subject' => $_REQUEST['subject'],
+            'message' => $_REQUEST['message'],
+            'ts' => time(),
+        )
+    )->execute();
+    
+    // Return a success 
+    print json_encode(
+        array(
+            'success' => true,
+            'message' => 'success',
+        )
+    );
+    
+    exit();
+    
+}
+
+/* array jquery_codescanner_add_scripts()
+ *
+ * Finds all JavaScripts to include for the sake of JavaScript-testing, and sends them 
+ * through drupal_add_js().
+ *
+ * Returns an array of all scripts sent through drupal_add_js().
+ */
+function jquery_codescanner_add_scripts() {
+    
+    $scripts = jquery_codescanner_get_scripts();
+    foreach ( $scripts as $script ) {
+    
+        if ( empty($script['DrupalAddJsParam1']) ) {
+            drupal_set_message('Error - jquery_codescanner_get_scripts() returned an empty script reference', 'error');
+        } else {
+            if ( empty($script['DrupalAddJsParam2']) ) {
+                $script['DrupalAddJsParam2'] = null;
+            }
+            drupal_add_js($script['DrupalAddJsParam1'], $script['DrupalAddJsParam2']);
+        }
+    }
+    
+}
+
+/* array jquery_codescanner_get_scripts()
+ *
+ * Returns all JavaScripts to include for the sake of JavaScript-testing
+ */
+function jquery_codescanner_get_scripts() {
+    
+    $ret = array();
+    
+    $moduleScriptsDir = drupal_get_path('module', 'jquery_codescanner') . '/scripts/';
+    if ( file_exists($moduleScriptsDir) && is_dir($moduleScriptsDir) ) {
+        foreach ( scandir($moduleScriptsDir) as $fileName ) {
+            if ( substr($fileName, -3) === '.js' ) {
+                $ret[] = array(
+                    'DrupalAddJsParam1' => $moduleScriptsDir . $fileName,
+                    'DrupalAddJsParam2' => array(
+                        'type' => 'file'
+                    )
+                );
+            }
+        }
+    }
+    
+    return $ret;
+}
+
+/* array jquery_codescanner_get_scripts()
+ *
+ * Ensurs the jquery_codescanner table exists within the MySQL database
+ */
+function jquery_codescanner_ensure_mysql_tabel() {
+    db_query("
+        CREATE TABLE IF NOT EXISTS jquery_codescanner (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+            subject VARCHAR( 1024 ) NOT NULL ,
+            message LONGTEXT NOT NULL ,
+            ts INT UNSIGNED NOT NULL ,
+            url VARCHAR( 1024 ) NOT NULL ,
+            email_sent TINYINT DEFAULT 0
+        )
+    ");
+}
+
+
+
+
+
+
+

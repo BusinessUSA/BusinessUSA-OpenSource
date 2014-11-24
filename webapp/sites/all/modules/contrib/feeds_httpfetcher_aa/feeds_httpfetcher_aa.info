@@ -1,0 +1,12 @@
+name = Feeds HTTPFetcher AA (Advanced Authentication)
+description = Feeds HTTPFetcher AA (Advanced Authentication)
+package = Feeds
+core = 7.x
+dependencies[] = feeds
+
+; Information added by drupal.org packaging script on 2013-03-07
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "feeds_httpfetcher_aa"
+datestamp = "1362621314"
+

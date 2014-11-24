@@ -1,0 +1,177 @@
+/* START: BUSA Tour */
+h1#page-title{display:none;}
+.busaalltours-mastercontainer{
+    background: #fff url("/sites/all/themes/bizusa/images/tourLineLeftBg.png") repeat-y scroll 58px 12px;
+    float:left;
+    clear:both;
+    width:925px;
+    padding:28px 0px 0px 40px;
+}
+.busatour-mastercontainer {
+    background: url("/sites/all/themes/bizusa/images/tourLineLeft.png") no-repeat scroll 18px 12px;
+    float:left;
+    clear:both;
+    width:100%;
+}
+.busatour-mastercontainer:first-child{
+    background: #fff url("/sites/all/themes/bizusa/images/tourLineLeft.png") no-repeat scroll 18px 12px;
+}
+.busatour-leftarea-title{
+    font: 25px 'Bitter-Bold',Times,serif;
+    margin-bottom:20px;
+}
+.busatour-leftarea {
+    width: 33%;
+    float: left;
+
+}
+.busatour-leftarea-title,
+.busatour-leftarea-text{
+    padding:0px 50px 0px 55px;
+}
+.busatour-leftarea-text{line-height:25px;}
+.busatour-slideshowarea {
+    width: 66%;
+    float: right;
+    background-color: #ebebeb;
+    border:1px solid #cfcfcf;
+}
+.busatour-slideshowarea-steps-container{
+    width:80%;
+    margin:0px auto 25px auto;
+}
+
+.busatour-slideshowarea-slide-container {
+    display: none;
+}
+.busatour-slideshowarea-slide-container.active {
+    display: block;
+}
+.busatour-slideshowarea-steps-container {
+
+}
+.busatour-slideshowarea-step-container {
+    float: left;
+    width: 25%;
+}
+.busatour-slideshowarea-step-text {
+    text-align: center;
+    cursor: pointer;
+}
+.busatour-slideshowarea-step-text input {
+    background: none;
+    background-color: #bbbbbb;
+    text-shadow: none;
+    color: white;
+    border: none;
+    width: 100%;
+    height:72px;
+    border-left:1px solid #ebebeb;
+    font-size:12px;
+    white-space:normal;
+}
+.busatour-slideshowarea-step-container-0 .busatour-slideshowarea-step-text input{
+    border:none;
+    white-space:normal;
+}
+.active .busatour-slideshowarea-step-text input {background-color:#0c5679;}
+
+/* START: Middle area (slides, images) */
+.busatour-slideshowarea-slide-container img {
+    border:1px solid #cfcfcf;
+    width:73%;
+}
+.busatour-slideshowarea-slide-container {
+    text-align: center;
+}
+/* END: Middle area (slides, images) */
+
+/* START: Controle area (prev/next buttons, and subtitle-text in center) */
+.busatour-slideshowarea-controles-container {
+    background-color: #bcbcbc;
+    height:60px;
+    margin-top:32px;
+}
+
+.busatour-slideshowarea-controles-back,
+.busatour-slideshowarea-controles-next {
+    float: left;
+    width: 22%;
+}
+.busatour-slideshowarea-controles-text{
+    float:left;
+    width:56%;
+    padding-top:20px;
+    color:#0C5679;
+}
+.busatour-slideshowarea-controles-text {
+    text-align: center;
+}
+.busatour-slideshowarea-controles-text a{
+    text-decoration:underline;
+}
+.busatour-slideshowarea-controles-next-btn {
+    float: right;
+    padding-right: 25%;
+}
+.busatour-slideshowarea-controles-back-btn {
+    float: left;
+    padding-left: 25%;
+}
+.busatour-slideshowarea-controles-back input {
+    background: none;
+    background-image: url('/sites/all/themes/bizusa/images/tour-back-button.png');
+    background-size: 100%;
+    height: 50px;
+    background-repeat: no-repeat;
+    width: 50px;
+    border: none;
+    margin-top:5px;
+}
+.currentslide-id-0 .busatour-slideshowarea-controles-back input{visibility: hidden;}
+.busatour-slideshowarea-controles-next-btn input {
+    background: none;
+    background-image: url('/sites/all/themes/bizusa/images/tour-back-next.png');
+    background-size: 100%;
+    height: 50px;
+    background-repeat: no-repeat;
+    width: 50px;
+    border: none;
+    margin-top:5px;
+}
+.currentslide-id-3  .busatour-slideshowarea-controles-next-btn input{visibility: hidden;}
+/* END: Controle area (prev/next buttons, and subtitle-text in center) */
+
+.busatour-postmastercontainer-spacer {
+    height: 100px;
+    float:left;
+    clear:both;
+    width:100%;
+}
+
+/* END: BUSA Tour */
+.busaalltours-mastercontainer-denied {
+    display: none;
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 280px) {
+    .busaalltours-mastercontainer-denied {
+        display: block;
+        padding: 10px;
+        background: white;
+        font-weight: 700;
+    }
+
+    .busaalltours-mastercontainer {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+
+

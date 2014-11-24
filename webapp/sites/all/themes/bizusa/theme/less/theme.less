@@ -1,0 +1,463 @@
+
+//
+// Load core variables and mixins
+// --------------------------------------------------
+
+@import (reference) "../bootstrap/less/bootstrap.less";
+
+//
+// Full Page Views
+// --------------------------------------------------
+
+.full-page-view{
+
+  // No Background
+  .wrapper .region.region-content{
+    background-color: transparent;
+  }
+
+  // Theme views
+  .view-content{
+    .list-group();
+    .views-row a{
+      .list-group-item();
+      border-color: #eff2f5;
+      &:hover{
+        color: #fff;
+        text-decoration: none;
+        background-color: @brand-primary;
+      }
+    }
+  }
+
+  // Hide view all link
+  .view-footer{
+    display: none;
+  }
+}
+
+//
+// Buttons
+// --------------------------------------------------
+
+// Common styles
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+  @shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 1px rgba(0,0,0,.075);
+  .box-shadow(@shadow);
+
+  // Reset the shadow
+  &:active,
+  &.active {
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+}
+
+// Mixin for generating new styles
+.btn-styles(@btn-color: #555) {
+  .reset-filter(); // Disable gradients for IE9 because filter bleeds through rounded corners
+  background-repeat: repeat-x;
+  border-color: darken(@btn-color, 14%);
+
+  &:hover,
+  &:focus  {
+    background-color: darken(@btn-color, 12%);
+    background-position: 0 -15px;
+  }
+
+  &:active,
+  &.active {
+    background-color: darken(@btn-color, 12%);
+    border-color: darken(@btn-color, 14%);
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: darken(@btn-color, 12%);
+    background-image: none;
+  }
+}
+
+// Common styles
+.btn {
+  // Remove the gradient for the pressed/active state
+  &:active,
+  &.active {
+    background-image: none;
+  }
+}
+
+//Create new buttons
+.btn-brand {
+  .button-variant(@btn-primary-color; @brand-primary; darken(@brand-primary, 8%));
+}
+
+//Used in ./micro-site/industry_resource
+.btn-brand-v2{
+  .button-variant(@btn-primary-color; @brand-primary; darken(@brand-primary, 4%) );
+  text-align: left;
+  font-size: 16px;
+  white-space: normal;
+}
+
+.btn-secondary {
+  font-family: @font-family-sans-serif-bold;
+  text-transform: uppercase;
+  .button-variant(darken(@brand-primary, 10%); #97e8c1 ; darken(#97e8c1, 8%));
+}
+
+.btn-viewall {
+  font-family: @font-family-sans-serif-bold;
+  text-transform: uppercase;
+  .button-variant(darken(@brand-primary, 10%); #eff2f5 ; darken(#eff2f5, 8%));
+}
+
+// Apply the mixin to the buttons
+.btn-default { .btn-styles(@btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
+.btn-primary { .btn-styles(@btn-primary-bg); text-transform: uppercase; font-family: @font-family-sans-serif-bold; }
+.btn-success { .btn-styles(@btn-success-bg); }
+.btn-info    { .btn-styles(@btn-info-bg); }
+.btn-warning { .btn-styles(@btn-warning-bg); }
+.btn-danger  { .btn-styles(@btn-danger-bg); }
+
+.btn-brand      { .btn-styles(@brand-primary); text-transform: uppercase; font-family: @font-family-sans-serif-bold; }
+
+
+
+//
+// text styles
+// --------------------------------------------------
+@text-color: #797979;
+body{
+  color: @text-color;
+}
+h1{
+  font-family: @font-family-sans-serif-bold;
+  font-size: 28px;
+}
+h2{
+  font-family: @font-family-sans-serif-bold;
+  font-size:20px;
+}
+h3{
+  font-family: @font-family-sans-serif-bold;
+  font-size:16px;
+}
+a{
+  font-family: @font-family-sans-serif-bold;
+}
+
+
+//
+// Images
+// --------------------------------------------------
+
+.thumbnail,
+.img-thumbnail {
+  .box-shadow(0 1px 2px rgba(0,0,0,.075));
+}
+
+
+
+//
+// Dropdowns
+// --------------------------------------------------
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  //#gradient > .vertical(@start-color: @dropdown-link-hover-bg; @end-color: darken(@dropdown-link-hover-bg, 5%));
+  background-color: darken(@dropdown-link-hover-bg, 5%);
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  //#gradient > .vertical(@start-color: @dropdown-link-active-bg; @end-color: darken(@dropdown-link-active-bg, 5%));
+  color: #fff;
+  background-color: darken(@dropdown-link-active-bg, 5%);
+}
+
+
+
+//
+// Navbar
+// --------------------------------------------------
+
+
+// Default navbar
+.navbar-default {
+  //#gradient > .vertical(@start-color: lighten(@navbar-default-bg, 10%); @end-color: @navbar-default-bg);
+  .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
+  border-radius: @navbar-border-radius;
+  //@shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
+  //.box-shadow(@shadow);
+
+  .navbar-nav > .active > a {
+    //#gradient > .vertical(@start-color: darken(@navbar-default-bg, 5%); @end-color: darken(@navbar-default-bg, 2%));
+    //.box-shadow(inset 0 3px 9px rgba(0,0,0,.075));
+  }
+}
+.navbar-brand,
+.navbar-nav > li > a {
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+}
+
+// Inverted navbar
+.navbar-inverse {
+  //#gradient > .vertical(@start-color: lighten(@navbar-inverse-bg, 10%); @end-color: @navbar-inverse-bg);
+  .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
+
+  .navbar-nav > .active > a {
+    //#gradient > .vertical(@start-color: @navbar-inverse-bg; @end-color: lighten(@navbar-inverse-bg, 2.5%));
+    //.box-shadow(inset 0 3px 9px rgba(0,0,0,.25));
+  }
+
+  .navbar-brand,
+  .navbar-nav > li > a {
+    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+  }
+}
+
+// Undo rounded corners in static and fixed navbars
+.navbar-static-top,
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  border-radius: 0;
+}
+
+
+
+//
+// Alerts
+// --------------------------------------------------
+
+// Common styles
+.alert {
+  text-shadow: 0 1px 0 rgba(255,255,255,.2);
+  @shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 2px rgba(0,0,0,.05);
+  .box-shadow(@shadow);
+}
+
+// Mixin for generating new styles
+.alert-styles(@color) {
+  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 7.5%));
+  border-color: darken(@color, 15%);
+}
+
+// Apply the mixin to the alerts
+.alert-success    { .alert-styles(@alert-success-bg); }
+.alert-info       { .alert-styles(@alert-info-bg); }
+.alert-warning    { .alert-styles(@alert-warning-bg); }
+.alert-danger     { .alert-styles(@alert-danger-bg); }
+
+
+
+//
+// Progress bars
+// --------------------------------------------------
+
+// Give the progress background some depth
+.progress {
+  #gradient > .vertical(@start-color: darken(@progress-bg, 4%); @end-color: @progress-bg)
+}
+
+// Mixin for generating new styles
+.progress-bar-styles(@color) {
+  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 10%));
+}
+
+// Apply the mixin to the progress bars
+.progress-bar            { .progress-bar-styles(@progress-bar-bg); }
+.progress-bar-success    { .progress-bar-styles(@progress-bar-success-bg); }
+.progress-bar-info       { .progress-bar-styles(@progress-bar-info-bg); }
+.progress-bar-warning    { .progress-bar-styles(@progress-bar-warning-bg); }
+.progress-bar-danger     { .progress-bar-styles(@progress-bar-danger-bg); }
+
+// Reset the striped class because our mixins don't do multiple gradients and
+// the above custom styles override the new `.progress-bar-striped` in v3.2.0.
+.progress-bar-striped {
+  #gradient > .striped();
+}
+
+
+//
+// List groups
+// --------------------------------------------------
+//.list-group-item-variant(@state; @background; @color);
+
+
+
+// Common styles
+
+.list-group {
+  border-radius: @border-radius-base;
+}
+
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+  border-color: darken(@list-group-active-border, 7.5%);
+}
+
+// List group - no border, no left & right padding
+
+.list-group-item-simple{
+  border: none;
+  font-family: @font-family-sans-serif;
+  line-height: 18px;
+}
+
+
+// Default style for block list (Sidebar)
+
+.list-group.default-block-list{
+  margin-top: 10px;
+  .list-group-item{
+    border: none;
+    font-size: @font-size-medium;
+    padding: 10px 30px;
+    letter-spacing: -0.15px;
+    line-height: 18px;
+
+    //Event Date
+    .views-field-field-event-date{
+      color: @btn-primary-bg;
+    }
+    
+    //Event State
+    .views-field-field-event-state{
+      color: @brand-primary;
+    }
+
+    a{
+      font-family: @font-family-sans-serif;
+    }
+  }
+}
+
+
+// List group inside a carousel (front page)
+
+.list-group-item-carousel{
+  border: none;
+  font-family: @font-family-sans-serif;
+  a&{
+    .list-group-item-heading{
+      font-family: @font-family-sans-serif-bold;
+      font-size: @font-size-base;
+      color: @brand-primary;
+    }
+    &:hover,
+    &:focus {
+      color: @text-color;
+      background-color: #F0F0F0 ;
+    }
+  }
+  
+}
+
+
+//
+// Panels
+// --------------------------------------------------
+// Create a new panel style by using the mixin below
+//.panel-variant(@border; @heading-text-color; @heading-bg-color; @heading-border);
+
+
+//Panel - primary color
+.panel-primary { border-color: #fff; }
+.panel-primary > .panel-heading .panel-title { text-transform: uppercase; padding-top: 5px; }
+
+
+//Default style for block list (deprecated use panel-block found in panels.less)
+.panel-blocklist {
+  
+  .panel-variant(#e2e2e2; #3b3b3b; #e2e2e2; #e2e2e2);
+  border:none;
+  .panel-heading{
+    padding: 15px 30px;
+    
+    .panel-title{
+      text-transform: uppercase;
+      font-size: @font-size-base;
+      letter-spacing: -.5px;
+    }
+  }
+  .panel-collapse{
+    .panel-body{
+      padding: 15px 30px;
+    }
+  }
+}
+
+//Program, Services and Tools
+.panel-contentsimple{
+  .panel-variant(#e2e2e2; #5f5f5f; transparent; transparent);
+  box-shadow: none;
+  border-width:1px 0px 0px 0px;
+  margin-bottom: 0;
+  .panel-heading{
+    padding-top:15px;
+    .panel-title{
+      font-size: @font-size-large;
+    }
+  }
+}
+
+
+
+//
+// Wells
+// --------------------------------------------------
+
+.well {
+  #gradient > .vertical(@start-color: darken(@well-bg, 5%); @end-color: @well-bg);
+  border-color: darken(@well-bg, 10%);
+  @shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
+  .box-shadow(@shadow);
+}
+
+//
+// Forms
+// --------------------------------------------------
+
+.form-control {
+  font-family: @font-family-sans-serif-italic;
+}
+
+//
+// Internet Explorer 10 in Windows 8 and Windows Phone 8
+// http://getbootstrap.com/getting-started/#support-ie10-width
+// --------------------------------------------------
+
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+
+
+// Components
+@import "page.less";
+@import "menu.less";
+@import "header.less";
+@import "breadcrumbs.less";
+@import "sidebar.less";
+@import "footer.less";
+@import "help-button.less";
+@import "share.less";
+@import "front-page.less";
+@import "type.less";
+@import "temp.less";
+@import "search.less";
+@import "utilities.less";
+@import "pager.less";
+@import "modal.less";
+@import "panels.less";
+@import "list-group.less";
+@import "../../css/prettyCheckable.less";
+@import "../../css/dropkick.less";

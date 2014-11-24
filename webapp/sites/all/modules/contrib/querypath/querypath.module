@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * The QueryPath module.
+ *
+ * This module adds support for QueryPath, a tool for working with DOM/XML/HTML.
+ *
+ * @author Matt Butcher <mbutcher@aleph-null.tv>
+ * @file
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function querypath_help($path, $args) {
+  if ($path == 'admin/help#querypath') {
+    $out = '<p>' . t('This module provides developers with access to the QueryPath library.') . '</p>';
+    $vars = array('@path' => drupal_get_path('module', 'querypath') . '/QueryPath');
+    if (function_exists('qp')) {
+      $out = '<p>' . t('Currently, you are running @version of the QueryPath library', array('@version' => QueryPath::VERSION)) . '</p>';
+      $out = '<p>' . t('While this module ships with a version of QueryPath, you may wist to substitute in your own. To do so, replace @path with your preferred QueryPath version.', $vars ) . '</p>';
+    }
+    else {
+      $out = '<p>' . t('To use this module, you must put the QueryPath library in your PHP path or in @path.', $vars) . '</p>';
+    }
+
+    $out .= l('Learn more about QueryPath (or download the most recent release)', 'http://querypath.org');
+  }
+}
+
+/**
+ * Implements hook_boot().
+ * Attempt to load the QueryPath library early in the boot cycle.
+ */
+function querypath_boot() {  
+  
+  // I'm not entirely happy with this particular method of including stuff.
+  // But this seems to be the best way. (Note that there is already a check
+  // in the install file.)
+  
+  // We include by relative path to allow PEAR and other things on PHP_PATH to 
+  // take precedence over the bundled version.
+  @include_once 'QueryPath/QueryPath.php';
+  if (function_exists('qp')) {
+    // module_load_include is sorta... meh. Just adds another stat call to a 
+    // require_once call.... plus it is apparently not ready in hook_boot.
+    //module_load_include('inc', 'querypath', 'classes');
+    require_once 'querypath.classes.inc';
+  }
+  else {
+    watchdog('querypath', 'The QueryPath library is missing.', array(), WATCHDOG_ERROR);
+  }
+}
+
+

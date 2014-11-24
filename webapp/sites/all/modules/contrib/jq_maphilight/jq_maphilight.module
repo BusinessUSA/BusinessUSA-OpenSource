@@ -1,0 +1,214 @@
+<?php
+/**
+ * @file
+ * Configurable javascript based image map highlighting using the jquery maphilight plugin.
+ */
+
+/**
+ * Implements hook_library().
+ */
+function jq_maphilight_library() {
+  $libraries['jquery.maphilight'] = array(
+    'title' => 'jQuery Maphilight',
+    'website' => 'http://plugins.jquery.com/project/maphilight',
+    'version' => '1.2.2',
+    'js' => array(
+      libraries_get_path('jquery.maphilight', FALSE) . '/jquery.maphilight.min.js' => array(),
+    ),
+  );
+  return $libraries;
+}
+
+ /**
+ * Implements hook_init().
+ *
+ * Add the jquery maphilight plugin code to all pages
+ */
+function jq_maphilight_init() {
+  if (_jq_maphilight_available() !== FALSE && variable_get('jq_maphilight_every_page', TRUE)) {
+    if (module_exists('jquery_plugin')) {
+      drupal_add_library('jquery_plugin', 'metadata');
+    }
+    drupal_add_library('jq_maphilight', 'jquery.maphilight');
+    $settings = array(
+      'jq_maphilight' => array(
+        'fill' => variable_get('jq_maphilight_fill', 'true'),
+        'fillColor' => variable_get('jq_maphilight_fillcolor', '000000'),
+        'fillOpacity' => variable_get('jq_maphilight_fillopacity', 2) / 10,
+        'stroke' => variable_get('jq_maphilight_stroke', 'true'),
+        'strokeColor' => variable_get('jq_maphilight_strokecolor', 'ff0000'),
+        'strokeOpacity' => variable_get('jq_maphilight_strokeopacity', 10) / 10,
+        'strokeWidth' => variable_get('jq_maphilight_strokewidth', 2),
+        'fade' => variable_get('jq_maphilight_fade', 'true'),
+        'alwaysOn' => variable_get('jq_maphilight_alwayson', 'false'),
+        'neverOn' => variable_get('jq_maphilight_neveron', 'false'),
+        'groupBy' => variable_get('jq_maphilight_groupby', 'false'),
+        'allMapsEnabled' => variable_get('jq_maphilight_all_maps_enabled', 'true'),
+      )
+    );
+    drupal_add_js($settings, 'setting');
+    drupal_add_js(drupal_get_path('module', 'jq_maphilight') . '/jq_maphilight.js');
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function jq_maphilight_menu() {
+  $items = array();
+  $items['admin/config/content/jq_maphilight'] = array(
+    'title' => 'JQuery Map Hilight',
+    'description' => 'Javascript image map highlighting using the jQuery Maphilight plugin.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jq_maphilight_admin_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_form().
+ */
+function jq_maphilight_admin_settings() {
+  $available = _jq_maphilight_available();
+  if ($available == FALSE) {
+    $desc = t('The jQuery Maphilight plugin is unavailable.');
+  }
+  else {
+    $desc = t('The jQuery Maphilight plugin is located at:') . ' ' . $available;
+  }
+  $form['jq_maphilight_status'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Plugin status'),
+    '#weight' => -10,
+    '#description' => $desc
+  );
+
+  $form['jq_maphilight_general'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('General settings'),
+    '#weight' => -9,
+  );
+  $form['jq_maphilight_general']['jq_maphilight_every_page'] = array(
+    '#type' => 'radios',
+    '#title' => t('Add Maphilight library to every page'),
+    '#default_value' => variable_get('jq_maphilight_every_page', 'true'),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'If false, <em>drupal_add_library(\'jq_maphilight\', \'jquery.maphilight\');</em> must be executed to enable the library, plus all following settings are invalid.'
+  );
+
+  $form['jq_maphilight_general']['jq_maphilight_all_maps_enabled'] = array(
+    '#type' => 'radios',
+    '#title' => t('Enable highlighting for all image maps'),
+    '#default_value' => variable_get('jq_maphilight_all_maps_enabled', 'true'),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'If false, <em>class="jq_maphilight"</em> must be added to the &lt;img&gt; tag of each image map you want highlighted.'
+  );
+
+  $form['jq_maphilight_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('jQuery Maphilight default settings'),
+    '#description' => 'You can override the default settings on individual image maps by adding an additional class to the &lt;img&gt; tag. See the README.txt file for more information.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_fill'] = array(
+    '#type' => 'radios',
+    '#title' => t('Fill'),
+    '#default_value' => variable_get('jq_maphilight_fill', 'true'),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'Specify whether the highlighted area should be filled.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_fillcolor'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Fill Color'),
+    '#default_value' => variable_get('jq_maphilight_fillcolor', '000000'),
+    '#size' => 8,
+    '#description' => 'Specify the color of the fill. Use HTML # notation without the #.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_fillopacity'] = array(
+    '#type' => 'select',
+    '#title' => t('Fill Opacity'),
+    '#default_value' => variable_get('jq_maphilight_fillopacity', 2),
+    '#options' => drupal_map_assoc(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
+    '#description' => 'Specify the opacity of the fill (0 = lightest, 10 = darkest).'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_stroke'] = array(
+    '#type' => 'radios',
+    '#title' => t('Stroke (outline)'),
+    '#default_value' => (variable_get('jq_maphilight_stroke', 'true')),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'Specify whether the highlighted area will be outlined.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_strokecolor'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Stroke Color'),
+    '#default_value' => variable_get('jq_maphilight_strokecolor', 'ff0000'),
+    '#size' => 8,
+    '#description' => 'Specify the color of the outline. Use HTML # notation without the #.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_strokewidth'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Stroke Width'),
+    '#default_value' => variable_get('jq_maphilight_strokewidth', 2),
+    '#size' => 8,
+    '#description' => 'Specify the width of the outline in pixels.'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_strokeopacity'] = array(
+    '#type' => 'select',
+    '#title' => t('Stroke Opacity'),
+    '#default_value' => variable_get('jq_maphilight_strokeopacity', 10),
+    '#options' => drupal_map_assoc(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
+    '#description' => 'Specify the opacity of the outline (0 = lightest, 10 = darkest).'
+  );
+
+  $form['jq_maphilight_settings']['jq_maphilight_fade'] = array(
+    '#type' => 'radios',
+    '#title' => t('Fade'),
+    '#default_value' => (variable_get('jq_maphilight_fade', 'true')),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'Specify whether the highlighting uses a fade transition.'
+  );
+  $form['jq_maphilight_settings']['jq_maphilight_alwayson'] = array(
+    '#type' => 'radios',
+    '#title' => t('Always on'),
+    '#default_value' => (variable_get('jq_maphilight_alwayson', 'false')),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'Whether to never show the hilighted areas.'
+  );
+  $form['jq_maphilight_settings']['jq_maphilight_neveron'] = array(
+    '#type' => 'radios',
+    '#title' => t('Never on'),
+    '#default_value' => (variable_get('jq_maphilight_neveron', 'false')),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'Whether to never show the hilighted areas.'
+  );
+  $form['jq_maphilight_settings']['jq_maphilight_groupby'] = array(
+    '#type' => 'radios',
+    '#title' => t('Group by'),
+    '#default_value' => (variable_get('jq_maphilight_groupby', 'false')),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#description' => 'If true, applies the class on the &lt;img&gt; to the wrapper div maphilight created.'
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Check if the jquery.maphilight.min.js file is available.
+ */
+function _jq_maphilight_available() {
+  if (module_exists('libraries')) {
+    $available = libraries_get_path('jquery.maphilight') . '/jquery.maphilight.min.js';
+    if (is_file($available)) {
+      return $available;
+    }
+  }
+  return FALSE;
+}

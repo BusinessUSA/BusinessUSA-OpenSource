@@ -1,0 +1,209 @@
+<?php
+
+// Can't use hook_menu's 'file to include because we need to pass it through overrideable.
+include_once(drupal_get_path('module', 'ya_wizard') . '/ya_wizard.api.inc');
+
+/**
+ * Implements hook_menu();
+ */
+function ya_wizard_menu() {
+  $items['wizard/api/%'] = array(
+    'page callback' => 'ya_wizard_api_export',
+    'page arguments' => array(2, 3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['resource/api/%'] = array(
+    'page callback' => 'ya_wizard_api_resource',
+    'page arguments' => array(2, 3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function ya_wizard_theme() {
+    $themes = array();
+    $themes['yawizard'] = array(
+        'template' => 'yawizard',
+        'variables' => array(
+            'sideBars' => false,
+        ),
+    );
+    $themes['yawizard_from_excel'] = array(
+        'template' => 'yawizard_from_excel',
+        'variables' => array(),
+    );
+    $themes['yawizard_ajax_loading_spinner'] = array(
+        'template' => 'yawizard_ajax_loading_spinner',
+        'variables' => array(),
+    );
+    $themes['yawizard_question'] = array(
+        'template' => 'yawizard_question',
+        'variables' => array(),
+    );
+    $themes['yawizard_pagedresults'] = array(
+        'template' => 'yawizard_pagedresults',
+        'variables' => array(
+            'containerAttribs' => '',
+            'resultsPerPage' => 5,
+            'pagerLinksMax' => 5,
+            'resultMarkups' => array()
+        ),
+    );
+    $themes['yawizard_pagedresults_page'] = array(
+        'template' => 'yawizard_pagedresults_page',
+        'variables' => array(
+            'containerAttribs' => '',
+            'pageId' => 1,
+            'resultsPerPage' => 5,
+            'pagerLinksMax' => 5,
+            'resultCount' => 0,
+            'resultMarkups' => array()
+        ),
+    );
+    $themes['yawizard_sections'] = array(
+        'template' => 'yawizard_sections',
+        'variables' => array(
+            'titles' => 'Top Programs reccommended for you',
+            'sections' => array(),
+            'resultsPerPage' => 5,
+            'pagerLinksMax' => 5,
+            'sideBars' => false,
+            'showTop5Label' => true,
+            'numberEachSection' => false,
+            'showSectionIcons' => true,
+            'collapsibleSections' => false,
+            'welcomeMessage' => array(),
+        ),
+    );
+    return $themes;
+}
+
+/**
+ * Implementation of hook_preprocess_HOOK().
+ */
+function ya_wizard_preprocess_yawizard(&$variables) {
+
+    $variables['sliderInNavigation'] = 1;
+
+    drupal_add_js(
+        drupal_get_path('module', 'ya_wizard') . '/jquery.mCustomScrollbar.js',
+        array(
+            'type' => 'file',
+            'group' => 'JS_LIBRARY'
+        )
+    );
+
+    drupal_add_css( drupal_get_path('module', 'ya_wizard') . '/jquery.mCustomScrollbar.css' );
+    drupal_add_css( drupal_get_path('module', 'ya_wizard') . '/ya_wizard.css' );
+
+    // Init the YA_Wizard library (javascript in the client's browser)
+
+    drupal_add_js(
+        drupal_get_path('module', 'ya_wizard') . '/yawizard.js',
+        array(
+            'type' => 'file',
+            'group' => 'JS_DEFAULT',
+        )
+    );
+
+    drupal_add_js(
+        drupal_get_path('module', 'ya_wizard') . '/yawizard-effects.js',
+        array(
+            'type' => 'file',
+            'group' => 'JS_DEFAULT',
+        )
+    );
+
+}
+
+/**
+ * Implementation of hook_preprocess_HOOK().
+ */
+function ya_wizard_preprocess_yawizard_sections(&$variables) {
+    
+    // If a string was passed for the variables welcomeMessage, typecast it as an array
+    if ( is_string($variables['welcomeMessage']) ) {
+        $variables['welcomeMessage'] = array( $variables['welcomeMessage'] );
+    }
+    
+    foreach ( $variables['sections'] as $sectionType => &$results ) {
+        foreach ( $results as &$result ) {
+
+            /* Ensure each wizard result has a target link field, and target URL field - auto-detect URL based on drupal_get_path_alias() if needed */
+            if ( !empty($result['nid']) && empty($result['link']) && empty($result['url']) ) { // If not link was given, but a nodeId was...
+                $result['link'] = '/' . drupal_get_path_alias('node/' . $result['nid']); // determin the Drupal [alias] URL to this node.
+                $result['url'] = $result['link'];
+            }
+            if ( empty($result['link']) && !empty($result['url']) ) {
+                $result['link'] = $result['url'];
+            }
+            if ( empty($result['url']) && !empty($result['link']) ) {
+                $result['url'] = $result['link'];
+            }
+
+            /* Ensure there is a "individual-icon" field, default to (boolean) false */
+            if ( empty($result['individual-icon']) ) {
+                $result['individual-icon'] = false;
+            }
+
+        }
+    }
+}
+
+/**
+ * Implementation of hook_preprocess_HOOK().
+ */
+function ya_wizard_preprocess_yawizard_pagedresults(&$variables) {
+
+    if ( empty($variables['resultCount']) || !is_numeric($variables['resultCount']) ) {
+        $variables['resultCount'] = count( $variables['resultMarkups'] );
+    }
+
+    $variables['pageCount'] = (integer) ceil( $variables['resultCount'] / $variables['resultsPerPage'] );
+    $variables['uniqVar'] = uniqid('yaPager_');
+    $variables['counter'] = 1;
+}
+
+/**
+ * Implementation of hook_preprocess_HOOK().
+ */
+function ya_wizard_preprocess_yawizard_pagedresults_page(&$variables) {
+
+    $variables['pageCount'] = (integer) ceil( $variables['resultCount'] / $variables['resultsPerPage'] );
+
+    // Show links for pageX through Y
+    if ( $variables['pagerLinksMax'] > $variables['pageCount'] ) {
+        $variables['pagerLinksStart'] = 1;
+        $variables['pagerLinksEnd'] = $variables['pageCount'];
+    } else {
+        $variables['pagerLinksStart'] = (integer) floor( $variables['pageId'] - ($variables['pagerLinksMax'] / 2) ) + 1;
+        if ( $variables['pagerLinksStart'] < 1 ) { $variables['pagerLinksStart'] = 1; }
+        $variables['pagerLinksEnd'] = $variables['pagerLinksStart'] + intval($variables['pagerLinksMax']);
+        if ( $variables['pagerLinksEnd'] > $variables['pageCount'] )  { $variables['pagerLinksEnd'] = $variables['pageCount'];  }
+    }
+
+}
+
+function ya_wizard_includePhpExcel() {
+    include_once(  drupal_get_path('module', 'ya_wizard') . '/ya_wizard.inc'  );
+    return _ya_wizard_includePhpExcel();
+}
+
+function ya_wizard_excelToArray($spreadsheetPath, $workSheetNumber = 0) {
+    include_once(  drupal_get_path('module', 'ya_wizard') . '/ya_wizard.inc' );
+    return _ya_wizard_excelToArray($spreadsheetPath, $workSheetNumber);
+}
+
+function ya_wizard_parseLogicStringToArrray($logicString) {
+    include_once(  drupal_get_path('module', 'ya_wizard') . '/ya_wizard.inc'  );
+    return _ya_wizard_parseLogicStringToArrray($logicString);
+}
+
+function ya_wizard_WizardFromExcel($spreadsheetPath) {
+    include_once(  drupal_get_path('module', 'ya_wizard') . '/ya_wizard.inc' );
+    return _ya_wizard_WizardFromExcel($spreadsheetPath);
+}

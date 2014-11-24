@@ -1,0 +1,140 @@
+table {
+  *border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+.custom-report-custom-report-bordered {
+  border: solid #ccc 1px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 1px 1px #ccc;
+  -moz-box-shadow: 0 1px 1px #ccc;
+  box-shadow: 0 1px 1px #ccc;
+}
+.custom-report-bordered tr:hover {
+  background: #fbf8e9;
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+.custom-report-bordered th {
+  background-color: #dce9f9;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+  background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+  background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  border-top: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.custom-report-bordered th:first-child {
+  -moz-border-radius: 6px 0 0 0;
+  -webkit-border-radius: 6px 0 0 0;
+  border-radius: 6px 0 0 0;
+}
+.custom-report-bordered th:last-child {
+  -moz-border-radius: 0 6px 0 0;
+  -webkit-border-radius: 0 6px 0 0;
+  border-radius: 0 6px 0 0;
+}
+.custom-report-bordered th:only-child {
+  -moz-border-radius: 6px 6px 0 0;
+  -webkit-border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0;
+}
+.custom-report-bordered tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 6px;
+  -webkit-border-radius: 0 0 0 6px;
+  border-radius: 0 0 0 6px;
+}
+.custom-report-bordered tr:last-child td:last-child {
+  -moz-border-radius: 0 0 6px 0;
+  -webkit-border-radius: 0 0 6px 0;
+  border-radius: 0 0 6px 0;
+}
+.custom-report-bordered td,
+.custom-report-bordered th {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+.custom-report-bordered td:first-child,
+.custom-report-bordered th:first-child {
+  border-left: none;
+}
+.custom-report-container .custom-report {
+  min-height: 50px;
+}
+.custom-report-container .custom-report legend {
+  height: 50px;
+  vertical-align: middle;
+  line-height: 50px;
+  border: none;
+  margin-bottom: 0px;
+  text-decoration: underline;
+}
+.custom-report-container .custom-report .fieldset-wrapper {
+  border: 2px solid black;
+  margin-left: 15px;
+  padding: 5px;
+}
+.custom-report-container .custom-report .fieldset-wrapper .fieldset-description .click-download-tooltip {
+  float: left;
+  margin-right: 15px;
+}
+.custom-report-container .custom-report .fieldset-wrapper > a {
+  text-decoration: none;
+  cursor: pointer;
+  height: 30px;
+  width: 100px;
+  display: inline-block;
+}
+.custom-report-container .custom-report .fieldset-wrapper > a .custom-report-button {
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  background: lightgray;
+}
+.custom-report-container #edit-mass {
+  min-height: 50px;
+}
+.custom-report-container #edit-mass legend {
+  height: 50px;
+  vertical-align: middle;
+  line-height: 50px;
+  border: none;
+  margin-bottom: 0px;
+  text-decoration: underline;
+}
+.custom-report-container #edit-mass .fieldset-wrapper {
+  margin-left: 15px;
+  padding: 5px;
+}
+.custom-report-container #edit-mass .fieldset-wrapper .edit-mass-note {
+  background: lightyellow;
+  padding: 10px;
+}
+.custom-report-container #edit-mass .fieldset-wrapper .form-item label {
+  display: block;
+}
+.custom-report-container #edit-mass .fieldset-wrapper .download {
+  margin-bottom: 15px;
+}
+.custom-report-container #edit-mass .fieldset-wrapper .download input {
+  width: 100px;
+  height: 30px;
+  background: lightgray;
+  border: none;
+  color: #6885a2;
+  font-family: "latoblack", Helvetica, Arial, sans-serif;
+}

@@ -1,0 +1,103 @@
+.disaster-splash-wizard-container {
+  float: left;
+  width: 75%;
+}
+.disaster-splash-declaration-container {
+  float: right;
+  width: 24%;
+  height: 390px;
+  margin-left: 1%;
+  border: 1px solid #000000;
+  position: relative;
+}
+.disaster-splash-declaration-container .disaster-splash-declaration-title {
+  text-align: center;
+}
+.disaster-splash-declaration-container .view-fema-disaster-declarations .views-row {
+  padding-left: 10px;
+  padding-bottom: 15px;
+}
+.disaster-splash-declaration-container .view-fema-disaster-declarations .item-list {
+  position: absolute;
+  bottom: 0;
+  margin-left: 40px;
+}
+.disaster-splash-declaration-container .view-fema-disaster-declarations .item-list .pager li > a,
+.disaster-splash-declaration-container .view-fema-disaster-declarations .item-list .pager .pager li > span {
+  padding: 0;
+  border: none;
+  border-radius: 0px;
+}
+.disaster-splash-declaration-container .view-fema-disaster-declarations .item-list .pager li {
+  margin: 0;
+  text-transform: capitalize;
+}
+.disaster-splash-featured-info-container {
+  clear: left;
+  float: left;
+  width: 75%;
+  min-height: 290px;
+  margin-top: 2%;
+  border: 1px solid #000000;
+}
+.disaster-splash-featured-info-container .disaster-splash-featured-info-title {
+  width: 300px;
+  text-align: center;
+  border: 1px solid black;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+.disaster-splash-featured-info-container .view-disaster-splash-featured-info .views-row {
+  padding-left: 10px;
+  padding-bottom: 15px;
+}
+.disaster-splash-faqs-container {
+  clear: right;
+  float: right;
+  width: 24%;
+  height: 561px;
+  margin-top: 2%;
+  margin-left: 1%;
+  border: 1px solid #000000;
+}
+.disaster-splash-faqs-container .disaster-splash-faqs-title {
+  text-align: center;
+}
+.disaster-splash-faqs-container .sidebar-article-result {
+  padding-left: 10px;
+  padding-bottom: 15px;
+}
+.disaster-splash-faqs-container .yawizard-pagedresults-pagers {
+  list-style: none;
+  display: table;
+  margin: 0 auto;
+  padding: 0;
+}
+.disaster-splash-faqs-container .yawizard-pagedresults-pagers li {
+  display: inline;
+  padding: 0.5em;
+}
+.disaster-splash-video-container {
+  float: left;
+  width: 37.5%;
+  margin-top: 2%;
+}
+.disaster-splash-info-maps-container {
+  float: left;
+  width: 36.5%;
+  height: 247px;
+  margin-top: 2%;
+  margin-left: 1%;
+  border: 1px solid #000000;
+}
+.disaster-splash-info-maps-container .disaster-splash-info-maps-title {
+  width: 300px;
+  text-align: center;
+  border: 1px solid black;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+.disaster-splash-info-maps-container .view-disaster-splash-featured-info .views-row {
+  padding-left: 10px;
+  padding-bottom: 15px;
+}

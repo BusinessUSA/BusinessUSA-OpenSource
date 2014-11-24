@@ -1,0 +1,98 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import (reference) "../../themes/bizusa/theme/bootstrap/less/bootstrap.less";
+
+//
+// About Page General Styles
+//---------------------------------------------------
+body > .wrapper .region.region-content #block-system-main{
+	background-color: #fff;
+	padding: 15px 0px;
+	@media (min-width: @screen-sm-min) {
+		padding:25px 15px;
+	}
+}
+.highlight{
+	@media (min-width: @screen-sm-min) {
+		margin-right: -30px;
+		margin-left: -30px;
+		margin-bottom:15px;
+		float:left;
+	}
+	p{
+		color: #1e5b71;
+		background-color: #97e8c1;
+		font-size: 25px;
+		padding: 4% 2.5%;
+		text-align: center;
+		margin: 10px 0px;
+		@media (min-width: @screen-sm-min) {
+	    	font-size: 30px;
+	  	}
+	}
+}
+.col-sm-5,
+.col-sm-7{
+	background-color:#fff;
+	@media (min-width: @screen-sm-min) {
+    	background-color: transparent;
+  	}
+	ul.logos-group{
+	padding: 0px;
+	.make-row();
+		li{
+		.make-xs-column(3);
+		text-align: center;
+		list-style-type: none;
+		margin-bottom:30px;
+			a{
+			background: url("/sites/all/themes/bizusa/images/aboutus_logos_v2.jpeg") no-repeat scroll 0px 0px transparent;
+			display:inline-block;
+			height:48px;
+			width:53px;
+			text-indent:-9999px;
+			}
+			&.one{ a{background-position: -28px -16px; &:hover{background-position: -28px -649px;} } }
+			&.two{ a{background-position: -118px -16px; &:hover{background-position: -118px -649px;} } }
+			&.three{ a{background-position: -204px -16px; &:hover{background-position: -204px -649px;} } }
+
+			&.four{ a{background-position: -28px -93px; &:hover{background-position: -28px -726px;} } }
+			&.five{ a{background-position: -116px -93px; &:hover{background-position: -116px -726px;} } }
+			&.six{ a{background-position: -204px -93px; &:hover{background-position: -204px -726px;} } }
+
+			&.seven{ a{background-position: -28px -174px; &:hover{background-position: -28px -807px;} } }
+			&.eight{ a{background-position: -117px -174px; &:hover{background-position: -117px -807px;} } }
+			&.nine{ a{background-position: -204px -174px; &:hover{background-position: -204px -807px;} } }
+
+			&.ten{ a{background-position: -28px -252px; &:hover{background-position: -28px -885px;} } }
+			&.eleven{ a{background-position: -116px -252px; &:hover{background-position: -116px -885px;} } }
+			&.twelve{ a{background-position: -204px -252px; &:hover{background-position: -204px -885px;} } }
+
+			&.thirteen{ a{background-position: -28px -332px; &:hover{background-position: -28px -965px;} } }
+			&.fourteen{ a{background-position: -118px -332px; &:hover{background-position: -118px -965px;} } }
+			&.fifteen{ a{background-position: -204px -332px; &:hover{background-position: -204px -965px;} } }
+
+			&.sixteen{ a{background-position: -28px -412px; &:hover{background-position: -28px -1045px;} } }
+			&.seventeen{ a{background-position: -116px -410px; &:hover{background-position: -116px -1043px;} } }
+			&.eighteen{ a{background-position: -204px -411px; &:hover{background-position: -204px -1044px;} } }
+
+			&.nineteen{ a{background-position: -28px -490px; &:hover{background-position: -28px -1123px;} } }
+			&.twenty{ a{background-position: -118px -490px; &:hover{background-position: -118px -1123px;} } }
+			&.twentyone{ a{background-position: -204px -490px; &:hover{background-position: -204px -1123px;} } }
+
+			&.twentytwo{ a{background-position: -28px -570px; &:hover{background-position: -28px -1203px;} } }
+			&.twentythree{ a{background-position: -118px -570px; &:hover{background-position: -118px -1203px;} } }
+			&.twentyfour{ a{background-position: -204px -570px; &:hover{background-position: -204px -1203px;} } }
+			&.twentyfive{ a{background: url("/sites/all/themes/bizusa/images/dhs_logo_BW.png") no-repeat scroll 0px 0px transparent; &:hover{background: url("/sites/all/themes/bizusa/images/dhs_logo.png") no-repeat scroll 0px 0px transparent;} } }
+		}
+	}
+	ul.logos-group.group1 li{margin-bottom:0px;}
+}
+.col-sm-5{
+	@media (min-width: @screen-sm-min) {
+    	padding-right:0px
+  	}
+}
+
+

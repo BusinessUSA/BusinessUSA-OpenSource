@@ -1,0 +1,117 @@
+//
+// Footer
+// --------------------------------------------------
+
+.region.region-footer{
+  .make-row();
+  float: left;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-left: 0;
+  margin-right: 0;
+ 
+  @media (min-width: @screen-sm-min) {
+    background-color: transparent;
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  #block-block-1{
+    .make-xs-column(12);
+    //Create columns
+    .list1{
+      float: left;
+      list-style: none;
+      .make-sm-column(2.5);
+    }
+    .list2, .list3{
+      float: left;
+      list-style: none;
+      .make-sm-column(2.5);
+      .make-sm-column-offset(.5);
+    }
+    .emailUpdates{
+      float: left;
+      .make-sm-column(3);
+      .make-sm-column-offset(.5);
+    }
+    
+    //On mobile hide the last 3 columns
+    .list2, .list3, .emailUpdates{
+      display: none;    
+      @media (min-width: @screen-sm-min) {
+        display: block;
+      }
+    }
+    
+    //Mobile style 
+    .list1{
+      background-color: #fff;
+      padding: 15px;
+      li{
+        float: left;
+        margin: 5px;
+        a{
+          background-color: @gray-lighter;
+          display: block;
+          padding: 10px;
+          font-size: 12px;
+          font-family: @font-family-sans-serif-bold;
+          border:1px solid #E0E0E0;
+        }
+      }
+    }
+    
+    //Tablet and Desktop style
+
+    @media (min-width: @screen-sm-min) {
+
+      .list1, .list2, .list3, .emailUpdates{
+        border-top: 3px solid #c6d1dc;
+        background-color: transparent;
+        padding: 0 15px;
+      }
+
+      .list1, .list2, .list3{
+        li{
+          float: none;
+          margin: 0px 0px 0px 0px;
+          a{
+            background-color: transparent;
+            font-size: 12px;
+            padding: 10px 0px 0px 0px;
+            display: block;
+            border: none;
+            font-family: @font-family-sans-serif;
+          }
+        }
+      }
+      .emailUpdates{
+        form {
+          float: left;
+          width: 100%;
+          #email{
+            .form-control();
+            .input-sm();
+            float: left;
+            width: 68%;
+            font-family: @font-family-sans-serif-italic;
+          }
+          .form-actions {
+            margin: 0;
+            float: left;
+            #submit-email{
+              .btn();
+              .btn-primary();
+              .btn-sm();
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+
+}

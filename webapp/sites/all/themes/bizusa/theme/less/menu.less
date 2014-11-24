@@ -1,0 +1,328 @@
+//
+// Navigation
+// --------------------------------------------------
+
+
+// Navigation variables
+//
+
+@images: "/sites/all/themes/bizusa/images";
+
+//Colors
+
+@navbar-color: #2f2f2f;
+@navbar-color-light: lighten(@navbar-color, 40%);
+@navbar-color-dark: darken(@navbar-color, 4%);
+
+// Navigation mixins
+//
+
+.setbackground(@my-background-image) {
+  background: url("@{images}/@{my-background-image}") no-repeat 50% 50% transparent;
+}
+
+
+//
+// On mobile hide desktop and tablet navigation 
+// --------------------------------------------------
+
+#navigation,
+#siteNavigations, 
+#mainNavigation,
+#scrollNavigation{
+  display: none;
+  @media (min-width: @screen-sm-min) {
+    display: block;
+  }
+}
+
+
+//
+// Adminitrator toolbar overwrites
+// --------------------------------------------------
+body.logged-in.role-administrator.admin-menu{
+  #admin-menu{
+    z-index: 1030;
+    a{
+      font-family: @font-family-sans-serif;
+    }
+  }
+}
+
+//
+// Main Navigation
+// --------------------------------------------------
+
+#mainNavigation,
+#scrollNavigation {
+  background-color: @navbar-color;
+}
+
+#mainNavigation li a,
+#scrollNavigation li a{
+  font-family: @font-family-sans-serif;
+}
+
+#mainNavigation .nav.navbar-nav > li > a,
+#scrollNavigation .nav.navbar-nav > li > a{
+  font-family: @font-family-sans-serif-bold;
+}
+
+li.translate > a:first-child {
+  .setbackground("google-translate.png");
+  margin-left: 30px;
+  margin-right: 8px;
+}
+
+li.twitter a{
+  .setbackground("busatwitter.png");
+}
+
+li.linkedin a {
+  .setbackground("busalinkdin.png");
+}
+
+li.email-updates a,
+li.browsealoud2 a {
+  .setbackground("mail_icon.png");
+}
+
+li.browsealoud #_ba__button{
+  margin-top: 16px; 
+  margin-left: 5px;
+}
+
+li.translate{
+  .sub-arrow{
+    visibility: hidden;
+  }
+  .sitewide-googletranslate-googleicon-container{
+    img{
+      display: none;
+    }
+  }
+  #googleTranslateApiPreContainer{
+    display: none;
+  }
+  #googleTranslateApiPostContainer{
+    display: none;
+  }
+  .skiptranslate.goog-te-gadget{
+    display: none;
+  }
+  .sitewide-googletranslate-optionsmastercontainer{
+      height: 300px;
+      overflow-x: hidden;
+      overflow: scroll;
+  }
+}
+
+//
+// Scroll Navigation
+// --------------------------------------------------
+
+.navbar-brand{
+  background: url("/sites/all/themes/bizusa/images/scroll-menu-logo.png") no-repeat 0% -5px transparent;
+  background-size: 120px;
+  padding-right: 130px;
+}
+
+ul.wizards{
+  background: url("/sites/all/themes/bizusa/images/scroll-menu-most.png") no-repeat 0% 0% transparent;
+  background-size: 40px;
+  padding-left: 40px;
+}
+
+li.start-a-business-menu-icon,
+li.access-financing-menu-icon,
+li.explore-exporting-menu-icon,
+li.find-opportunities-menu-icon,
+li.grow-your-business-menu-icon,
+li.taxes-and-credits-menu-icon{
+  margin-left: 10px;
+  &.open{
+    background-color: #080808;
+    & > a{
+      background-color: transparent !important;
+    }
+  }
+  & > a{
+    .sub-arrow{
+      visibility: hidden;
+    }
+  }
+}
+
+li.taxes-and-credits-menu-icon{
+  margin-right: 10px;
+  .setbackground("busalinkdin.png");
+}  
+
+li.start-a-business-menu-icon{
+  .setbackground("scroll-start-a-business.png");
+}
+
+li.access-financing-menu-icon{
+  .setbackground("scroll-access-financing.png");
+}
+
+li.explore-exporting-menu-icon{
+  .setbackground("scroll-explore-exporting.png");
+}
+
+li.find-opportunities-menu-icon{
+  .setbackground("scroll-find-opportunities.png");
+}
+
+li.grow-your-business-menu-icon{
+  .setbackground("scroll-grow-your-biz.png");
+}
+
+li.taxes-and-credits-menu-icon {
+  .setbackground("scroll-taxes.png");
+}
+
+
+//
+// Mobile Navigation
+// --------------------------------------------------
+
+#menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 100%;
+  //z-index: 1000;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper {
+  position: absolute;
+  overflow: hidden;
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+
+  -ms-touch-action: none;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .levelHolderClass {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  background: @navbar-color;
+  width: auto;
+  min-height: 100%;
+  font-family: @font-family-sans-serif;
+  font-size: 1em;
+  zoom: 1;
+
+  -ms-touch-action: none;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .ltr {
+  margin-left: -100%;
+  left: 0;
+
+  // Adding this because of IE9 bug
+  -moz-box-shadow: 5px 0 5px -5px #1f4164;
+  -webkit-box-shadow: 5px 0 5px -5px #1f4164;
+  box-shadow: 5px 0 5px -5px #1f4164;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#1f4164,direction=90,strength=2);
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .rtl {
+  margin-right: -100%;
+  right: 0;
+  
+  // Adding this because of IE9 bug
+  -moz-box-shadow: 5px 0 5px 5px #1f4164;
+  -webkit-box-shadow: 5px 0 5px 5px #1f4164;
+  box-shadow: 5px 0 5px 5px #1f4164;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#1f4164,direction=270,strength=2);
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .multilevelpushmenu_mobilemenu_inactive {
+  background: #2e6196;
+}
+//.multilevelpushmenu_mobilemenu_inactive {
+  //  display: none;
+//}
+
+.multilevelpushmenu_mobilemenu_wrapper h2 {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  font-family: @font-family-sans-serif-bold;
+  color: #fff;
+  padding: 0 .4em 0 .4em;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper li {
+  cursor: pointer;
+  border-top: 1px solid @navbar-color-dark;
+  padding: .4em .4em .4em .4em;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper li:last-child {
+  border-bottom: 1px solid @navbar-color-dark;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper li:hover {
+  background-color: @navbar-color-dark;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper a {
+  display: block;
+  outline: none;
+  overflow: hidden;
+  font-size: @font-size-h4;
+  line-height: 1em;
+  padding: .2em .2em;
+  text-decoration: none;
+  font-family: @font-family-sans-serif;
+  color: @navbar-color-light;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper a:hover {
+  color: #ffe;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .backItemClass {
+  display: block;
+  padding: .4em .4em .4em .4em;
+  background: @brand-primary;
+  border-top: 1px solid darken(@brand-primary, 10%);
+  a{
+    color: #fff;
+  }
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .floatRight {
+  float: right;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .floatLeft {
+  float: left;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .cursorPointer {
+  cursor: pointer;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .iconSpacing_ltr {
+  padding: 0 .4em 0 0;
+}
+
+.multilevelpushmenu_mobilemenu_wrapper .iconSpacing_rtl {
+  padding: 0 0 0 .4em;
+}
+
+
+

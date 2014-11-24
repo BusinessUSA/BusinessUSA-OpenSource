@@ -1,0 +1,14 @@
+name = Facetapi Collapsible Links
+description = Provides a nice collabsible links facet widget.
+dependencies[] = facetapi
+package = Search Toolkit
+core = 7.x
+
+files[] = collapsible_widget.inc
+
+; Information added by drupal.org packaging script on 2013-04-26
+version = "7.x-1.1"
+core = "7.x"
+project = "facetapi_collapsible"
+datestamp = "1366997116"
+

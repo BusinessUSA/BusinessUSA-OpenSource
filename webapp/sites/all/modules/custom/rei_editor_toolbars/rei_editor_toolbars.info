@@ -1,0 +1,16 @@
+name = REI Editor Toolbars
+description = Custom configuration settings for the editor toolbar and shortcut bar.
+core = 7.x
+package = REI
+version = 7.x-0.1
+project = rei_editor_toolbars
+;dependencies[] = ctools
+dependencies[] = dashboard
+;dependencies[] = features
+;dependencies[] = strongarm
+dependencies[] = system
+;features[ctools][] = strongarm:strongarm:1
+;features[features_api][] = api:2
+;features[user_permission][] = access dashboard
+;features[user_permission][] = access site reports
+;features[variable][] = admin_menu_components

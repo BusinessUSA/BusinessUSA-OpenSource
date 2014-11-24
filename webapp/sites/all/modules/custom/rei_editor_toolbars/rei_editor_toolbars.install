@@ -1,0 +1,15 @@
+<?php
+/**
+ * Install functions for the editor toolbar feature to increase the shortcut
+ * limit.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Increases the shortcut limit on the
+ * shortcut bar.
+ */
+function rei_editor_toolbars_install() {
+  variable_set('shortcut_max_slots', 100);
+}

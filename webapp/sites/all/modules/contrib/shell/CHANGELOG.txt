@@ -1,0 +1,8 @@
+; $Id$ 
+===================
+Changelog for Shell (D7 Version)
+===================
+
+
+7-22-2011
+Initial commit for the D7 port of Shell.

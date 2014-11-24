@@ -1,0 +1,96 @@
+/* $Id$  */
+
+#shell-popup-link {
+  text-align: right;
+  padding-bottom: 5px;
+}
+
+#shell-screen-screen {
+  width: 100%;
+  border: 1px solid blue;
+  background-color: black;
+  color: forestgreen;
+  font-size: 0.95em;
+}
+
+#shell-screen-history {
+  height: 400px;
+  line-height: 1.2em;
+  overflow-y: auto;
+  font-family: Courier New, fixed-width;  
+  padding: 10px;
+}
+
+body.page-shell-popup {
+  min-width: 0px !important;
+}
+
+#shell-popup-page #shell-screen-screen {
+  width: 98%;
+  margin: 5px;
+}
+
+#shell-popup-page #shell-screen-history {
+  height: 400px;
+}
+
+#center form#shell-input-form {
+  margin-bottom: 0px;
+  background-color: darkblue;
+}
+
+#shell-input-field {
+  border: 1px solid yellow;
+  background-color: transparent;
+  color: yellow;
+  width: 80%;
+  font-weight: bold;
+}
+
+#shell-input-field-wrapper {
+  margin: 0;
+  margin-top: 5px;
+}
+
+#shell-send {
+  float: right;
+  margin: 0;
+  margin-right: 5px;
+  position: relative;
+  top: 10px;
+}
+
+.user-command {
+  color: yellow;
+}
+
+pre.shell {
+  font-size: 10pt;  
+  margin: 0;
+  padding: 0;
+}
+
+.shell-not-supported {
+  font-style: italic;
+}
+
+.shell-directory-listing {
+  margin-top: 10px;
+}
+
+.shell-view-file
+{
+  background-color: beige;
+  border: 1px solid gray;
+  padding: 5px;  
+}
+
+.shell-list-from-tab
+{
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+.shell-list-from-tab span.shell-filename {
+  padding-right: 30px;
+}

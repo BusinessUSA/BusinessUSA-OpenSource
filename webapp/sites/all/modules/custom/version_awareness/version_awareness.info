@@ -1,0 +1,6 @@
+;$Id$
+name = Version Awareness
+description = Defines functions usefull for telling the application-code status, detecting if the running environment is the production server or not, etc.
+package = REI
+core = 7.x
+files[] = version_awareness.module

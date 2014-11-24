@@ -1,0 +1,564 @@
+<?php
+
+/**
+ * The main file for querypath_examples.
+ * 
+ * @author Matt Butcher <mbutcher@aleph-null.tv>
+ * @file
+ */
+
+/**
+ * Implements hook_help().
+ */
+function querypath_examples_help($path, $args) {
+  if ($path == 'admin/help#querypath_examples') {
+    return t('Examples of using QueryPath.');
+  }
+}
+
+/**
+ * Implements hook_menu();
+ * 
+ * ADD: Customized RSS Feeds - create a function where someone can pass an array of rss urls to it & display
+ * the most current up to the number passed to it
+ * rssFeeds(rssURLs[], limit)
+ */
+function querypath_examples_menu() {
+  $items = array();
+  $items['qp/rss'] = array(
+    'title' => t('Transform an RSS feed'),
+    'description' => t('Grab a remote RSS feed and transform it into HTML.'),
+    'page callback' => 'querypath_examples_show_rss',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/sticky'] = array(
+    'title' => t('Show sticky nodes'),
+    'description' => t('Grab a list of sticky nodes and display it.'),
+    'page callback' => 'querypath_examples_show_sticky_nodes',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/twitter'] = array(
+    'title' => t('Show Twitters'),
+    'description' => t('Show public timeline from Twitter3.'),
+    'page callback' => 'querypath_examples_show_twitter',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/musicbrainz'] = array(
+    'title' => t('Show MusicBrainz data'),
+    'description' => t('Query the MusicBrainz library.'),
+    'page callback' => 'querypath_examples_show_musicbrainz',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/sparql'] = array(
+    'title' => t('Run SPARQL query'),
+    'description' => t('Query a SPARQL endpoint and display the results.'),
+    'page callback' => 'querypath_examples_show_sparql',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/ld'] = array(
+    'title' => t('Related References'),
+    'description' => t('View linked data for a particular path.'),
+    'page callback' => 'querypath_examples_show_ld',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  $items['qp/multiplerss'] = array(
+    'title' => t('Show Multiple RSS Feeds'),
+    'description' => t('Show multiple RSS feeds.'),
+    'page callback' => 'querypath_examples_show_multiplerss',
+    'page arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/**
+ * Display the titles of each item in the RSS feed.
+ */
+function querypath_examples_show_rss() {
+  
+  $out = '<h2>' . t('Items in the RSS Feed') . '</h2>';
+  $out .= '<p>' . t('Display a linked title to each item in the RSS feed') . '</p>';
+  $out .= '<p>' . t('Behind the scenes, this is fetching the RSS feed over HTTP, parsing it, and then creating a list of linked items.') . '</p>';
+  
+  $url = url('rss.xml', array('absolute' => TRUE));  
+  foreach (qp($url, 'item') as $item) {
+    $title = $item->find('title')->text();
+    $link = $item->next('link')->text();
+    
+    $out .= '<p>' . l($title, $link) . '</p>';
+  }
+  
+  $code = '<?php
+  $url = url(\'rss.xml\', array(\'absolute\' => TRUE));
+  foreach (qp($url, \'item\') as $item) {
+    $title = $item->find(\'title\')->text();
+    $link = $item->next(\'link\')->text();
+    
+    $out .= \'<p>\' . l($title, $link) . \'</p>\';
+  }
+  ?>';
+  
+  $out .= '<h2>' . t('The Code:') . '</h2>';
+  $out .= highlight_string($code, TRUE);
+  
+  $out .= '<h2>' . t('References:') . '</h2>';
+  $out .= l('The QueryPath API', 'http://querypath.org');
+  return $out;
+}
+
+function querypath_examples_show_sticky_nodes() {
+  $out = '';
+  $out = '<h2>' . t('List of nodes marked sticky') . '</h2>';
+  $out .= '<p>' . t('Display a list of sticky nodes. This combines a database query with some basic HTML generation.') . '</p>';
+  
+  $sql = 'SELECT title FROM {node} WHERE sticky = 1';
+  $ul = qp('<?xml version="1.0"?><ul></ul>')
+    ->query($sql)
+    ->withEachRow()
+    ->appendColumn('title', '<li/>')
+    ->top()
+    ->html();
+    
+  $code = '<?php
+    $sql = \'SELECT title FROM {node} WHERE sticky = 1\';
+    $ul = qp(\'<?xml version="1.0"?><ul></ul>\')
+      ->query($sql)
+      ->withEachRow()
+      ->appendColumn(\'title\', \'<li/>\')
+      ->top()
+      ->html();
+  ?>';
+  
+  $out .= $ul;
+  $out .= '<h2>' . t('The Code:') . '</h2>';
+  $out .= highlight_string($code, TRUE);
+  
+  $out .= '<h2>' . t('References:') . '</h2>';
+  $out .= l('The QueryPath API', 'http://querypath.org');
+  return $out;
+}
+
+function querypath_examples_show_twitter() {
+  $out = '';
+  $out = '<h2>' . t('Fetch and display the public twitter feed.') . '</h2>';
+  $out .= '<p>' . t('Display the most recent entries on the Twitter public timeline.') . '</p>';
+  
+  try {
+    $ul = qp('<?xml version="1.0"?><ul/>');
+    $url = 'http://twitter.com/statuses/public_timeline.xml';
+    $tpl = '<li>
+      <div style="height: 55px">
+      <img style="float:left" width="50" height="50" src="@img"/>
+      <strong>@uname </strong><em>@ts</em><br/>
+      @txt
+      </div>
+    </li>';
+    foreach (qp($url, 'status') as $status) {
+      $data = array();
+      $data['@ts'] = substr($status->children('created_at')->text(), 0, 20);
+      $data['@txt'] = $status->next('text')->text();
+      $data['@uname'] = htmlentities($status->parent()->find('user>screen_name')->text());
+      $data['@img'] = $status->next('profile_image_url')->text();
+      $data = strtr($tpl, $data);
+      $ul->append($data);
+    }
+
+    $out .= $ul->html();
+  }
+  catch (Exception $e) {
+    drupal_set_message('Error:' . $e->getMessage(), 'status');
+  }
+  
+  $out .= '<h2>' . t('The Code:') . '</h2>';
+  
+  $code = '
+      <?php
+      $ul = qp(\'<?xml version=\'1.0\'?><ul/>\');
+      $url = \'http://twitter.com/statuses/public_timeline.xml\';
+      $tpl = \'<li>
+        <div style=\'height: 55px\'>
+        <img style=\'float:left\' src=\'@img\'/>
+        <strong>@uname </strong><em>@ts</em><br/>
+        @txt
+        </div>
+      </li>\';
+      foreach (qp($url, \'status\') as $status) {
+        $data = array();
+        $data[\'@ts\'] = substr($status->children(\'created_at\')->text(), 0, 20);
+        $data[\'@txt\'] = $status->next(\'text\')->text();
+        $data[\'@uname\'] = htmlentities($status->parent()->find(\'user>screen_name\')->text());
+        $data[\'@img\'] = $status->next(\'profile_image_url\')->text();
+        $data = strtr($tpl, $data);
+        $ul->append($data);
+      }
+      $out .= $ul->html();
+      ?>';
+  
+  $out .= highlight_string($code, TRUE);
+  
+  $out .= '<h2>' . t('References:') . '</h2>';
+  $out .= l('The QueryPath API', 'http://querypath.org');
+  return $out;
+}
+
+function querypath_examples_show_musicbrainz() {
+  return drupal_get_form('querypath_examples_show_musicbrainz_form');
+}
+
+function querypath_examples_show_musicbrainz_form($edit) {
+  $form['explain'] = array(
+    '#type' => 'item',
+    '#title' => t('MusicBrainz Example'),
+    '#markup' => t('Enter an artist and this will query the MusicBrainz XML service an return the "best" artist match and a list of albums by the artist.'),
+  );
+  
+  $form['artist_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Enter an Artist Name'),
+    '#description' => t('Examples: U2, Tori Amos'),
+    '#size' => 60,
+    '#maxlength' => 256,
+    '#required' => TRUE,
+  );
+  $form['submit_artist'] = array(
+    '#type' => 'submit',
+    '#value' => t('Find'),
+  );
+  if (!empty($_SESSION['musicbrainz_data'])) {
+    $form['out'] = array(
+      '#type' => 'markup',
+      '#markup' => $_SESSION['musicbrainz_data'],
+    );
+    unset($_SESSION['musicbrainz_data']);
+  }
+  
+  return $form;
+}
+
+function querypath_examples_show_musicbrainz_form_validate($form, &$form_state) {
+  $artist_name = trim($form_state['values']['artist_name']);
+  $artist_name = urlencode($artist_name);
+  
+  $artist_url = 'http://musicbrainz.org/ws/1/artist/?type=xml&name=' . $artist_name;
+  $album_url = 'http://musicbrainz.org/ws/1/release/?type=xml&artistid=';
+  try {
+    drupal_set_message('URL: ' . $artist_url, 'status');
+    $artist = qp($artist_url, 'artist:first');
+    if ($artist->size() > 0) {
+      $id = $artist->attr('id');
+      $out = '';
+      $out .= '<p>The best match we found was for ' . $artist->children('name')->text() . '</p>';
+      $out .= '<p>Artist ID: ' . $id . '</p>';
+      $out .= '<p>Albums for this artist' . '</p><ul>';
+      $out .= $album_url . urlencode($id);
+      $albums = qp($album_url . urlencode($id));//->writeXML();
+      $xml = $albums->xml();
+
+      foreach ($albums->find('release') as $album) {
+        $title = check_plain($album->find('title')->text());
+        $asin = check_plain($album->next('asin')->text());
+        $us_release = check_plain($album->parent()->find('release-event-list>event[country=US]')->attr('date'));
+        $label = check_plain($album->attr('label'));
+        
+        $out .= '<li><strong>' . $title  . '</strong><br/>';
+        if (strlen($label) > 0 && $label != '-') {
+          $out .= ' (' . $label  . ')</li>';
+        }
+        if (!empty($us_release)) {
+          $out .= ' <em>Release Date:' . $us_release . '</em>';
+        }
+        if (!empty($asin) && $asin != '-') {
+          $out .= '<br/><a href="http://www.amazon.com/gp/product/' . $asin .'">Buy</a>';
+        }
+        
+      }
+      $out .= '<h2>The XML looked like this:</h2>';
+      $out .= '<blockquote>';
+      $out .= htmlentities($xml);
+      $out .= '</blockquote>';
+      
+      $_SESSION['musicbrainz_data'] = $out;
+    }
+    else {
+      drupal_set_message('No artists found for ' . $artist_name, 'status');
+    }
+  }
+  catch (Exception $e) {
+    drupal_set_message('Error: ' . $e->getMessage(), 'status');
+  }
+}
+
+
+function querypath_examples_show_sparql() {
+  $out = '';
+//  $_SESSION['out'] = '';
+  $out = drupal_get_form('querypath_examples_show_sparql_form');
+  if ($_SESSION['out'] != '') {
+    $out .= $_SESSION['out'];
+  }
+  $_SESSION['out'] = '';
+  return $out;
+}
+
+function querypath_examples_show_sparql_form($edit) {
+  $form['sparql_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#description' => t('Enter a term. (Case-sensitive)'),
+    '#default_value' => t('The Beatles'),
+    '#size' => 60,
+    '#maxlength' => 256,
+    '#required' => FALSE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Go'),
+  );
+  
+  return $form;
+}
+
+function querypath_examples_show_sparql_form_validate($form, &$form_state) {
+  $query = $form_state['values']['sparql_name'];
+  $query = check_plain($query); // Tags can goober things up.
+  $query = addslashes($query); // Escape quotes.
+  
+  try {
+    $out = querypath_examples_show_sparql_lookup($query);
+    $_SESSION['out'] = $out;
+  }
+  catch (QueryPathException $qpe) {
+    form_set_error('sparql_name', 'Could not submit query. This is likely due to a network problem.');
+  }
+}
+
+function querypath_examples_show_sparql_lookup($term) {
+  // URL to DB Pedia's SPARQL endpoint.
+  $base_url = 'http://dbpedia.org/sparql';
+
+  // The SPARQL query to run.
+  $query = '
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?uri ?name ?label
+    WHERE {
+      ?uri foaf:name ?name .
+      ?uri rdfs:label ?label
+      FILTER (?name = "%s")
+      FILTER (lang(?label) = "en")
+    }
+  ';
+  $sparql = sprintf($query, $term);
+
+  // We first set up the parameters that will be sent.
+  $params = array(
+    'query' => $sparql,
+    'format' => 'application/sparql-results+xml',
+  );
+
+  // DB Pedia wants a GET query, so we create one.
+  $data = http_build_query($params);
+  $url = $base_url . '?' . $data;
+
+  // Next, we simply retrieve, parse, and output the contents.
+  $qp = qp($url, 'head');
+
+  // Get the headers from the resulting XML.
+  $headers = array();
+  foreach ($qp->children('variable') as $col) {
+    $headers[] = $col->attr('name');
+  }
+
+  // Get rows of data from result.
+  $rows = array();
+  $col_count = count($headers);
+  foreach ($qp->top()->find('results>result') as $row) {
+    $cols = array();
+    $row->children();
+    for ($i = 0; $i < $col_count; ++$i) {
+      $item = $row->branch()->eq($i);
+      if ($item->branch()->children('uri')->size() == 1) {
+        $txt = $item->text();
+        $cols[$i] = querypath_examples_format_ld_link($txt, $txt);
+      }
+      else {
+        $cols[$i] = $item->text();
+      }
+      
+    }
+    $rows[] = $cols;
+  }
+  
+  $caption = t('SPARQL Query results from DBPedia');
+  $out = t('Results of issuing @url the following query: ', array('@url' => $base_url)) . 
+    '<pre>' . $sparql . '</pre>';
+  $out .= theme('table', $headers, $rows, array(), $caption);
+  $out .= htmlentities($qp->top()->xml());
+  return $out;
+}
+
+function querypath_examples_format_ld_link($text, $uri) {
+  // Switch to linked data URI:
+  $uri = preg_replace('|\/resource\/|', '/data/', $uri) . '.rdf';
+  return l($text, 'qp/ld', array('query' => array('uri' => $uri)));
+}
+
+/**
+ * View Linked Data for a resource.
+ */
+function querypath_examples_show_ld() {
+  $resource = urldecode($_GET['uri']);
+  
+  if (empty($resource)) {
+    drupal_set_message('Using default resource: The Beatles.', 'status');
+    $resource = 'http://dbpedia.org/data/The_Beatles.rdf';
+  }
+  else {
+    if (preg_match('|^http[s]?://|', $resource) == 0) {
+      drupal_set_message('Invalid URI', 'error');
+      return '';
+    }
+  }
+  
+  $headers = array(
+    'Accept: application/rdf,application/rdf+xml;q=0.9,*/*;q=0.8',
+    'Accept-Language: en-us,en',
+    'Accept-Charset: ISO-8859-1,utf-8',
+    'User-Agent: QueryPath/1.2',
+  );
+
+  // The context options:
+  $options = array(
+    'http' => array(
+      'method' => 'GET',
+      'protocol_version' => 1.1,
+      'header' => implode("\r\n", $headers),
+    ),
+  );
+
+  // Create a stream context that will tell QueryPath how to 
+  // load the file.
+  $cxt = stream_context_create($options);
+
+  // Fetch the URL and select all rdf:Description elements.
+  // (Note that | is the CSS 3 equiv of colons for namespacing.)
+  // To add the context, we pass it in as an option to QueryPath.
+  $qp = qp($resource, 'rdf|Description', array('context' => $cxt));
+  //$qp = qp('/Users/mbutcher/Code/QueryPath/examples/The_Beatles.rdf');
+
+  // Normally this would be refactored into a theme function, but we leave
+  // it here so that it is easier to see what is really happening.
+
+  // Use CSS pseudoclasses with namespaced XML.
+  $out = "<h1>" . $qp->top()->find('rdfs|label:first')->text() . '</h1>';
+  $out .= "<p>About: " . $qp->top()->find('foaf|name:first')->text() . '</p>';
+
+  // Namespaced attributes can be retrieved using the same sort of delimiting.
+  $out .= '<p>' .  $qp->top()->find('rdfs|comment[xml|lang="en"]')->text() . '</p>';
+  $out .= '<h2>Images</h2>';
+  $qp->top();
+  foreach ($qp->branch()->find('foaf|img') as $img) {
+    // Note that when we use attr() we are using the XML name, NOT 
+    // the CSS 3 name. So it is rdf:resource, not rdf|resource.
+    // The same goes for the tag() function -- it will return 
+    // the full element name (e.g. rdf:Description).
+    $out .= '<img src="' . $img->attr('rdf:resource') . '"/>';
+  }
+
+  $out .= "<h2>Images Galleries</h2>";
+  foreach ($qp->branch()->find('dbpprop|hasPhotoCollection') as $img) {
+    $link = $img->attr('rdf:resource');
+    $out .= l($link, $link, array('absolute' => TRUE));
+  }
+
+  $out .= "<h2>Other Sites</h2>";
+  foreach ($qp->branch()->find('foaf|page') as $img) {
+    $link = $img->attr('rdf:resource') . PHP_EOL;
+    $out .= l($link, $link, array('absolute' => TRUE));
+  }
+  
+  return $out;
+}
+
+/**
+ * Display the titles of each item in the RSS feed.
+ */
+function querypath_examples_show_multiplerss() {
+
+  $out = '<h2>' . t('Items in the RSS Feed') . '</h2>';
+  $out .= '<p>' . t('Display a linked title to each item in the RSS feed') . '</p>';
+  $out .= '<p>' . t('Behind the scenes, this is fetching the RSS feed over HTTP, parsing it, and then creating a list of linked items.') . '</p>';
+
+  $urls = array("http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml",
+                "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/africa/rss.xml",
+                "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/americas/rss.xml");
+  $feeds = array();
+  $feeds = _querypath_examples_show_multiplerss($urls, 10);
+    
+  foreach($feeds as $date => $item) {
+    $out .= '<p>' . l($item['title'], $item['link']) 
+            .' <br />From: ' . $item['url'] 
+            .' <br />' . $item['desc'] 
+            .' <br />Published: ' . date("M d, Y H:m:s", $date) . '</p>';
+  }
+
+  $code = '<?php
+  $urls = array("http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml",
+                "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/africa/rss.xml",
+                "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/americas/rss.xml");
+  $feeds = array();
+  $feeds = _querypath_examples_show_multiplerss($urls, 10);
+    
+  foreach($feeds as $date => $item) {
+    $out .= \'<p>\' . l($item[\'title\'], $item[\'link\']) 
+            .\' <br />From: \' . $item[\'url\'] 
+            .\' <br />\' . $item[\'desc\'] 
+            .\' <br />Published: \' . date("M d, Y H:m:s", $date) . \'</p>\';
+  }
+  ?>';
+  $out .= '<h2>' . t('The Code:') . '</h2>';
+  $out .= highlight_string($code, TRUE);
+
+  $out .= '<h2>' . t('References:') . '</h2>';
+  $out .= l('The QueryPath API', 'http://querypath.org');
+  return $out;
+}
+
+function _querypath_examples_show_multiplerss($urls, $limit) {
+  $feeds = array();
+  $tot = 1;
+  foreach($urls as $u) {
+    $url = url($u, array('absolute' => TRUE));
+    foreach (qp($url, 'item') as $item) {
+      $title = $item->find('title')->text();
+      $link = $item->parent()->children('link')->text();
+      $desc = $item->parent()->children('description')->text();
+      $pubdate = strtotime($item->parent()->children('pubDate')->text());
+      if(!$pubdate)
+        $pubdate = strtotime($item->parent()->children('lastBuildDate')->text());
+      $feeds[$pubdate] = array('url' => $u, 'title' => $title, 'link' => $link, 'desc' => $desc);
+      if($tot == $limit) break;
+      $tot++;
+    }
+    $tot = 1;
+  }
+  krsort($feeds);
+  $c = count($feeds);
+  for($i = $c; $i > $c-$limit-1; $i--) {
+    array_pop($feeds);
+  }
+  return $feeds;
+}

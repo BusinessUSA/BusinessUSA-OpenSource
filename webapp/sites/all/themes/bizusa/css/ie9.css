@@ -1,0 +1,12 @@
+/*********************
+***   IE 9 Fixes  ****
+**********************/
+
+
+body.page-healthcare .slide.slide-id-0 .questions .question-container.widget-type-html.wiztag-custom-html .question-controle-container.question-controle-for-wiztag-custom-html.question-controle-widget-type-html .splashextension .splashextension-section.splashextension-toolsres div{
+	min-height: 275px;
+}
+
+body.page-healthcare .slide.slide-id-0 .questions .question-container.widget-type-html.wiztag-custom-html .question-controle-container.question-controle-for-wiztag-custom-html.question-controle-widget-type-html .splashextension .splashextension-section.splashextension-connect div {
+	min-height: 275px;
+}

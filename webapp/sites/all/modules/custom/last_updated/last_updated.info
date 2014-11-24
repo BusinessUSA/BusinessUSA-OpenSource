@@ -1,0 +1,5 @@
+name = Last Updated
+description = Last date section of a page was modified.
+core = 7.x
+version = 7.x-1.0-alpha1
+package = Custom

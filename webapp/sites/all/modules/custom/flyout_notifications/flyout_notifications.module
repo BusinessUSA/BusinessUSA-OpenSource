@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Code for the Flyout Notifications feature.
+ */
+
+//include_once 'flyout_notifications.features.inc';
+
+/**
+ * Implements hook_node_form_FORM_ID_alter().
+ *
+ * Customizes the preview for flyout nodes.
+ */
+function flyout_notifications_form_recommended_flyout_node_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($form_state['node_preview'])) {
+    $title = $form_state['values']['title'];
+    $snippet = (!empty($form_state['values']['field_snippet'][LANGUAGE_NONE][0]['value']) ? $form_state['values']['field_snippet'][LANGUAGE_NONE][0]['value'] : '');
+    if (!empty($form_state['values']['field_image'][LANGUAGE_NONE][0]['fid'])) {
+      $image_file = file_load($form_state['values']['field_image'][LANGUAGE_NONE][0]['fid']);
+      $image_path = file_create_url($image_file->uri);
+
+      $form['#prefix'] = '<div class="preview-recommended-flyout-container">
+        <div class="preview-recommended-flyout-wrap" style="width: 360px;">
+          <div class="preview-recommended-flyout">
+            <a href="" class="preview-recommended-flyout-link">
+              <img src="' . $image_path . '" class="preview-recommended-flyout-content-image" width="70" height="70">
+              <h6 class="preview-recommended-flyout-heading">' . $title . '</h6>
+              <h4 class="preview-recommended-flyout-snippet">' . $snippet . '</h4>
+            </a>
+            <span class="preview-recommended-flyout-close">&#10006;</span>
+          </div>
+        </div>
+      </div>';
+    }
+    else {
+      $form['#prefix'] = '<div class="preview-recommended-flyout-container">
+        <div class="preview-recommended-flyout-wrap" style="width: 360px;">
+          <div class="preview-recommended-flyout">
+            <a href="" class="preview-recommended-flyout-link">
+              <h6 class="preview-recommended-flyout-heading">' . $title . '</h6>
+              <h4 class="preview-recommended-flyout-snippet">' . $snippet . '</h4>
+            </a>
+            <span class="preview-recommended-flyout-close">&#10006;</span>
+          </div>
+        </div>
+      </div>';
+    }
+  }
+}

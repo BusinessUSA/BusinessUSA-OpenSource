@@ -1,0 +1,241 @@
+<?php
+
+require_once 'events/events_mysql.inc';
+require_once 'events/events_PHPExcel.php';
+require_once 'programs/programs_mysql.inc';
+require_once 'programs/programs_PHPExcel.inc';
+require_once 'services/services_mysql.inc';
+require_once 'services/services_PHPExcel.inc';
+require_once 'resource/resource_mysql.inc';
+require_once 'resource/resource_PHPExcel.inc';
+require_once 'articles/articles_mysql.inc';
+require_once 'articles/articles_PHPExcel.inc';
+require_once 'mass_content_exporter.inc';
+
+/**
+ * Implements hook_help().
+ */
+function custom_report_help($path) {
+  switch ($path) {
+    case 'admin/help#custom_report':
+      return t('This is help text for Custom Report page.');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function custom_report_permission() {
+  return array(
+    'access custom report' => array(
+      'title' => t('Access custom report'),
+      'description' => t('Allow users to access custom report'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function custom_report_menu() {
+  $items = array();
+  $items['custom-report'] = array(
+    'title' => t('Custom Reports'),
+    'page callback' => array('drupal_get_form'),
+    'page arguments' => array('custom_report_description'),
+    'access arguments' => array('access custom report'),
+  );
+  // a link to dowload data in an excel file format
+  $items['custom-report/events/download'] = array(
+    'page callback' => array('downloadPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  $items['custom-report/programs/download'] = array(
+    'page callback' => array('downloadProgramPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  $items['custom-report/services/download'] = array(
+    'page callback' => array('downloadServicesPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  $items['custom-report/articles/download'] = array(
+    'page callback' => array('downloadArticlesPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  $items['custom-report/resource-center/download'] = array(
+    'page callback' => array('downloadResourceCenterPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  $items['custom-report/all-content-types/download'] = array(
+    'page callback' => array('downloadAllContentTypesPHPExcelFile'),
+    'access arguments' => array('access custom report'),
+  );
+  return $items;
+}
+
+/**
+ * Constructs a descriptive page.
+ */
+function custom_report_description() {
+  $form = array();
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'custom_report') . '/css/custom_report.css',
+  );
+  $form['prefix'] = array(
+    '#markup' => '<div class="custom-report-container col-md-12">',
+  );
+  //events
+  $form['events'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Events Report'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('<p>The Events Report contains a Summary tab with an overview of Events related statistics and a Detailed tab with all the events in a list format.</p><span class="click-download-tooltip">Click Download to view this report.</span>'),
+    '#prefix' => '<div class="custom-report" id="events-report">',
+    '#suffix' => '</div>',
+  );
+  $form['events']['download'] = array(
+    '#type' => 'link',
+    '#title' => '<div class="custom-report-button">' . t('Download') . '</div>',
+    '#href' => 'custom-report/events/download',
+    '#options' => array(
+      'html' => TRUE,
+    ),
+  );
+  
+  //programs
+  $form['programs'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Programs Report'),
+    '#description' => t('<p>The Programs report contains a Summary tab with an overview of Programs related statistics and a Detailed tab with all progrmas in a list format.</p><span class="click-download-tooltip">Click Download to view this report.</span>'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#prefix' => '<div class="custom-report" id="programs_report">',
+    '#suffix' => '</div>',
+  );
+  $form['programs']['download'] = array(
+    '#type' => 'link',
+    '#title' => '<div class="custom-report-button">' . t('Download') . '</div>',
+    '#href' => 'custom-report/programs/download',
+    '#options' => array(
+      'html' => TRUE,
+    ),
+  );
+  
+  //services
+  $form['services'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Services Report'),
+    '#description' => t('<p>The Services report contains a Summary tab with an overview of Services related statistics and a Detailed tab with all services in a list format.</p><span class="click-download-tooltip">Click Download to view this report.</span>'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#prefix' => '<div class="custom-report" id="services_report">',
+    '#suffix' => '</div>',
+  );
+  $form['services']['download'] = array(
+    '#type' => 'link',
+    '#title' => '<div class="custom-report-button">' . t('Download') . '</div>',
+    '#href' => 'custom-report/services/download',
+    '#options' => array(
+      'html' => TRUE,
+    ),
+  );
+  
+  //Resource Centers
+  $form['resource_centers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Resource Centers Report'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('<p>The Resource Centers Report contains a Summary tab with an overview of Resource Centers related statistics and a Detailed tab with all Resource Centers in a list format.</p><span class="click-download-tooltip">Click Download to view this report.</span>'),
+    '#prefix' => '<div class="custom-report" id="resource_centers_report">',
+    '#suffix' => '</div>',
+  );
+  $form['resource_centers']['download'] = array(
+    '#type' => 'link',
+    '#title' => '<div class="custom-report-button">' . t('Download') . '</div>',
+    '#href' => 'custom-report/resource-center/download',
+    '#options' => array(
+      'html' => TRUE,
+    ),
+  );
+  
+  //Articles
+  $form['articles'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Articles Report'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('<p>The Articles Report contains a Detailed tab with all Articles in a list format.</p><span class="click-download-tooltip">Click Download to view this report.</span>'),
+    '#prefix' => '<div class="custom-report" id="articles_centers">',
+    '#suffix' => '</div>',
+  );
+  $form['articles']['download'] = array(
+    '#type' => 'link',
+    '#title' => '<div class="custom-report-button">' . t('Download') . '</div>',
+    '#href' => 'custom-report/articles/download',
+    '#options' => array(
+      'html' => TRUE,
+    ),
+  );
+  
+  //Mass content download 
+  $form['mass'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Mass Content Exporter'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    //'#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+  );
+  $form['mass']['note'] = array(
+    '#markup' => '<div class="edit-mass-note">Note:<br />
+      This will return ALL database fields associated with content for a given content-type.<br /><br />
+      <span class="edit-mass-note-label">Remember that:</span>
+      <ul class="edit-mass-note-list">
+        <li>The content-type list below contains ALL types registered in the system, including ones which are normally hidden or no longer in use.</li>
+        <li>To view the downloaded [.csv] file in Excel, you may need to navigate to where the file is on your system, right-click it, and choose "Open With", and select Excel.</li>
+        <li>In Excel, you can click full columns, and choose Hide on fields which you may not be interested in seeing.</li>
+        <li>In Excel, using the Filter option under the Data menu is very helpful for generating reports.</li>
+      </ul>
+    </div>',
+  );
+  $form['mass']['content_types'] = array(
+      '#type' => 'select',
+      '#title' => t('Get a list of all nodes and their fields values for the content-type:'),
+      '#default_value' => 0,
+      '#options' => getContentTypes(),
+    );
+  $form['mass']['format'] = array(
+      '#type' => 'select',
+      '#title' => t('In the format of: '),
+      '#default_value' => 'csv',
+      '#options' => array('csv' => t('CSV (Comma Seperated Values)'), 'debug' => t('NULL/Debug (Run the query, do not output)')),
+    );
+  $form['mass']['published'] = array(
+       '#type' => 'select',
+       '#title' => t('Published content only?'),
+       '#options' => array(0 => t('No'), 1 => t('Yes')),
+       '#default_value' => 1,
+       //'#attributes' => array('onChange' => "top.location.href=document.getElementById('$formname').options[document.getElementById('$formname').selectedIndex].value"),
+   );
+  $form['mass']['download'] = array(
+    '#type' => 'submit',
+    '#value' => t('Download'),
+    '#submit' => array('downloadAllContentTypes_handler'),
+    '#prefix' => '<div class="download">',
+    '#suffix' => '</div>',
+  );
+  $form['suffix'] = array(
+    '#markup' => '</div>',
+  );
+  return $form;
+}
+
+function getContentTypes(){
+    foreach ( (array) node_type_get_types() as $typeMacName => $typeInfo ) {
+        $contentTypes[$typeMacName] = $typeMacName;
+    }
+
+    return $contentTypes;
+}
+

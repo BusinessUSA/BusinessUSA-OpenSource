@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * The installer file for qpcache.
+ * @file
+ */
+
+function qpcache_update_6100() {
+  
+  $spec = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'unsigned' => FALSE,
+    'default' => 0,
+  );
+  $indexes = array(
+    'unique keys' => array('hash' => array('crckey', 'hashkey')),
+  );
+
+  db_change_field('qpcache_xmlcache', 'crckey', 'crckey', $spec, $indexes);
+  return;
+}
+
+function qpcache_update_6101() {
+  $spec = array(
+    'type' => 'int',
+    'size' => 'big',    
+    'not null' => TRUE,
+    'unsigned' => FALSE,
+    'default' => 0,
+  );
+  db_change_field('qpcache_xmlcache', 'crckey', 'crckey', $spec);
+  return;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function qpcache_schema() {
+  $schema['qpcache_xmlcache'] = array(
+    'fields' => array(
+      // Cache ID
+      'cid' => array(
+        'type' => 'serial', 
+        'not null' => TRUE, 
+        'unsigned' => TRUE,
+      ),
+      // CRC32 checksum
+      'crckey' => array(
+        'type' => 'int',
+        'size' => 'big',     
+        'not null' => TRUE,
+        'unsigned' => FALSE,
+        'default' => 0,
+      ),
+      // Expiration timestamp
+      'expire' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      // Hash key
+      'hashkey' => array(
+        'type' => 'varchar',
+        'length' => 32,
+      ),
+      // Cleartext key (for DBAs)
+      'clearkey' => array(
+        'type' => 'text',
+      ),
+      
+      // XML content
+      'body' => array(
+        'type' => 'text',
+        'size' => 'big',
+      ),
+    ),
+    'primary key' => array('cid'),
+    // Collision space for the combination of these two should be miniscule.
+    'unique keys' => array('hash' => array('crckey', 'hashkey')),
+    'indexes' => array(
+      // Used for fast seeking
+      'by_key' => array('crckey', 'hashkey', 'expire'),
+      // Used by cache maintanance
+      'cacheexpire' => array('expire'),
+    ), 
+  );
+
+  return $schema;
+}

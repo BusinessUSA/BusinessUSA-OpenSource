@@ -1,0 +1,19 @@
+<?php
+/*
+	Version 0
+
+*/
+
+function drupal_output_buffering_init() {
+    
+    ob_start('drupal_output_buffering_obclose_callback');
+    $GLOBALS['drupal_output_buffering_start_time'] = microtime(true);
+    
+}
+
+function drupal_output_buffering_obclose_callback($buffer) {
+
+    // @TODO: Have this module record the time it takes for certain pages to load in a MySQL table if requested
+    // @TODO: Set the $GLOBALS['drupal_output_buffering_start_time'] variable to false as this output-buffer closes
+    return false;
+}

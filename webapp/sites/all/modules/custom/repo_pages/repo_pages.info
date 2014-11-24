@@ -1,0 +1,6 @@
+;$Id$
+name = Repository Pages
+description = Automatically detects and implements any *.page.php file found in sites/all/pages/ directory (recursive) as a page in Drupal. This module is meant to replace the usage of the Basic Page content-type, by having all Basic Pages stored in files, rather than in the database.
+package = REI
+core = 7.x
+files[] = repo_pages.module

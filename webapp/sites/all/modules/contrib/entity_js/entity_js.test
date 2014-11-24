@@ -1,0 +1,174 @@
+<?php
+/**
+ * @file
+ * Tests for entity_js.module.
+ */
+
+/**
+ * Tests for CRUD.
+ */
+class EntityJSTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Entity JS CRUD',
+      'description' => 'Test basic CRUD callback abstractions for Entity API functionality.',
+      'group' => 'Entity JS',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('entity_js');
+    // Create a user that is able to perform node CRUD functions.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'node entity js create',
+      'node entity js create page',
+      'node entity js update',
+      'node entity js update page',
+      'node entity js delete',
+      'node entity js delete page',
+      'node entity js read',
+      'node entity js read page',
+      'access efq javascript callbacks',
+    ));
+
+    // Create a multi-valued field for 'page' nodes.
+    $field_name = 'field_test_field';
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'text',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    );
+    field_create_field($field);
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => 'page',
+      'widget' => array(
+        'settings' => array(
+          'text_processing' => 0,
+        ),
+      ),
+    );
+    field_create_instance($instance);
+
+    $this->drupalLogin($this->privileged_user);
+    // Create some dummy nodes of different bundles.
+    $this->page_type = $this->drupalCreateNode(array('type' => 'page'));
+    $this->article_type = $this->drupalCreateNode(array('type' => 'article'));
+  }
+
+  /**
+   * Test CRUD using callbacks.
+   */
+  function testEntityJSCRUD() {
+    // Test entity_js_create.
+    $post = array('values' => array('title' => $this->randomName(8), 'type' => 'page', 'field_test_field' => array(
+      LANGUAGE_NONE => array(
+        array('value' => $this->randomName()),
+        array('value' => $this->randomName()),
+        array('value' => $this->randomName()),
+      ),
+    )));
+    $this->entityJSPostCallback('entity_js_create/node', $post);
+    // Check that the node exists in the database.
+    $node = $this->drupalGetNodeByTitle($post['values']["title"]);
+    $this->assertTrue($node, 'Node found in database.');
+
+    // Test entity_js_drupal_render_entity_view.
+    $this->drupalGet('entity_js_drupal_render_entity_view/node/' . $node->nid . '/default');
+    // Return is an HTML output. Simply check the title.
+    $this->assertText($node->title, 'Successfully viewed the node.');
+
+    // Test entity_js_load_single_json.
+    $output = $this->drupalGet('entity_js_load_single_json/node/' . $node->nid);
+    $this->assertEqual(drupal_json_decode($output), (array) $node, 'Successfully loaded the node.');
+
+    // Test entity_js_update.
+    $post = array('values' => array('title' => $this->randomName(8)));
+    $this->entityJSPostCallback('entity_js_update/node/' . $node->nid, $post);
+    // Check that the node exists with the new title. $expected_node will
+    // contain the currently updated node.
+    $node = $expected_node = $this->drupalGetNodeByTitle($post['values']['title']);
+    $this->assertTrue($node, 'Node with new title found in database.');
+
+    // Test updating a multi-value field when only updating a specific value.
+    $field_value = $this->randomName();
+    $field_value_2 = $this->randomName();
+    $expected_node->field_test_field[LANGUAGE_NONE][2]['value'] = $expected_node->field_test_field[LANGUAGE_NONE][2]['safe_value'] = $field_value;
+    $expected_node->field_test_field[LANGUAGE_NONE][3]['value'] = $expected_node->field_test_field[LANGUAGE_NONE][3]['safe_value'] = $field_value_2;
+    $expected_node->field_test_field[LANGUAGE_NONE][3]['format'] = NULL;
+    $expected_items = field_get_items('node', $expected_node, 'field_test_field');
+    $post = array('values' => array('field_test_field' => array(
+      LANGUAGE_NONE => array(
+        2 => array('value' => $field_value),
+        3 => array('value' => $field_value_2),
+      ),
+    )));
+    $this->entityJSPostCallback('entity_js_update/node/' . $node->nid, $post);
+    $node = $this->drupalGetNodeByTitle($node->title);
+    $items = field_get_items('node', $node, 'field_test_field');
+    debug($items);
+    debug($expected_items);
+    $this->assertEqual($expected_items, $items, 'Successfully updated a multi-value field.');
+
+    // Provide basic EntityFieldQuery.
+    $post = array(
+      'efq' => array(
+        'entityCondition' => array(
+          array('entity_type', 'node'),
+        ),
+        'entityOrderBy' => array(
+          array('entity_id', 'ASC'),
+        ),
+        'propertyCondition' => array(
+          array('status', 1),
+        ),
+      ),
+    );
+
+    // The result to compare to.
+    $expected_result = array(
+      'node' => array(
+        $this->page_type->nid => array(
+          'nid' => $this->page_type->nid,
+          'vid' => $this->page_type->vid,
+          'type' => 'page',
+        ),
+        $node->nid => array(
+          'nid' => $node->nid,
+          'vid' => $node->vid,
+          'type' => 'page',
+        ),
+      ),
+    );
+
+    // Test entity_js_efq_json.
+    $output = $this->entityJSPostCallback('entity_js_efq_json', $post);
+    $this->assertEqual(drupal_json_decode($output), $expected_result, 'Result of query is the same as doing an actual EntityFieldQuery.');
+
+    // Test entity_js_delete.
+    $this->drupalGet('entity_js_delete/node/' . $node->nid);
+    $node = node_load($node->nid, TRUE);
+    $this->assertFalse($node, 'Successfully deleted the node.');
+  }
+
+  /**
+   * Simple function similar to DrupalWebTestCase::drupalGet() but using POST as
+   * the method.
+   */
+  protected function entityJSPostCallback($path, $post) {
+    $out = $this->curlExec(array(CURLOPT_URL => $this->getAbsoluteUrl($path), CURLOPT_POST => TRUE, CURLOPT_POSTFIELDS => drupal_http_build_query($post)));
+    $this->refreshVariables();
+
+    if ($new = $this->checkForMetaRefresh()) {
+      $out = $new;
+    }
+
+    $this->verbose('POST request to: ' . $path .
+      '<hr />Ending URL: ' . $this->getUrl() .
+      '<hr />Fields: ' . highlight_string('<?php ' . var_export($post, TRUE), TRUE) .
+      '<hr />' . $out);
+
+    return $out;
+  }
+}

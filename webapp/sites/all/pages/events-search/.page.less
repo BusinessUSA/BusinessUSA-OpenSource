@@ -1,0 +1,165 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import (reference) "../../themes/bizusa/theme/bootstrap/less/bootstrap.less";
+
+//
+// Events Search General Styles
+//---------------------------------------------------
+.search-acrossbusinessagencies-mastercontainer {
+display: none;
+}
+
+body.one-sidebar .wrapper #contentArea{
+    .region.region-sidebar-first{
+		display:none;
+	}
+	.region.region-content{
+		.make-sm-column-pull(4);
+		#block-system-main{
+			background-color:#fff;
+
+			.events-row {
+				float: left;
+				padding: 20px 0;
+				border-top: 1px solid #e8e8e8;
+				width: 94%;
+				.eventscolumn-left {
+					width: 30%;
+					float: left;
+					.event-calendar {
+						width: 66px;
+						height: 66px;
+						margin-bottom: 12px;
+						display: block;
+						float: left;
+						.month {
+							display: block;
+							float: left;
+							width: 66px;
+							background-color: #1a4168;
+							color: #fff;
+							text-align: center;
+							line-height: 21px;
+							text-transform: uppercase;
+						}
+						.day {
+							float: left;
+							clear: both;
+							display: block;
+							width: 100%;
+							background-color: #97e8c1;
+							line-height: 45px;
+							text-align: center;
+							font-family: "latoblack", sans-serif;
+							font-size: 26px;
+							color: #1a4168;
+						}
+					}
+					.calendar-icon-container {
+						float: left;
+						margin-right: 10px;
+					}
+					.event-calendarlinks {
+						clear: both;
+					}
+				}
+				.eventscolumn-right {
+					float: right;
+					width: 70%;
+					h2.event-title{margin-top:0px;}
+					.event-date-time {
+						font-family: "latoblack", sans-serif;
+						//color: #f75b49;
+						font-size: 12px;
+						margin-bottom: 5px;
+					}
+					.event-where {
+						font-family: "latoblack", sans-serif;
+						float: left;
+					}
+					.event-location {
+						font-family: "latoitalic", sans-serif;
+						margin-bottom: 10px;
+					}
+				}
+				.google-map {
+					float: left;
+					clear: both;
+					width: 100%;
+					margin-top: 15px;
+					.viewhide-map {
+						display: block;
+						clear: both;
+						background: url("/sites/all/themes/bizusa/images/icons/viewhide-map.png") no-repeat transparent;
+						padding-left: 22px;
+						margin-left: 30%;
+						height: 21px;
+						line-height: 20px;
+					}
+				}
+			}
+			.events-row:first-child{
+				border-top: none;
+			}
+		}
+	}
+}
+
+input[type="text"]{
+	.form-control();
+}
+input[type="button"]{
+	.btn();
+    .btn-primary();
+}
+#form-events-listings-and-filters{
+	.make-sm-column(4);
+	.make-sm-column-push(8);
+	@media (min-width: @screen-sm-min) {
+		padding-right:0px;
+	}
+	#solr-search-events{
+		width:75%;
+		float:left;
+		@media (min-width: @screen-sm-min) {
+			width:75%;
+		}
+		@media (min-width: @screen-md-min) {
+			width:75%;
+		}
+		@media (min-width: @screen-lg-min) {
+			width:75%;
+		}
+	}
+    .solr-search-events-submit {
+      width: 25%;
+    }
+	a:hover{text-decoration: none;}
+	#event-search-filters{
+		> div{
+			float:left;
+			width:100%;
+			clear:both;
+			padding-bottom:10px;
+			.accordion-header {
+				display: block;
+				float:left;
+				width: 100%;
+				background: #e2e2e2 url(/sites/all/themes/bizusa/images/icons/block-collapsed.png) 92% 54% no-repeat;
+				padding: 20px 0 20px 30px;
+				color: #3b3b3b;
+			}	
+			.accordion-header.active {
+				background: #e2e2e2 url(/sites/all/themes/bizusa/images/icons/block-expanded.png) 92% 54% no-repeat;
+			}
+			> div{
+				.make-xs-column(12);
+				background-color: #fff;
+				padding-top:15px;
+				padding-bottom:15px;
+			}
+		}
+	}
+}
+

@@ -1,0 +1,81 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import (reference) "../../themes/bizusa/theme/bootstrap/less/bootstrap.less";
+
+//
+// Blog Page General Styles
+//---------------------------------------------------
+body.one-sidebar > .wrapper #contentArea .region.region-content{
+	background-color: transparent;
+	@media (min-width: @screen-sm-min) {
+		padding-left:0px;
+		padding-right:0px;
+	}
+	#block-system-main{
+		padding:0px;
+		background-color: transparent;
+        .view-blog .view-empty {
+            background: #FFFFFF;
+            padding: 20px;
+        }
+		.view-blog .view-content{
+ 			> div{
+				background-color:#fff;
+				margin-bottom:10px;
+				border-bottom:3px solid #dae0e5;
+				padding:30px 30px 30px 130px;
+				h2{
+					margin-top:0px;
+				}
+			}
+			.Whitehouse{background: #fff url("/sites/all/themes/bizusa/images/whitehouse.png") 30px 30px no-repeat;}
+			.Small.Business.Administration{background: #fff url("/sites/all/themes/bizusa/images/smallbusinessadministration.png") 30px 30px no-repeat;}
+			.Department.of.Commerce{background: #fff url("/sites/all/themes/bizusa/images/departmentofcommerce.png") 45px 30px no-repeat;}
+            .BusinessUSA{background: #fff url("/sites/all/themes/bizusa/images/businessusa.png") 30px 30px no-repeat;}
+
+            .date-display-single {
+                display: block;
+                margin-bottom: 10px;
+            }
+		}
+	}
+}
+body.one-sidebar > .wrapper #contentArea .region.region-sidebar-first {
+  .container-inline-date {
+    .form-item {
+      margin-right: 2px;
+      .dk-select {
+        width: 85px;
+        height: 33px;
+        .dk-selected {
+          border: none;
+          padding-right: 0px;
+          width: 85px;
+          height: 33px;
+          &:before,
+          &:after {
+            content: none;
+          }
+        }
+        .dk-select-options {
+          border: 1px solid #6784a3;
+          width: 85px;
+          li {
+            font-size: 12px;
+            line-height: 25px;
+            text-transform: none;
+            background-color: #6784a3;
+            font-family: "latoregular", sans-serif;
+            border-bottom: 1px solid #FFFFFF;
+            color: #FFFFFF;
+            width: 85px;
+          }
+        }
+      }
+    }
+  }
+}
+#block-views-blog-block_1{
+	display:none;
+}

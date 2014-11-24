@@ -1,0 +1,2511 @@
+/**************************
+***************************
+***                    ****
+***   DESKTOP STYLES   ****
+***                    ****
+***************************
+**************************/
+/**************************
+***   GENERAL STYLES   ****
+**************************/
+body .wrapper {
+  width: 960px;
+}
+.mobile-only {
+  display: none;
+}
+.mobile-only-inportant {
+  display: none !important;
+}
+.nonmobile-forceshow {
+  display: block;
+}
+.nonmobile-forceshow-important {
+  display: block !important;
+}
+/***************************
+***   MAIN NAVIGATION   ****
+***************************/
+#navigation {
+  font-family: 'latoregular', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  background-color: #2f2f2f;
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+  /* scroll to top menu*/
+  /* scroll down menu */
+}
+#navigation #block-block-2 {
+  display: none;
+}
+#navigation #block-system-main-menu ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  float: right;
+}
+#navigation #block-system-main-menu ul li {
+  float: left;
+  list-style-image: none;
+  list-style-type: none;
+  position: relative;
+  padding: 0px;
+  margin: 0px;
+}
+#navigation #block-system-main-menu ul li a {
+  color: #fff;
+  text-decoration: none;
+  line-height: 60px;
+  padding: 0px 13px;
+  display: block;
+  font-family: "latoregular", sans-serif;
+  font-weight: bold;
+}
+#navigation #block-system-main-menu ul li ul {
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  margin: 0px;
+  padding: 0px;
+  display: none;
+}
+#navigation #block-system-main-menu ul li ul li {
+  clear: both;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  background-color: #f75b49;
+  border-bottom: 1px solid #f98477;
+}
+#navigation #block-system-main-menu ul li ul li a {
+  white-space: nowrap;
+  line-height: 48px;
+  font-weight: normal;
+}
+#navigation #block-system-main-menu ul li ul li ul {
+  display: none;
+  position: absolute;
+  left: 148px;
+  top: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+#navigation #block-system-main-menu ul li ul li.last {
+  border-bottom: none;
+}
+#navigation #block-system-main-menu ul li ul li:hover {
+  background-color: #fff;
+}
+#navigation #block-system-main-menu ul li ul li:hover a {
+  color: #f75b49;
+}
+#navigation #block-system-main-menu ul li ul li:hover ul {
+  display: block;
+  position: absolute;
+  left: 148px;
+  top: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+#navigation #block-system-main-menu ul li ul li:hover ul li a {
+  color: #fff;
+}
+#navigation #block-system-main-menu ul li ul li:hover ul li a:hover {
+  color: #f75b49;
+}
+#navigation #block-system-main-menu ul li:hover {
+  background-color: #f75b49;
+}
+#navigation #block-system-main-menu ul li:hover ul {
+  display: block;
+}
+#navigation #block-system-main-menu ul li:hover ul li ul {
+  display: none;
+}
+#navigation #block-system-main-menu ul li:hover ul li:hover ul {
+  display: block;
+}
+#navigation #block-system-main-menu ul li.expanded,
+#navigation #block-system-main-menu ul li.collapsed,
+#navigation #block-system-main-menu ul li.leaf {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+#navigation #block-system-main-menu ul li.twitter {
+  width: 12px;
+  margin-left: 18px;
+}
+#navigation #block-system-main-menu ul li.twitter a {
+  display: block;
+  height: 38px;
+  background: url("/sites/all/themes/bizusa/images/busatwitter.png") no-repeat;
+  margin-top: 24px;
+  text-indent: -999999px;
+}
+#navigation #block-system-main-menu ul li.linkedin {
+  width: 12px;
+  margin-left: 15px;
+}
+#navigation #block-system-main-menu ul li.linkedin a {
+  display: block;
+  height: 38px;
+  background: url("/sites/all/themes/bizusa/images/busalinkdin.png") no-repeat;
+  margin-top: 24px;
+  text-indent: -999999px;
+}
+#navigation #block-system-main-menu ul li.translate {
+  margin-left: 30px;
+  width: 33px;
+}
+#navigation #block-system-main-menu ul li.translate > a:first-child {
+  display: block;
+  height: 38px;
+  background: url("/sites/all/themes/bizusa/images/google-translate.png") no-repeat;
+  margin-top: 24px;
+  margin-left: 10px;
+  text-indent: -999999px;
+}
+#navigation #block-system-main-menu ul li.linkedin:hover,
+#navigation #block-system-main-menu ul li.twitter:hover,
+#navigation #block-system-main-menu ul li.translate:hover {
+  background-color: transparent !important;
+}
+#navigation .logoscroll-containerlink {
+  float: left;
+  padding-right: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+#navigation .mostVisited {
+  display: block;
+  float: left;
+}
+#navigation .mostVisited > ul {
+  display: block;
+  float: left;
+  background: #565656 url('../images/scroll-menu-most.png') no-repeat 16px 0px;
+  list-style-type: none;
+  padding: 0px 0px 0px 80px;
+  margin: 0px 83px 0px 0px;
+}
+#navigation .mostVisited > ul li {
+  width: 67px;
+  height: 60px;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  cursor: pointer;
+}
+#navigation .mostVisited > ul li span {
+  display: block;
+  height: 28px;
+  width: 28px;
+  margin: 16px auto;
+  text-indent: -99999px;
+}
+#navigation .mostVisited > ul li ul {
+  display: none;
+}
+#navigation .mostVisited > ul li ul a {
+  display: block;
+  height: 60px;
+  line-height: 60px;
+  background-color: #f75b49;
+  position: absolute;
+}
+#navigation .mostVisited > ul li:hover {
+  background-color: #f75b49;
+}
+#navigation .mostVisited > ul li:hover ul {
+  display: block;
+  margin: 0px;
+  padding: 0px;
+}
+#navigation .mostVisited > ul li:hover ul li {
+  background-color: #f75b49;
+  width: initial;
+  white-space: nowrap;
+}
+#navigation .mostVisited > ul li:hover ul li a {
+  padding: 0px 30px;
+  color: #fff;
+}
+#navigation .mostVisited > ul li.item1 span {
+  background: transparent url('../images/scroll-start-a-business.png') no-repeat center center;
+}
+#navigation .mostVisited > ul li.item2 span {
+  background: transparent url('../images/scroll-access-financing.png') no-repeat center center;
+}
+#navigation .mostVisited > ul li.item3 span {
+  background: transparent url('../images/scroll-explore-exporting.png') no-repeat center center;
+}
+#navigation .mostVisited > ul li.item4 span {
+  background: transparent url('../images/scroll-find-opportunities.png') no-repeat center center;
+}
+#navigation .mostVisited > ul li.item5 span {
+  background: transparent url('../images/scroll-grow-your-biz.png') no-repeat center center;
+}
+#navigation .mostVisited > ul li.item6 span {
+  background: transparent url('../images/scroll-taxes.png') no-repeat center center;
+}
+#navigation .fullMenu {
+  position: relative;
+  float: left;
+}
+#navigation .fullMenu .toggleMenu {
+  display: block;
+  height: 17px;
+  width: 21px;
+  margin: 24px 0px 0px 0px;
+  background: transparent url('../images/scroll-menu-mainMenu.png') no-repeat center center;
+  text-indent: -9999px;
+}
+#navigation .fullMenu ul {
+  position: absolute;
+  top: 60px;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+#navigation .fullMenu ul li {
+  margin: 0px;
+  padding: 0px;
+  background-color: #f75b49;
+  border-bottom: 1px dashed #f98477;
+  position: relative;
+}
+#navigation .fullMenu ul li a {
+  display: block;
+  position: relative;
+  white-space: nowrap;
+  padding: 0px 30px;
+  line-height: 48px;
+  color: #fff;
+}
+#navigation .fullMenu ul li ul {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: -310px;
+}
+#navigation .fullMenu ul li ul li {
+  background-color: #fff;
+  border-color: #fdcec9;
+}
+#navigation .fullMenu ul li ul li:hover {
+  background-color: #f75b49;
+}
+#navigation .fullMenu ul li ul li:hover a {
+  color: #fff;
+}
+#navigation .fullMenu ul li.last {
+  border: none;
+}
+#navigation .fullMenu ul li:hover {
+  background-color: #fff;
+}
+#navigation .fullMenu ul li:hover a {
+  color: #f75b49;
+}
+#navigation .fullMenu ul li:hover ul {
+  display: block;
+}
+#navigation .fullMenu ul li.expanded,
+#navigation .fullMenu ul li.leaf {
+  list-style-image: none;
+  list-style-type: none;
+}
+#navigation .searchArea {
+  display: block;
+  float: left;
+  margin-left: 20px;
+  position: relative;
+}
+#navigation .searchArea > a {
+  display: block;
+  margin-top: 22px;
+  height: 20px;
+  width: 20px;
+  background: transparent url('../images/scroll-menu-search.png') no-repeat center center;
+  text-indent: -9999px;
+}
+#navigation .searchArea > form {
+  position: absolute;
+  top: 60px;
+  left: -170px;
+  width: 195px;
+  display: block;
+  float: left;
+  padding: 10px;
+  background-color: #2f2f2f;
+}
+#navigation .searchArea > form input[type="text"] {
+  width: 100px;
+}
+/***************************************/
+/*     Search Results Page Title      */
+/**************************************/
+body.node-type-services #titleWrapper .title,
+body.node-type-program #titleWrapper .title,
+body.node-type-article #titleWrapper .title,
+body.node-type-blog #titleWrapper .title,
+body.node-type-data #titleWrapper .title,
+body.node-type-success-story #titleWrapper .title,
+body.node-type-tools #titleWrapper .title,
+body.node-type-federal-register #titleWrapper .title,
+body.node-type-grants #titleWrapper .title,
+body.node-type-green-sbir-topic #titleWrapper .title,
+body.node-type-business-news #titleWrapper .title,
+body.node-type-rules-status #titleWrapper .title,
+body.node-type-export-gov-micro-site-page #titleWrapper .title,
+body.node-type-wizard-result-reference-for-solr #titleWrapper .title,
+body.node-type-appointment-office #titleWrapper .title,
+body.node-type-state-resource #titleWrapper .title,
+body.node-type-swim-lane-page #titleWrapper .title,
+body.node-type-video #titleWrapper .title,
+body.node-type-featured-item #titleWrapper .title,
+body.node-type-whats-new #titleWrapper .title,
+body.node-type-browseregulations #titleWrapper .title {
+  width: 828px;
+}
+body.node-type-services #titleWrapper .h1,
+body.node-type-program #titleWrapper .h1,
+body.node-type-article #titleWrapper .h1,
+body.node-type-blog #titleWrapper .h1,
+body.node-type-data #titleWrapper .h1,
+body.node-type-success-story #titleWrapper .h1,
+body.node-type-tools #titleWrapper .h1,
+body.node-type-federal-register #titleWrapper .h1,
+body.node-type-grants #titleWrapper .h1,
+body.node-type-green-sbir-topic #titleWrapper .h1,
+body.node-type-business-news #titleWrapper .h1,
+body.node-type-rules-status #titleWrapper .h1,
+body.node-type-export-gov-micro-site-page #titleWrapper .h1,
+body.node-type-wizard-result-reference-for-solr #titleWrapper .h1,
+body.node-type-appointment-office #titleWrapper .h1,
+body.node-type-state-resource #titleWrapper .h1,
+body.node-type-swim-lane-page #titleWrapper .h1,
+body.node-type-video #titleWrapper .h1,
+body.node-type-featured-item #titleWrapper .h1,
+body.node-type-whats-new #titleWrapper .h1,
+body.node-type-browseregulations #titleWrapper .h1 {
+  padding-top: 19px;
+}
+/**********************
+***   FRONT PAGE   ****
+**********************/
+body.front {
+  /* Resources and Events */
+}
+body.front .wrapper .region-sidebar-first {
+  display: none;
+}
+body.front .button-viewall {
+  background-color: #F75B49;
+  border: medium none;
+  color: #FFFFFF;
+  float: right;
+  font-family: latoblack;
+  height: 40px;
+  margin-right: 20px;
+  margin-bottom: 15px;
+  vertical-align: bottom;
+  width: 95px;
+  cursor: pointer;
+}
+body.front .view-wizard-list .views-row {
+  display: block;
+  clear: both;
+  height: 55px;
+  margin-bottom: 1px;
+  background-color: #97e8c1;
+}
+body.front .view-wizard-list .views-row .views-field-title,
+body.front .view-wizard-list .views-row .views-field-title .field-content,
+body.front .view-wizard-list .views-row .views-field-title .field-content a {
+  text-decoration: none;
+  font-family: 'latoblack_italic', sans-serif;
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 55px;
+  color: #205589;
+  margin-bottom: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+body.front .view-wizard-list .views-row .views-field-title .field-content a:hover {
+  text-overflow: initial;
+}
+body.front .view-wizard-list .views-row .views-field-field-swimlane-wizurl {
+  display: none;
+}
+body.front .view-wizard-list .views-row .views-field-field-summary,
+body.front .view-wizard-list .views-row .views-field-field-weight {
+  display: none;
+}
+body.front .view-wizard-list .wizardSpotlight,
+body.front .view-wizard-list .wizardStandard,
+body.front .view-wizard-list .wizardBacklight {
+  float: left;
+  margin-right: 8px;
+}
+body.front .view-wizard-list .wizardBacklight {
+  margin-right: 0px;
+}
+body.front #block-boxes-front_page_resources_and_events {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+body.front #block-boxes-front_page_resources_and_events #boxes-box-front_page_resources_and_events {
+  float: left;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer {
+  float: left;
+  width: 666px;
+  /*height: auto !important;*/
+  margin: 8px 8px 0px 0px;
+  background-color: #fff;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container,
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-googlemap-container,
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-list-container {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList {
+  width: 636px;
+  padding: 15px;
+  background-color: #fff;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view {
+  float: left;
+  width: 200px;
+  margin: 0px 5px;
+  font-family: 'latoregular', sans-serif;
+  font-size: 13px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view .views-row {
+  padding-left: 30px;
+  min-height: 16px;
+  background: url('../images/check.png') no-repeat;
+  margin-bottom: 20px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view .views-row .views-field {
+  margin-bottom: 5px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view .views-row .views-field-php {
+  margin-top: 12px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view a {
+  text-decoration: none;
+  font-family: 'latoregular', sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view a:hover {
+  text-decoration: underline;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view-display-id-front_page_events input {
+  height: 15px;
+  width: 15px;
+  border: 0px;
+  cursor: pointer;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view-display-id-front_page_events .calendaricon-yahoo {
+  background: transparent url('../images/cal-yahoo.jpg') no-repeat 0px 0px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view-display-id-front_page_events .calendaricon-outlook {
+  background: transparent url('../images/cal-outlook.jpg') no-repeat 0px 0px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer #locationsList .view-display-id-front_page_events .calendaricon-gmail {
+  background: transparent url('../images/cal-google.jpg') no-repeat 0px 0px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container {
+  background-color: #6885a2;
+  color: #fff;
+  float: left;
+  width: 100%;
+  clear: both;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container h2 {
+  float: left;
+  text-transform: uppercase;
+  font-size: 18px;
+  margin: 0px 0px 0px 25px;
+  padding: 0px;
+  line-height: 60px;
+  font-weight: normal;
+  text-shadow: 1px 1px #526C85;
+  letter-spacing: -0.5px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch {
+  float: right;
+  height: 60px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch #mapView {
+  background: url('../images/map_icon.png') no-repeat;
+  text-indent: -9999px;
+  display: block;
+  min-height: 25px;
+  min-width: 19px;
+  float: left;
+  margin-top: 17px;
+  margin-right: 23px;
+  cursor: pointer;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch #listView {
+  background: url('../images/list_icon.png') no-repeat;
+  text-indent: -9999px;
+  display: block;
+  min-height: 25px;
+  min-width: 19px;
+  float: left;
+  margin-top: 17px;
+  margin-right: 23px;
+  cursor: pointer;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch input[type=textbox] {
+  margin-top: 10px;
+  padding: 10px;
+  border: 0;
+  margin-right: 0;
+  display: block;
+  float: left;
+  font-family: 'latoitalic', sans-serif;
+  font-size: 14px;
+  color: #757575;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch input[type=button] {
+  border: 0;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  background-color: #f75b49;
+  padding: 9px 10px;
+  margin: 10px 10px 0 0;
+  display: block;
+  float: right;
+  font-family: "latoblack", sans-serif;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: normal;
+  height: 38px;
+  text-transform: uppercase;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-mastercontainer .resevents-titlebar-container .zipSearch input[type=button]:hover {
+  background-color: #f52f18;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-succstores-container {
+  float: left;
+  width: 266px;
+  padding: 10px;
+  height: 437px;
+  margin-top: 8px;
+  font-family: 'latoblack', sans-serif;
+  background: #797b81 url('../images/SuccessStories_bg.jpg') no-repeat 0 bottom;
+  color: #fff;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-succstores-container h2 {
+  color: #FFFFFF;
+  font-size: 36px;
+  font-weight: normal;
+  letter-spacing: -1px;
+  margin-top: 12px;
+  padding-bottom: 0px;
+  text-align: center;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-succstores-container a {
+  font-size: 18px;
+  color: #205589;
+  max-width: 266px;
+  color: #FFFFFF;
+  font-family: "latoblack_italic", sans-serif;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-succstores-container .field-content a {
+  display: block;
+  padding: 0px 15px;
+}
+body.front #block-boxes-front_page_resources_and_events .resevents-succstores-container .views-slideshow-controls-bottom a {
+  padding: 0px 15px;
+  font-size: 16px;
+}
+body.front {
+  /* wizard list */
+  /* Carousel */
+  /* Resources and Events */
+}
+body.front .wizardStandard {
+  width: 258px;
+}
+body.front #block-views-wizard_list-block {
+  float: left;
+  margin-right: 8px;
+  /* spotlight wizards */
+  /* backlight wizards */
+}
+body.front #block-views-wizard_list-block .block-title {
+  display: none;
+}
+body.front #block-views-wizard_list-block .views-row {
+  width: 100%;
+}
+body.front #block-views-wizard_list-block .views-row .views-field-title .field-content a {
+  padding-left: 20%;
+  width: 80%;
+  overflow: hidden;
+  font-size: 12px;
+}
+body.front #block-views-wizard_list-block .views-row .views-field-title .field-content a:hover {
+  overflow: visible;
+  width: 100px;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 {
+  height: 223px;
+  width: 347px;
+  margin-bottom: 0px;
+  padding: 0px 13px;
+  position: relative;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-title,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title .field-content,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-title .field-content,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title .field-content a,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-title .field-content a {
+  height: auto;
+  width: auto;
+  line-height: normal;
+  padding: 0px;
+  font-size: 32px;
+  font-family: 'latoblack', sans-serif;
+  font-style: initial;
+  font-weight: normal;
+  letter-spacing: -2px;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title .field-content a,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-title .field-content a {
+  padding-left: 42px;
+  background-position: top left;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-title {
+  padding-top: 30px;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-field-summary,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .views-field-field-summary {
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 19px;
+  margin: 0px 10px 0px 42px;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .wizardLink,
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .wizardLink {
+  position: absolute;
+  bottom: 24px;
+  padding: 3px 20px 0px 42px;
+  font-family: "latoregular", sans-serif;
+  font-weight: bold;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 {
+  background-color: #fff;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-title .field-content a {
+  color: #f75b49;
+  text-shadow: none;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .views-field-field-summary {
+  color: #797979;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-1 .wizardLink {
+  background: transparent url('../images/green_arrow.png') no-repeat right top;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 {
+  background-color: #6885a2;
+  color: #fff;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 a {
+  color: #fff;
+}
+body.front #block-views-wizard_list-block .wizardSpotlight .views-row.views-row-2 .wizardLink {
+  background: transparent url('../images/red_arrow.png') no-repeat right top;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap {
+  width: 285px;
+  height: 446px;
+  float: left;
+  position: relative;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper {
+  height: 446px !important;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .wizardStandard.bx-clone {
+  background-color: #97e8c1 !important;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .wizardStandard.bx-clone .views-row {
+  visibility: hidden !important;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-controls.bx-has-pager.bx-has-controls-direction {
+  position: absolute!important;
+  bottom: 0px !important;
+  height: 54px !important;
+  width: 100% !important;
+  background-color: #6885a2;
+  border-top: 1px solid #fff !important;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-pager,
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-controls-auto {
+  position: absolute;
+  top: 22px;
+  width: 100%;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-pager.bx-default-pager a:hover,
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-pager.bx-default-pager a.active {
+  background-color: #97e8c1;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-prev {
+  background: transparent url('../images/wiz-slider-prev.png') no-repeat 0px 7px;
+  z-index: 2;
+}
+body.front #block-views-wizard_list-block .menuMoreWrap .bx-wrapper .bx-next {
+  background: transparent url('../images/wiz-slider-next.png') no-repeat 0px 7px;
+  z-index: 2;
+}
+body.front #block-views-wizard_list-block .wizardBacklight {
+  background-color: #6885a2;
+  width: 54px;
+  height: 446px;
+  position: relative;
+  z-index: 997;
+}
+body.front #block-views-wizard_list-block .wizardBacklight .views-row,
+body.front #block-views-wizard_list-block .wizardBacklight .views-field-title,
+body.front #block-views-wizard_list-block .wizardBacklight .views-field-title .field-content,
+body.front #block-views-wizard_list-block .wizardBacklight .views-field-title .field-content a {
+  width: 54px;
+  overflow: hidden;
+  background-color: #6885a2;
+  opacity: 0.85;
+  filter: alpha(opacity=85);
+}
+body.front #block-views-wizard_list-block .wizardBacklight .views-row .views-field-title .field-content a {
+  width: 190px;
+  padding-left: 64px;
+  font-style: normal;
+  font-size: 14px;
+}
+body.front #block-views-wizard_list-block .views-row.start-a-business .views-field-title .field-content a {
+  background: transparent url('../images/wiz-start-a-business-new.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.resource-grow-your-business .views-field-title .field-content a {
+  background: transparent url('../images/wiz-grow-your-business.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.access-financing .views-field-title .field-content a {
+  background: transparent url('../images/wiz-access-financing.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.export .views-field-title .field-content a {
+  background: transparent url('../images/wiz-explore-exporting.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.find-opportunities .views-field-title .field-content a {
+  background: transparent url('../images/wiz-find-opportunities.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.veterans .views-field-title .field-content a {
+  background: transparent url('../images/wiz-veterans.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.disaster-assistance .views-field-title .field-content a {
+  background: transparent url('../images/wiz-disaster-assistance.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.select-usa .views-field-title .field-content a {
+  background: transparent url('../images/wiz-select-usa.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.jobcenter-wizard .views-field-title .field-content a {
+  background: transparent url('../images/wiz-jobs.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.healthcare .views-field-title .field-content a {
+  background: transparent url('../images/wiz-healthcare.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.taxes-and-credits .views-field-title .field-content a {
+  background: transparent url('../images/wiz-taxes.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.find-green-opportunities .views-field-title .field-content a {
+  background: transparent url('../images/wiz-green-opportunities.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.browseregulations .views-field-title .field-content a {
+  background: transparent url('../images/wiz-browse-regulations.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.tour .views-field-title .field-content a {
+  background: transparent url('../images/wiz-tour.png') no-repeat 10px 10px;
+}
+body.front #block-views-wizard_list-block .views-row.training-materials-portal .views-field-title .field-content a {
+  background: transparent url('../images/wiz-training.png') no-repeat 10px 10px;
+}
+body.front #block-boxes-front_page_news_block {
+  float: left;
+  width: 286px;
+  height: 446px;
+  background-color: #fff;
+}
+body.front #block-boxes-front_page_news_block h2.block-title {
+  color: #f75b49;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  font-size: 19px;
+  font-weight: normal;
+  letter-spacing: -0.5px;
+}
+body.front #block-boxes-front_page_news_block h2.block-title a {
+  color: #f75b49;
+}
+body.front #block-boxes-front_page_news_block .views-row {
+  float: left;
+  clear: both;
+  width: 236px;
+  padding: 0px 25px;
+  margin-bottom: 25px;
+}
+body.front #block-boxes-front_page_news_block .views-row .field-content a {
+  font-family: "latoregular", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  margin-top: 1px;
+}
+body.front #block-boxes-front_page_news_block .views-row .field-content p {
+  margin-top: 3px;
+}
+body.front #block-boxes-front_page_news_block .views-row .views-field-field-newsnote-icon {
+  float: left;
+  margin-right: 15px;
+}
+body.front #block-boxes-front_page_news_block .frontpagenews-container-businessnews .views-row .views-field-title {
+  float: left;
+  font-size: 14px;
+  width: 170px;
+  height: 51px;
+}
+body.front #block-boxes-front_page_news_block .frontpagenews-container-businessnews .views-row .views-field-title a {
+  color: #44809e;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 51px;
+}
+body.front #block-boxes-front_page_news_block .bx-viewport {
+  height: 446px !important;
+}
+body.front #block-boxes-front_page_news_block #carousel .view-content {
+  float: left;
+}
+body.front .view-header h2#header-resourcecenters,
+body.front .view-header h2#header-localresources,
+body.front .view-header h2#header-localevents {
+  padding-left: 30px;
+  font-weight: normal;
+  font-family: "latoblack_italic", sans-serif;
+  margin-top: 5px;
+}
+/***************************************
+***   REQUEST AN APPOINTMENT PAGE   ****
+****************************************/
+body.page-request-appointment-and-closest-resource-centers .resourcecenters-filter-container {
+  width: 314px;
+}
+body.page-request-appointment-and-closest-resource-centers .resourcecenters-filter-container .resourcecenters-filter-submit {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border: 0;
+  background: #6885a2;
+  color: #fff;
+  font-family: latoblack;
+  padding: 16px 30px;
+  cursor: pointer;
+}
+body.page-request-appointment-and-closest-resource-centers .resourcecenters-googlemap-container {
+  float: left;
+  margin-top: 18px;
+  width: 638px;
+  height: 816px;
+}
+body.page-request-appointment-and-closest-resource-centers .resourcecenters-googlemap-container #map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList {
+  float: left;
+  clear: both;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList {
+  float: left;
+  width: 314px;
+  margin-right: 8px;
+  background-color: #fff;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content {
+  margin: 0px 18px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content .views-row {
+  position: relative;
+  margin-bottom: 25px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content .views-row .views-field {
+  margin-left: 37px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content .views-row .views-field.views-field-php-1 {
+  float: left;
+  margin-left: 0px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content .views-row .views-field.views-field-title a {
+  text-transform: uppercase;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList .view-content .views-row .views-field-counter {
+  margin-left: 0px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .itemList h2 {
+  color: #1e4865;
+  font-weight: normal;
+}
+body.page-request-appointment-and-closest-resource-centers #dataList .item3 {
+  margin-right: 0;
+}
+/***************************************
+***   REQUEST AN APPOINTMENT FORM   ****
+****************************************/
+body.page-request-appointment-form .region-content .requestform-container .appt-form {
+  float: left;
+  width: 75%;
+}
+body.page-request-appointment-form .region-content #dateofvisit,
+body.page-request-appointment-form .region-content #firstname,
+body.page-request-appointment-form .region-content #reqaptemail {
+  width: 40%;
+  margin: 1% 1% 1% 4%;
+}
+body.page-request-appointment-form .region-content #lastname,
+body.page-request-appointment-form .region-content #phone {
+  width: 40%;
+  float: right;
+  margin: 1% 4% 1% 1%;
+}
+body.page-request-appointment-form .region-content .timeofvisit-input-container {
+  width: 45%;
+  float: right;
+  margin: 1% 4% 1% 1%;
+}
+body.page-request-appointment-form .region-content #timeofvisit {
+  width: 100px;
+}
+body.page-request-appointment-form .region-content #reasonforvisit {
+  width: 87.5%;
+}
+/*************************
+***   ABOUT US PAGE   ****
+**************************/
+body.page-about-us .aboutus-contentContainer {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  padding: 35px;
+}
+body.page-about-us .about-us-image {
+  float: right;
+  padding: 5px;
+}
+body.page-about-us #logos-group {
+  padding: 0px 0px 0px 8%;
+  margin: 0px;
+  overflow: auto;
+}
+body.page-about-us #logos-group li {
+  list-style-type: none;
+  float: left;
+  margin: 0px 0px 0px 0px;
+  margin-right: 28px;
+  margin-bottom: 40px;
+}
+body.page-about-us #logos-group li a {
+  background: url("/sites/all/themes/bizusa/images/logos-aboutus.jpg") no-repeat scroll 0px 0px transparent;
+  display: block;
+  height: 187px;
+  width: 169px;
+  text-indent: -9999px;
+}
+body.page-about-us #logos-group li a.depOfAgr {
+  background-position: 0px 0px;
+}
+body.page-about-us #logos-group li a.depOfAgr:hover {
+  background-position: 0px -562px;
+}
+body.page-about-us #logos-group li a.depOfCom {
+  background-position: -170px 0px;
+}
+body.page-about-us #logos-group li a.depOfCom:hover {
+  background-position: -170px -562px;
+}
+body.page-about-us #logos-group li a.depOfLab {
+  background-position: -340px 0px;
+}
+body.page-about-us #logos-group li a.depOfLab:hover {
+  background-position: -340px -562px;
+}
+body.page-about-us #logos-group li a.depOfTre {
+  background-position: -510px 0px;
+}
+body.page-about-us #logos-group li a.depOfTre:hover {
+  background-position: -510px -562px;
+}
+body.page-about-us #logos-group li a.depOfVet {
+  background-position: -680px 0px;
+}
+body.page-about-us #logos-group li a.depOfVet:hover {
+  background-position: -680px -562px;
+}
+body.page-about-us #logos-group li a.envProAgency {
+  background-position: 0px -187px;
+}
+body.page-about-us #logos-group li a.envProAgency:hover {
+  background-position: 0px -749px;
+}
+body.page-about-us #logos-group li a.equalOppCom {
+  background-position: -170px -187px;
+}
+body.page-about-us #logos-group li a.equalOppCom:hover {
+  background-position: -170px -749px;
+}
+body.page-about-us #logos-group li a.expImpBank {
+  background-position: -340px -187px;
+}
+body.page-about-us #logos-group li a.expImpBank:hover {
+  background-position: -340px -749px;
+}
+body.page-about-us #logos-group li a.genServAdm {
+  background-position: -510px -187px;
+}
+body.page-about-us #logos-group li a.genServAdm:hover {
+  background-position: -510px -749px;
+}
+body.page-about-us #logos-group li a.ovrSeaInv {
+  background-position: -680px -187px;
+}
+body.page-about-us #logos-group li a.ovrSeaInv:hover {
+  background-position: -680px -749px;
+}
+body.page-about-us #logos-group li a.smBusAdm {
+  background-position: 0px -374px;
+}
+body.page-about-us #logos-group li a.smBusAdm:hover {
+  background-position: 0px -936px;
+}
+body.page-about-us #logos-group li a.tradeDev {
+  background-position: -170px -374px;
+}
+body.page-about-us #logos-group li a.tradeDev:hover {
+  background-position: -170px -936px;
+}
+body.page-about-us #logos-group li a.whtHouse {
+  background-position: -340px -374px;
+}
+body.page-about-us #logos-group li a.whtHouse:hover {
+  background-position: -340px -936px;
+}
+body.page-about-us #logos-group li a.irs {
+  background: url("/sites/all/themes/bizusa/images/logos-aboutus-irs.jpg") no-repeat scroll 0px 0px transparent;
+}
+body.page-about-us #logos-group li a.irs:hover {
+  background-position: 0px -187px;
+}
+/*************************
+***   SITE MAP PAGE   ****
+**************************/
+body.page-sitemap .sitemap-contentContainer {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  width: 890px;
+  padding: 10px 35px 35px 23px;
+}
+/*********************
+***   APIS PAGE   ****
+*********************/
+body.page-apis .apis-contentContainer {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  width: 890px;
+  padding: 35px;
+}
+/****************************
+***   QUICK FACTS PAGE   ****
+****************************/
+body.page-quick-facts .region-content {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  width: 94%;
+  padding: 3%;
+}
+body.page-quick-facts .region-content .view-content {
+  width: 60%;
+  float: left;
+  margin-right: 4%;
+  margin-left: 2%;
+}
+body.page-quick-facts .region-content .view-filters {
+  width: 34%;
+  float: right;
+}
+body.page-quick-facts .region-content .view-filters .form-item {
+  margin-right: 3px;
+  margin-bottom: 4px;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container {
+  margin-top: 5px;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container .dk_toggle {
+  background: url(/sites/all/themes/bizusa/images/bluearrow.png) no-repeat transparent;
+  background-position: 97%;
+  background-color: #f2f2f2;
+  color: #6885a2;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container .dk_options_inner {
+  z-index: 99999;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container a.dk_toggle.dk_label {
+  width: 90px !important;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container.date-day a.dk_toggle.dk_label {
+  width: 50px !important;
+}
+body.page-quick-facts .region-content .view-filters .form-item .dk_container.date-year a.dk_toggle.dk_label {
+  width: 55px !important;
+}
+body.page-quick-facts .region-content .view-filters .form-item .date-day .dk_options_inner {
+  height: 315px;
+}
+body.page-quick-facts .region-content .view-filters .form-item #dk_container_edit-field-publishrange-value-op {
+  width: 262px;
+}
+body.page-quick-facts .region-content .view-filters .form-item #dk_container_edit-field-publishrange-value-op .dk_toggle {
+  width: 242px !important;
+}
+/*********************
+***   BLOG PAGE   ****
+*********************/
+body.page-blog .views-widget {
+  padding: 10px 0 15px 0;
+}
+body.page-blog .prettycheckbox {
+  float: left;
+}
+body.page-blog .prettycheckbox label {
+  display: block;
+  float: left;
+  cursor: pointer;
+}
+body.page-blog label.option {
+  display: inline;
+  font-weight: normal;
+  vertical-align: middle;
+}
+body.page-blog .prettycheckbox a.checked {
+  position: relative;
+  background-position: 0 -17px;
+}
+body.page-blog .ui-datepicker {
+  width: 17em;
+  padding: .2em .2em 0;
+  display: none !important;
+}
+/**************************
+***  LINK TO US PAGE   ****
+***************************/
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container .linktous-nonmobile-container .wizard-section-container .wizard-section {
+  width: 170px;
+}
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft {
+  width: 75%;
+}
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-country-list .dk_container a.dk_toggle,
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-state-list .dk_container a.dk_toggle,
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-industry-list .dk_container a.dk_toggle,
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-country-list .dk_container select,
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-state-list .dk_container select,
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatleft .select-industry-list .dk_container select {
+  width: 620px !Important;
+}
+body.page-link-to-us .region.region-content .block.block-system .linktous-master-page-container form .find-widget .floatright {
+  float: right;
+  width: 25%;
+}
+/**********************
+***   SEARCH PAGE   ***
+**********************/
+body.page-search #titleWrapper h1 {
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  padding-right: 30px;
+  margin-right: 30px;
+  border-right: 1px dotted #ccc;
+}
+body.page-search #titleWrapper .current-search-item {
+  float: left;
+  padding-left: 10px;
+  color: #505050;
+  font-family: 'latoitalic', sans-serif;
+  line-height: 15px;
+}
+body.page-search #titleWrapper .current-search-item .search-results-searchfor {
+  font-size: 16px;
+  margin-top: 24px;
+}
+body.page-search #titleWrapper .current-search-item .search-results-container {
+  margin-top: 19px;
+  background-color: #E8E8E8;
+  font-size: 12px;
+  color: #282828;
+  padding: 5px 5px;
+  line-height: 15px;
+}
+body.page-search #titleWrapper .current-search-item .search-export-container {
+  margin-top: 18px;
+}
+body.page-search #titleWrapper .current-search-item:nth-child(2) {
+  max-width: 83%;
+}
+body.page-search .region.region-content {
+  width: 680px;
+  float: left;
+}
+body.page-search .region.region-content #search-form {
+  display: none;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer {
+  float: left;
+  margin-bottom: 15px;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer .searchresults-topwizardarea-wizarditem-leftright-container {
+  background-color: #E8E8E8;
+  margin-left: 5px;
+  padding: 15px;
+  float: left;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer .searchresults-topwizardarea-wizarditem-leftright-container .searchresults-topwizardarea-wizarditem-leftside {
+  width: 200px;
+  float: left;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer .searchresults-topwizardarea-wizarditem-leftright-container .searchresults-topwizardarea-wizarditem-leftside .searchresults-topwizardarea-wizarditem-icon {
+  float: left;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer .searchresults-topwizardarea-wizarditem-leftright-container .searchresults-topwizardarea-wizarditem-leftside .searchresults-topwizardarea-wizarditem-title {
+  float: left;
+  width: 140px;
+  line-height: 16px;
+  padding-top: 8px;
+  padding-left: 10px;
+}
+body.page-search .region.region-content .searchresults-topwizardarea-wizarditem-colorspacer .searchresults-topwizardarea-wizarditem-leftright-container .searchresults-topwizardarea-wizarditem-rightside {
+  width: 440px;
+  font-size: 14px;
+  color: #202020;
+  float: left;
+}
+body.page-search .region.region-content .search-results .search-result-container {
+  float: left;
+  background-color: #fff;
+  padding: 20px 40px 10px 15px;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-content-type {
+  float: left;
+  width: 60px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: #6885A2;
+  font-size: 11px;
+  margin-right: 10px;
+  word-wrap: break-word;
+  font-family: "latoitalic", sans-serif;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-content-type img.search-result-icon-img {
+  display: inline-block;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-content-type .ptype-is-Data {
+  display: block;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-panel-content {
+  float: left;
+  width: 550px;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-panel-content h3 {
+  margin: 0px 0px 5px 0px;
+  font-weight: normal;
+  font-size: 16px;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-panel-content p {
+  color: #202020;
+  font-size: 14px;
+  line-height: 16px;
+}
+body.page-search .region.region-content .search-results .search-result-container .search-result-panel-content .search-score {
+  display: none;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer {
+  border: 4px solid #ffffff;
+  background-color: #F8F8F8;
+  margin-top: 20px;
+  float: left;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer .search-acrossbusinessagencies-innercontainer {
+  padding: 15px 20px 0px 20px;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer .search-acrossbusinessagencies-innercontainer .search-acrossbusinessagencies-title a {
+  font-weight: normal;
+  font-size: 17px;
+  font-family: 'latoitalic', sans-serif;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer .search-acrossbusinessagencies-innercontainer .search-acrossbusinessagencies-results-container {
+  margin: 15px 0px 0px 70px;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer .search-acrossbusinessagencies-innercontainer .search-acrossbusinessagencies-results-container .search-acrossbusinessagencies-result-container {
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #202020;
+}
+body.page-search .region.region-content .search-acrossbusinessagencies-mastercontainer .search-acrossbusinessagencies-innercontainer .search-acrossbusinessagencies-results-container .search-acrossbusinessagencies-result-container .search-acrossbusinessagencies-result-titlelinked a {
+  font-size: 14px;
+  font-family: 'latoitalic', sans-serif;
+}
+body.page-search .region.region-content .pager {
+  margin-top: 30px;
+  float: left;
+}
+body.page-search .region.region-content .pager a {
+  font-size: 15px;
+}
+body.page-search .region.region-content .pager li {
+  float: left;
+}
+body.page-search .region.region-content .pager .pager-first {
+  display: none;
+}
+body.page-search .region.region-content .pager .pager-current {
+  font-family: 'latoregular', sans-serif;
+  color: #A8A8A8;
+  font-size: 15px;
+}
+body.page-search .region.region-content .pager .pager-next a {
+  display: block;
+  width: 21px;
+  height: 21px;
+  text-indent: -9999999px;
+  background: url("../images/pager-next.png") no-repeat transparent;
+}
+body.page-search .region.region-content .pager .pager-previous a {
+  display: block;
+  width: 21px;
+  height: 21px;
+  background: url("../images/pager-previous.png") no-repeat transparent;
+  text-indent: -9999999px;
+}
+body.page-search .region.region-content .pager .pager-ellipsis {
+  font-size: 25px;
+  line-height: 0px;
+  margin: 0px;
+}
+body.page-search .region.region-content .pager .pager-last.last {
+  display: none;
+}
+body.page-search .region.region-sidebar-first {
+  width: 260px;
+  float: right;
+  background-color: #fff;
+}
+body.page-search .region.region-sidebar-first #block-boxes-search_page_refine_by_title h1 {
+  text-transform: uppercase;
+  font-size: 13px;
+  background-color: #E8E8E8;
+  color: #505050;
+  padding: 18px 0px 18px 18px;
+  margin: 0px;
+  font-weight: normal;
+  font-family: "latoblack", sans-serif;
+}
+body.page-search .region.region-sidebar-first #block-boxes-search_page_refine_by_title .boxes-box-controls .links {
+  margin: 0px;
+}
+body.page-search .region.region-sidebar-first .block-facetapi {
+  padding: 0px 0px 20px 0px;
+  border-bottom: 1px solid #ccc;
+  margin: 18px;
+}
+body.page-search .region.region-sidebar-first .block-facetapi h2.block-title {
+  margin: 0px 0px 10px 0px;
+  font-size: 12px;
+  color: #6885A2;
+  text-transform: uppercase;
+  font-family: 'latoblack', sans-serif;
+  font-weight: normal;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links {
+  float: left;
+  width: 100%;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf {
+  list-style: none;
+  margin-left: 0px;
+  font-size: 12px;
+  color: #505050;
+  padding: 2px 0px;
+  width: 100%;
+  font-family: 'latoregular', sans-serif;
+  float: left;
+  clear: both;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf .prettycheckbox {
+  float: left;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf .prettycheckbox a {
+  background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  width: 14px;
+  height: 13px;
+  margin-top: 0px;
+  margin-right: 5px;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf .prettycheckbox a.checked {
+  background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background-position: 0 -13px;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf .prettycheckbox label {
+  margin: 0;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf a.facetapi-checkbox-processed {
+  color: #797979;
+  font-family: 'latoregular', sans-serif;
+  display: inline-block;
+  float: left;
+  width: 90%;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf a.facetapi-checkbox-processed:hover {
+  text-decoration: underline;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf a.facetapi-checkbox-processed span.facet-result-count {
+  background-color: #F0F0F0;
+  font-size: 10px;
+  line-height: 12px;
+  padding: 3px;
+  color: #606060;
+  float: right;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list a.facetapi-limit-link {
+  font-family: "latoblack_italic", sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+}
+body.page-search .region.region-sidebar-first .block-facetapi .item-list a.facetapi-limit-link:after {
+  content: " \00BB";
+}
+body.page-search .region.region-sidebar-first .block-facetapi.last {
+  border-bottom: 0px solid #fff;
+}
+/********************************
+***   FEDERAL RESOURCES PAGE   ****
+*********************************/
+body.page-federal-resources .greensba-section-container {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  width: 890px;
+  padding: 35px;
+}
+body.page-federal-resources .greensba-section {
+  width: 48%;
+  float: left;
+  margin-right: 2%;
+  margin-bottom: 20px;
+}
+body.page-federal-resources .greensba-section ul {
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid #EEEEEE;
+  border-radius: 0 0 5px 5px;
+  margin: 0;
+  padding: 0;
+}
+body.page-federal-resources .greensba-section ul li {
+  list-style: none;
+  padding: 9px;
+}
+body.page-federal-resources .greensba-section ul li:nth-child(even) {
+  background-color: #F9F9F9;
+}
+body.page-federal-resources .greensba-section-header {
+  background-color: #E9E9E9;
+  color: #5C5C5C;
+  font-family: bitter-bold;
+  line-height: 36px;
+  padding: 5px 10px;
+  font-size: 18px;
+}
+body.page-federal-resources .viewmoreless {
+  float: right;
+  border: 1px solid #EEEEEE;
+  border-radius: 3px;
+  background-color: #F9F9F9;
+  padding: 5px;
+}
+body.page-federal-resources .morelessrow {
+  margin: 5px 0;
+}
+body.page-federal-resources a.viewmoreless {
+  margin-bottom: 30px;
+}
+/*************************************
+***   PRIVACY AND SECURITY PAGE   ****
+*************************************/
+body.page-privacy-and-security .privacyandsecurity_masterContainer {
+  background-color: #fff;
+  float: left;
+  clear: both;
+  width: 890px;
+  padding: 35px;
+}
+/****************************************
+***   SBIR Certification Tool PAGE   ****
+*****************************************/
+body.page-sbir-certification-tool .sbir-certification-tool-mastercontainer,
+.sbir-certification-tool-mastercontainer-wrapper .sbir-certification-tool-mastercontainer {
+  background-color: #fff;
+  float: left;
+  clear: both;
+}
+body.page-sbir-certification-tool .sbir-certification-tool-welcomemessage,
+.sbir-certification-tool-mastercontainer-wrapper .sbir-certification-tool-welcomemessage {
+  background-color: #6885a2;
+  color: #fff;
+  display: block;
+  padding: 20px;
+}
+body.page-sbir-certification-tool .sbir-certification-tool-welcomemessage a,
+.sbir-certification-tool-mastercontainer-wrapper .sbir-certification-tool-welcomemessage a {
+  color: #fff;
+  text-decoration: underline;
+}
+body.page-sbir-certification-tool .sbir-certification-tool-contentcontainer,
+.sbir-certification-tool-mastercontainer-wrapper .sbir-certification-tool-contentcontainer {
+  float: left;
+}
+body.page-sbir-certification-tool .roweven,
+.sbir-certification-tool-mastercontainer-wrapper .roweven,
+body.page-sbir-certification-tool .rowodd,
+.sbir-certification-tool-mastercontainer-wrapper .rowodd {
+  display: block;
+  width: 100%;
+  float: left;
+}
+body.page-sbir-certification-tool .rowodd,
+.sbir-certification-tool-mastercontainer-wrapper .rowodd {
+  background-color: #F9F9F9;
+  height: auto;
+}
+body.page-sbir-certification-tool .cell1,
+.sbir-certification-tool-mastercontainer-wrapper .cell1 {
+  display: block;
+  width: 15%;
+  height: 110px;
+  float: left;
+  padding: 3%;
+  font-size: 16px;
+  font-family: latoblack;
+  color: #6885a2;
+}
+body.page-sbir-certification-tool .cell2,
+.sbir-certification-tool-mastercontainer-wrapper .cell2 {
+  display: block;
+  border-right: 1px dashed;
+  border-left: 1px dashed;
+  width: 52%;
+  float: left;
+  padding: 3%;
+  min-height: 111px;
+}
+body.page-sbir-certification-tool .cell3,
+.sbir-certification-tool-mastercontainer-wrapper .cell3 {
+  text-align: center;
+  padding-top: 2%;
+  position: relative;
+  width: 20%;
+  height: 149px;
+  float: left;
+}
+body.page-sbir-certification-tool .cell3 img,
+.sbir-certification-tool-mastercontainer-wrapper .cell3 img {
+  height: 43px;
+  padding: 0 30px;
+  margin-top: 8px;
+}
+body.page-sbir-certification-tool .cell3 img#profit_pass,
+.sbir-certification-tool-mastercontainer-wrapper .cell3 img#profit_pass {
+  margin-bottom: 30px;
+}
+body.page-sbir-certification-tool .cell3 label,
+.sbir-certification-tool-mastercontainer-wrapper .cell3 label {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-family: "latoblack_italic", sans-serif;
+}
+body.page-sbir-certification-tool #eligibility-message,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message {
+  margin-top: 25px;
+  float: left;
+}
+body.page-sbir-certification-tool #eligibility-message #success_message,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #success_message {
+  float: left;
+}
+body.page-sbir-certification-tool #eligibility-message #success_message img,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #success_message img {
+  float: left;
+  margin-top: 12px;
+  margin-right: 10px;
+}
+body.page-sbir-certification-tool #eligibility-message #success_message p,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #success_message p {
+  float: left;
+  width: 65%;
+  margin-right: 15px;
+  padding: 0;
+  margin-top: 6px;
+}
+body.page-sbir-certification-tool #eligibility-message #fail_message,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #fail_message {
+  float: left;
+}
+body.page-sbir-certification-tool #eligibility-message #fail_message img,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #fail_message img {
+  float: left;
+  margin-top: 12px;
+  margin-right: 10px;
+}
+body.page-sbir-certification-tool #eligibility-message #fail_message p,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message #fail_message p {
+  float: left;
+  width: 55%;
+  margin-top: 6px;
+  margin-right: 15px;
+}
+body.page-sbir-certification-tool #eligibility-message .btn-Continue,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message .btn-Continue {
+  float: right;
+  cursor: pointer;
+  margin-top: 25px;
+}
+body.page-sbir-certification-tool #eligibility-message .btn-Continue a,
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message .btn-Continue a {
+  color: #fff;
+  padding: 20px;
+  background-color: #f75b49;
+}
+body.page-sbir-certification-tool .downarrow,
+.sbir-certification-tool-mastercontainer-wrapper .downarrow {
+  display: none;
+}
+body.page-sbir-certification-tool .radiobutton,
+.sbir-certification-tool-mastercontainer-wrapper .radiobutton {
+  height: 20px;
+  position: relative;
+  top: 5px;
+}
+body.page-sbir-certification-tool .options,
+.sbir-certification-tool-mastercontainer-wrapper .options {
+  padding-right: 10px;
+}
+body.page-sbir-certification-tool .btn-next,
+.sbir-certification-tool-mastercontainer-wrapper .btn-next {
+  background-color: #6885a2;
+  color: #fff;
+  font-family: 'latoblack', sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 15px 25px;
+  float: right;
+}
+body.page-sbir-certification-tool label,
+.sbir-certification-tool-mastercontainer-wrapper label {
+  font-weight: normal;
+}
+body.page-sbir-certification-tool #lblprofit,
+.sbir-certification-tool-mastercontainer-wrapper #lblprofit {
+  margin-top: 15px;
+  margin-bottom: 50px;
+}
+body.page-sbir-certification-tool #lbllocation,
+.sbir-certification-tool-mastercontainer-wrapper #lbllocation {
+  margin-top: 20px;
+  float: left;
+  width: 100%;
+}
+body.page-sbir-certification-tool #lblownership,
+.sbir-certification-tool-mastercontainer-wrapper #lblownership,
+body.page-sbir-certification-tool #lblemployee,
+.sbir-certification-tool-mastercontainer-wrapper #lblemployee {
+  margin-top: 20px;
+}
+body.page-sbir-certification-tool .ptacLightBoxWrapper,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBoxWrapper,
+body.page-sbir-certification-tool .vendorLightBoxWrapper,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBoxWrapper,
+body.page-sbir-certification-tool .jobLightBoxWrapper,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBoxWrapper {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 25px;
+  width: 500px;
+}
+body.page-sbir-certification-tool .ptacLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-logo-innerwrapper,
+body.page-sbir-certification-tool .vendorLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-logo-innerwrapper,
+body.page-sbir-certification-tool .jobLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-logo-innerwrapper {
+  float: left;
+  margin: 15px 0px 0px 15px;
+  width: 250px;
+}
+body.page-sbir-certification-tool .kill-ptacLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-ptacLightBox,
+body.page-sbir-certification-tool .kill-vendorLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-vendorLightBox,
+body.page-sbir-certification-tool .kill-jobLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-jobLightBox {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font: 12px Bitter-Regular, Times, serif;
+  background-color: #15567B;
+  color: whiteSmoke;
+  font-weight: bold;
+  padding: 1em;
+}
+body.page-sbir-certification-tool .kill-ptacLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-ptacLightBox img,
+body.page-sbir-certification-tool .kill-vendorLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-vendorLightBox img,
+body.page-sbir-certification-tool .kill-jobLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-jobLightBox img {
+  width: 35px;
+  margin: 0px;
+  margin-right: 10px;
+}
+body.page-sbir-certification-tool .ptacLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-logo,
+body.page-sbir-certification-tool .vendorLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-logo,
+body.page-sbir-certification-tool .jobLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-logo {
+  background-color: #ebebeb;
+  position: relative;
+  overflow: auto !important;
+  border-bottom: 1px solid #808080;
+  height: 80px;
+}
+body.page-sbir-certification-tool .ptacLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-msg-area,
+body.page-sbir-certification-tool .vendorLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-msg-area,
+body.page-sbir-certification-tool .jobLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-msg-area {
+  font-weight: normal;
+  padding: 10px 24px;
+}
+body.page-sbir-certification-tool .ptacLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-msg-area p,
+body.page-sbir-certification-tool .vendorLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-msg-area p,
+body.page-sbir-certification-tool .jobLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-msg-area p {
+  padding-top: 5px;
+}
+body.page-sbir-certification-tool .ptacLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-logo-innerwrapper,
+body.page-sbir-certification-tool .vendorLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-logo-innerwrapper,
+body.page-sbir-certification-tool .jobLightBox-logo-innerwrapper,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-logo-innerwrapper {
+  float: left;
+  margin: 15px 0px 0px 15px;
+  width: 250px;
+}
+body.page-sbir-certification-tool .kill-ptacLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-ptacLightBox,
+body.page-sbir-certification-tool .kill-vendorLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-vendorLightBox,
+body.page-sbir-certification-tool .kill-jobLightBox,
+.sbir-certification-tool-mastercontainer-wrapper .kill-jobLightBox {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font: 12px Bitter-Regular, Times, serif;
+  background-color: #15567B;
+  color: whiteSmoke;
+  font-weight: bold;
+  padding: 1em;
+}
+body.page-sbir-certification-tool .kill-ptacLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-ptacLightBox img,
+body.page-sbir-certification-tool .kill-vendorLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-vendorLightBox img,
+body.page-sbir-certification-tool .kill-jobLightBox img,
+.sbir-certification-tool-mastercontainer-wrapper .kill-jobLightBox img {
+  width: 35px;
+  margin: 0px;
+  margin-right: 10px;
+}
+body.page-sbir-certification-tool .ptacLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-logo,
+body.page-sbir-certification-tool .vendorLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-logo,
+body.page-sbir-certification-tool .jobLightBox-logo,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-logo {
+  background-color: #ebebeb;
+  position: relative;
+  overflow: auto !important;
+  border-bottom: 1px solid #808080;
+  height: 80px;
+}
+body.page-sbir-certification-tool .ptacLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-msg-area,
+body.page-sbir-certification-tool .vendorLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-msg-area,
+body.page-sbir-certification-tool .jobLightBox-msg-area,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-msg-area {
+  font-weight: normal;
+  padding: 10px 24px;
+}
+body.page-sbir-certification-tool .ptacLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .ptacLightBox-msg-area p,
+body.page-sbir-certification-tool .vendorLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .vendorLightBox-msg-area p,
+body.page-sbir-certification-tool .jobLightBox-msg-area p,
+.sbir-certification-tool-mastercontainer-wrapper .jobLightBox-msg-area p {
+  padding-top: 5px;
+}
+body.page-sbir-certification-tool #cboxOverlay,
+.sbir-certification-tool-mastercontainer-wrapper #cboxOverlay {
+  cursor: pointer;
+  display: block;
+  background: #000;
+  opacity: 0.4;
+  position: fixed;
+  width: 100%;
+  height: 300%;
+}
+body.page-sbir-certification-tool #colorbox,
+.sbir-certification-tool-mastercontainer-wrapper #colorbox {
+  padding-bottom: 38px;
+  padding-right: 0px;
+  top: 180px;
+  left: 804px;
+  position: absolute;
+  width: 298px;
+  height: 119px;
+  opacity: 1;
+  cursor: auto;
+  display: block;
+  background: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+body.page-sbir-certification-tool #cboxContent,
+.sbir-certification-tool-mastercontainer-wrapper #cboxContent {
+  float: left;
+  width: 298px;
+  height: 119px;
+  background: #fff;
+  overflow: visible;
+  margin-bottom: 28px;
+  float: none;
+  position: relative;
+}
+body.page-sbir-certification-tool #cboxLoadedContent,
+.sbir-certification-tool-mastercontainer-wrapper #cboxLoadedContent {
+  height: 325px;
+  width: 500px;
+  overflow: visible;
+}
+body.page-sbir-certification-tool #cboxLoadingOverlay,
+.sbir-certification-tool-mastercontainer-wrapper #cboxLoadingOverlay {
+  background: #e6e6e6;
+}
+body.page-sbir-certification-tool #cboxLoadingOverlay,
+.sbir-certification-tool-mastercontainer-wrapper #cboxLoadingOverlay,
+body.page-sbir-certification-tool #cboxLoadingGraphic,
+.sbir-certification-tool-mastercontainer-wrapper #cboxLoadingGraphic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+body.page-sbir-certification-tool #cboxTitle,
+.sbir-certification-tool-mastercontainer-wrapper #cboxTitle {
+  left: 0;
+  height: 38px;
+  color: #313131;
+  padding: 0 140px 0 15px;
+  display: table-cell;
+  vertical-align: middle;
+  margin: 0;
+  display: block;
+  float: left;
+}
+body.page-sbir-certification-tool #cboxClose,
+.sbir-certification-tool-mastercontainer-wrapper #cboxClose {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px 0px no-repeat;
+  width: 25px;
+  height: 25px;
+  text-indent: -9999px;
+  opacity: 1;
+  cursor: pointer;
+}
+body.page-sbir-certification-tool #cboxMiddleRight,
+.sbir-certification-tool-mastercontainer-wrapper #cboxMiddleRight {
+  width: 0;
+  height: 119px;
+  float: left;
+}
+body.page-sbir-certification-tool #cboxError,
+.sbir-certification-tool-mastercontainer-wrapper #cboxError {
+  padding: 50px;
+  border: 1px solid #ccc;
+}
+body.page-sbir-certification-tool #colorbox div,
+.sbir-certification-tool-mastercontainer-wrapper #colorbox div {
+  overflow: visible;
+}
+body.page-sbir-certification-tool #cboxWrapper,
+.sbir-certification-tool-mastercontainer-wrapper #cboxWrapper {
+  height: 157px;
+  width: 298px;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  -moz-border-radius-bottomleft: 9px;
+  -moz-border-radius-bottomright: 9px;
+  -webkit-border-bottom-left-radius: 9px;
+  -webkit-border-bottom-right-radius: 9px;
+}
+body.page-sbir-certification-tool #colorbox,
+.sbir-certification-tool-mastercontainer-wrapper #colorbox,
+body.page-sbir-certification-tool #cboxOverlay,
+.sbir-certification-tool-mastercontainer-wrapper #cboxOverlay,
+body.page-sbir-certification-tool #cboxWrapper,
+.sbir-certification-tool-mastercontainer-wrapper #cboxWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: visible !important;
+}
+body.page-sbir-certification-tool #cboxTopLeft,
+.sbir-certification-tool-mastercontainer-wrapper #cboxTopLeft,
+body.page-sbir-certification-tool #cboxTopRight,
+.sbir-certification-tool-mastercontainer-wrapper #cboxTopRight {
+  float: left;
+}
+body.page-sbir-certification-tool #cboxTopCenter,
+.sbir-certification-tool-mastercontainer-wrapper #cboxTopCenter {
+  float: left;
+  width: 298px;
+}
+body.page-sbir-certification-tool #cboxMiddleLeft,
+.sbir-certification-tool-mastercontainer-wrapper #cboxMiddleLeft {
+  float: left;
+  height: 119px;
+  width: 0;
+}
+body.page-sbir-certification-tool #cboxMiddleLeft,
+.sbir-certification-tool-mastercontainer-wrapper #cboxMiddleLeft,
+body.page-sbir-certification-tool #cboxBottomLeft,
+.sbir-certification-tool-mastercontainer-wrapper #cboxBottomLeft {
+  clear: left;
+}
+.sbir-certification-tool-mastercontainer-wrapper #eligibility-message .btn-Continue {
+  float: right;
+  cursor: pointer;
+  margin-top: 25px;
+  margin-bottom: 35px;
+  margin-right: 15px;
+}
+/****************************************
+***   Reverse Information Flow PAGE   ****
+*****************************************/
+body.page-reverse-information-flow .region-content {
+  width: 100%;
+}
+body.page-reverse-information-flow .reverse-information-flow-mastercontainer {
+  width: 100%;
+  background-color: #fff;
+}
+body.page-reverse-information-flow .tabstrip {
+  width: 100%;
+  float: left;
+}
+body.page-reverse-information-flow .tabs {
+  width: 15%;
+  padding: 2%;
+  background-color: #97e8c1 ;
+  float: left;
+}
+body.page-reverse-information-flow .tabs:hover {
+  background-color: #6885a2;
+  color: #fff;
+}
+body.page-reverse-information-flow #results {
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+body.page-reverse-information-flow #results td {
+  width: 25%;
+  padding: 3%;
+}
+body.page-reverse-information-flow #pageNavPosition {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+/**************************
+***   JOB CENTER PAGE   ***
+***************************/
+body.page-jobcenter-wizard #block-system-main .wizard-sidebars-container .jobcenterajax-container .jobcenteroffice-result .jobcenteroffice-result-hours .jobcenteroffice-result-hours-label {
+  width: 25%;
+  float: left;
+}
+body.page-jobcenter-wizard #block-system-main .wizard-sidebars-container .jobcenterajax-container .jobcenteroffice-result .jobcenteroffice-result-hours .jobcenteroffice-result-hours-data {
+  margin-left: 25%;
+}
+body.page-jobcenter-wizard #block-system-main .wizard-sidebars-container .jobcenterajax-container .jobcenteroffice-result .jobcenteroffice-result-phone .jobcenteroffice-result-phone-label {
+  float: left;
+  width: 25%;
+}
+body.page-jobcenter-wizard #block-system-main .wizard-sidebars-container .jobcenterajax-container .jobcenteroffice-result .jobcenteroffice-result-phone .jobcenteroffice-result-phone-data {
+  margin-left: 25%;
+}
+body.page-jobcenter-wizard #block-system-main .wizard-sidebars-container .jobcenterajax-container .jobcenteroffice-result .jobcenteroffice-result-description .jobcenteroffice-result-description-label {
+  float: left;
+  width: 25%;
+}
+/********************************
+***   TRAINING PAGE   ****
+*********************************/
+body .view-Training-materials {
+  position: relative;
+}
+body .view-Training-materials #mobile-accordion {
+  display: none;
+}
+body .view-Training-materials .view-filters {
+  position: absolute;
+  margin-top: -64px;
+  right: 0px;
+}
+body .view-Training-materials .view-filters .views-exposed-widget {
+  padding: 0px;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  border: none;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset.collapsible .fieldset-legend {
+  background-image: url("../images/icons/menu-expanded.png");
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset.collapsed .fieldset-legend {
+  background-image: url("../images/icons/menu-collapsed-rtl.png");
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset legend {
+  text-transform: uppercase;
+  font: 15px "latoblack", sans-serif;
+  background-color: #6885a2;
+  padding: 20px 25px;
+  display: block;
+  float: right;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset legend span.fieldset-legend {
+  padding: 0px 15px 0px 0px;
+  background-position: right center;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset legend a {
+  color: #fff;
+  outline: 0;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper {
+  float: left;
+  clear: both;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 15px;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper a.bef-toggle {
+  display: none;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes {
+  padding: 10px 0;
+  background-color: #fff;
+  float: left;
+  width: 100%;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item {
+  float: left;
+  clear: both;
+  margin-bottom: 10px;
+  margin-left: 3%;
+  width: 97%;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item .prettycheckbox {
+  float: left;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item .prettycheckbox a {
+  background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  width: 14px;
+  height: 13px;
+  margin-top: 3px;
+  margin-left: 5px;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item .prettycheckbox a.checked {
+  background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background-position: 0 -13px;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item .prettycheckbox label {
+  margin: 0;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item label {
+  display: block;
+  float: left;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 18px;
+  width: 79%;
+  margin-left: 3%;
+  cursor: pointer;
+}
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item label:hover {
+  text-decoration: underline;
+}
+body .view-Training-materials .view-content {
+  margin-top: 60px;
+}
+body .view-Training-materials .view-content .views-table {
+  display: block;
+}
+body .view-Training-materials .view-content .views-table thead {
+  background-color: #6885a2;
+  color: #fff;
+  text-transform: uppercase;
+}
+body .view-Training-materials .view-content .views-table thead th {
+  font: 14px "latoblack", sans-serif;
+  padding: 20px 0px;
+}
+body .view-Training-materials .view-content .views-table thead th a {
+  color: #fff;
+  font-weight: normal;
+  font: 14px "latoblack", sans-serif;
+}
+body .view-Training-materials .view-content .views-table thead th a img {
+  padding-left: 10px;
+}
+body .view-Training-materials .view-content .views-table tbody tr td {
+  padding: 15px 10px;
+  font: 12px "latoregular", sans-serif;
+}
+body .view-Training-materials .view-content .views-table tbody tr td a {
+  font: 13px "latoregular", sans-serif;
+  font-weight: bold;
+}
+body .view-Training-materials .view-content .views-table tbody tr td img {
+  padding-left: 10px;
+}
+body .view-Training-materials .view-content .views-table tbody tr td.views-field-field-agency {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+body .view-Training-materials .view-content .views-table tbody tr td.active {
+  background-color: inherit;
+}
+body .view-Training-materials .view-content .views-table tbody tr.even {
+  background-color: #fff;
+  border-bottom: none;
+}
+body .view-Training-materials .view-content .views-table tbody tr.odd {
+  background-color: #f6f7f7;
+  border-bottom: none;
+}
+body .view-Training-materials .pager {
+  margin-top: 30px;
+  float: left;
+}
+body .view-Training-materials .pager a {
+  font-size: 15px;
+}
+body .view-Training-materials .pager li {
+  float: left;
+}
+body .view-Training-materials .pager .pager-first {
+  display: none;
+}
+body .view-Training-materials .pager .pager-current {
+  font-family: 'latoregular', sans-serif;
+  color: #A8A8A8;
+  font-size: 15px;
+}
+body .view-Training-materials .pager .pager-next a {
+  display: block;
+  width: 21px;
+  height: 21px;
+  text-indent: -9999999px;
+  background: url("../images/pager-next.png") no-repeat transparent;
+}
+body .view-Training-materials .pager .pager-previous a {
+  display: block;
+  width: 21px;
+  height: 21px;
+  background: url("../images/pager-previous.png") no-repeat transparent;
+  text-indent: -9999999px;
+}
+body .view-Training-materials .pager .pager-ellipsis {
+  font-size: 25px;
+  line-height: 0px;
+  margin: 0px;
+}
+body .view-Training-materials .pager .pager-last.last {
+  display: none;
+}
+/********************************
+  ***   HEALTHCARE WIZARD   ****
+*********************************/
+body.page-healthcare #block-system-main .wizard-outside-sidebar-upcoming-events .wizard-sidebarresults-results-container .viewmore-healthcare {
+  width: 180px;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true {
+  width: 100%;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .wizard-container .wizardHeader {
+  width: 100%;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .wizard-container .wizardHeader .tabs ul.slide-selector li a {
+  padding: 40px 10px 0px 10px;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .slide {
+  width: 100%;
+  background-size: 30%;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .slide .questions {
+  margin-left: 350px;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .slide .questions .widget-type-radio-group label {
+  width: 257px;
+}
+body.page-healthcare .wizard-has-outside-sidebar-true .slide .wizard-continue {
+  margin-left: 445px;
+}
+/***********************************
+***  ICONS FOR WIZARDS           ****
+************************************/
+body.page-start-a-business .splash-icon-image,
+body.page-access-financing .splash-icon-image,
+body.page-export .splash-icon-image,
+body.page-find-opportunities .splash-icon-image,
+body.page-resource-grow-your-business .splash-icon-image,
+body.page-taxes-and-credits .splash-icon-image,
+body.page-jobcenter-wizard .splash-icon-image,
+body.page-select-usa .splash-icon-image,
+body.page-veterans .splash-icon-image,
+body.page-tour .splash-icon-image,
+body.page-disaster-assistance .splash-icon-image,
+body.page-find-green-opportunities .splash-icon-image,
+body.page-browseregulations .splash-icon-image,
+body.page-expand-exporting .splash-icon-image,
+body.page-begin-exporting .splash-icon-image,
+body.page-rural-exporting .splash-icon-image {
+  display: block;
+  float: left;
+  padding: 19px;
+  margin-left: 20%;
+}
+body.page-start-a-business .wizard-splash-icon,
+body.page-access-financing .wizard-splash-icon,
+body.page-export .wizard-splash-icon,
+body.page-find-opportunities .wizard-splash-icon,
+body.page-resource-grow-your-business .wizard-splash-icon,
+body.page-taxes-and-credits .wizard-splash-icon,
+body.page-jobcenter-wizard .wizard-splash-icon,
+body.page-select-usa .wizard-splash-icon,
+body.page-veterans .wizard-splash-icon,
+body.page-tour .wizard-splash-icon,
+body.page-disaster-assistance .wizard-splash-icon,
+body.page-find-green-opportunities .wizard-splash-icon,
+body.page-browseregulations .wizard-splash-icon,
+body.page-expand-exporting .wizard-splash-icon,
+body.page-begin-exporting .wizard-splash-icon,
+body.page-rural-exporting .wizard-splash-icon {
+  height: 48px;
+}
+body.page-start-a-business .splash-title,
+body.page-access-financing .splash-title,
+body.page-export .splash-title,
+body.page-find-opportunities .splash-title,
+body.page-resource-grow-your-business .splash-title,
+body.page-taxes-and-credits .splash-title,
+body.page-jobcenter-wizard .splash-title,
+body.page-select-usa .splash-title,
+body.page-veterans .splash-title,
+body.page-tour .splash-title,
+body.page-disaster-assistance .splash-title,
+body.page-find-green-opportunities .splash-title,
+body.page-browseregulations .splash-title,
+body.page-expand-exporting .splash-title,
+body.page-begin-exporting .splash-title,
+body.page-rural-exporting .splash-title {
+  width: 50%;
+  float: left;
+  margin-left: 4%;
+}
+body.page-start-a-business .splash-title label,
+body.page-access-financing .splash-title label,
+body.page-export .splash-title label,
+body.page-find-opportunities .splash-title label,
+body.page-resource-grow-your-business .splash-title label,
+body.page-taxes-and-credits .splash-title label,
+body.page-jobcenter-wizard .splash-title label,
+body.page-select-usa .splash-title label,
+body.page-veterans .splash-title label,
+body.page-tour .splash-title label,
+body.page-disaster-assistance .splash-title label,
+body.page-find-green-opportunities .splash-title label,
+body.page-browseregulations .splash-title label,
+body.page-expand-exporting .splash-title label,
+body.page-begin-exporting .splash-title label,
+body.page-rural-exporting .splash-title label {
+  float: left;
+}
+/**********************************
+****  BROWSE REGULATIONS         **
+**********************************/
+body.page-browseregulations .dk_options_inner li a {
+  white-space: normal;
+}
+body.page-browseregulations .dk_toggle {
+  min-width: 375px;
+}
+body.page-browseregulations #wiztag-keyword_textbox {
+  width: 375px;
+}
+/********************************
+****  FIND OPPORTUNITIES WIZARD **
+**********************************/
+body.page-find-opportunities #txtgosearch-container {
+  margin-bottom: 15px;
+}
+body.page-find-opportunities #findopportunities-search-container {
+  margin-bottom: 25px;
+  text-align: center;
+}
+body.page-find-opportunities #findopportunities-searchtxt {
+  display: inline-block;
+}
+body.page-find-opportunities #txtgosearch {
+  width: 175px;
+  margin-right: 10px;
+}
+body.page-find-opportunities .wizard-goButton-inner {
+  display: inline-block;
+}
+body.page-find-opportunities .wizard-goButton-inner input {
+  font-size: 18px;
+}
+body.page-find-opportunities .more-fbo-open-link {
+  float: right;
+  background-color: #f75b49;
+  width: 101px;
+  height: 45px;
+  margin-bottom: 15px;
+}
+body.page-find-opportunities #ancmorefbo_and {
+  display: inline-block;
+  padding: 15px 23px 15px 23px;
+  color: #fff;
+}
+body.page-find-opportunities .question-controle-for-wiztag-Industry {
+  width: 100%;
+}
+body.page-find-opportunities .question-controle-for-wiztag-Industry #wiztag-Industry {
+  width: 65%;
+}
+body.page-find-opportunities .question-controle-widget-type-textbox {
+  width: 100%;
+}
+body.page-find-opportunities .question-controle-widget-type-textbox .question-controle {
+  width: 60%;
+}
+/***************************************************************
+***   FULL TIME EMPLOYEE CALCULATOR PAGE STYLES   **** **** ****
+******************************************** **** **** **** ****/
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-input-ui .empcalculator-input-ui-input1-ui,
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-input-ui .empcalculator-input-ui-input2-ui {
+  float: left;
+  width: 100%;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-input-ui .empcalculator-input-ui-label.empcalculator-input-ui-label-1,
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-input-ui .empcalculator-input-ui-label.empcalculator-input-ui-label-2 {
+  line-height: 15px;
+  font-size: 15px;
+  padding-bottom: 15px;
+  display: inline-block;
+  width: 70%;
+  margin-right: 6%;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-controles-ui {
+  text-align: right;
+  float: right;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-specialcountingrules-btncontainer {
+  display: inline-block;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-specialcountingrules-btncontainer input {
+  cursor: pointer;
+  padding-top: 10px;
+  color: #1a6894;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-results-ui-container .empcalculator-results-ui-1 {
+  padding-top: 30px;
+}
+body.page-full-time-employee-calculator .empcalculator-mastercontainer .empcalculator-results-ui-container .empcalculator-results-ui-1 .empcalculator-results-ui-1-rightside {
+  width: 84%;
+}
+body.page-full-time-employee-calculator #colorbox .empcalculator-specialcountingrules-colorboxcontents-container {
+  width: 350px;
+  padding: 25px;
+}

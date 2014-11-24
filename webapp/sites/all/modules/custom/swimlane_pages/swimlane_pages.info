@@ -1,0 +1,6 @@
+;$Id$
+name = Swimlane Pages
+description = Helps the Content Management Team and the Administrator manage the "[Legacy] Swimlane pages"
+package = REI
+core = 7.x
+files[] = swimlane_pages.module

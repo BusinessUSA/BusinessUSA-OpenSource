@@ -1,0 +1,42 @@
+/**
+ * FacetAPI Collapsible structural styles.
+ * @todo: Move the display properties into JS. Initially hiding facets
+ * with CSS can cause the content to not show if JS is disabled or has
+ * stopped working because of a parsing error.
+ */
+
+.block.facetapi-collapsible .facet-collapsible-wrapper {
+  display: none;
+}
+.block.facetapi-collapsible.expanded .facet-collapsible-wrapper {
+  display: block;
+}
+.block.facetapi-collapsible ul.facetapi-collapsible ul {
+  display:none;
+}
+.block.facetapi-collapsible ul.facetapi-collapsible ul.expanded {
+  display:block
+}
+/**
+ * FacetAPI Collapsible Block Titles & Toggle
+ */
+.block.facetapi-collapsible h2.block-title {
+  cursor: pointer;
+}
+.block.facetapi-collapsible h2.block-title .toggle {
+  background: url(images/expand.png) no-repeat 0 0 transparent;
+  display: block;
+  float: right;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+}
+.block.facetapi-collapsible.expanded h2.block-title .toggle {
+  background-image: url(images/collapse.png);
+}
+.block.facetapi-collapsible.expanded.active h2.block-title {
+  cursor: default;
+}
+.block.facetapi-collapsible.expanded.active h2.block-title .toggle {
+  display: none;
+}

@@ -1,0 +1,37 @@
+.fakefooter-container {
+  clear: both;
+  background-color: #fff;
+  text-align: center;
+  padding: 15px;
+}
+.fakefooter-flag {
+  background: transparent url('/sites/all/themes/bizusa/images/footerFlag.png') no-repeat 0px 0px;
+  width: 21px;
+  height: 16px;
+  display: inline-block;
+  margin-right: 8px;
+}
+.fakefooter-msg {
+  border: 0px solid #ff4400;
+  text-align: left;
+  width: 60%;
+  display: inline-block;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+.region.region-content .mobileapp-content {
+  background-color: #fff;
+  padding: 7%;
+  margin: 0 20px 20px 20px;
+}
+.region.region-content .mobileapp-content ul {
+  padding: 0px;
+  margin: 0;
+  list-style: none;
+}
+.region.region-content .mobileapp-content ul li {
+  padding-bottom: 10px;
+}
+.region.region-content .mobileapp-content ul li img {
+  width: 120px;
+}

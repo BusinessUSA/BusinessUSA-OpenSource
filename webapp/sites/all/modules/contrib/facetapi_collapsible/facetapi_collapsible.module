@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * Implements hook_facetapi_widgets().
+ */
+function facetapi_collapsible_facetapi_widgets() {
+  return array(
+    'collapsible' => array(
+      'handler' => array(
+        'label' => t('Collapsible Links'),
+        'class' => 'FacetapiCollapsible',
+        'query types' => array('term', 'date'),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function facetapi_collapsible_theme_registry_alter(&$theme_registry) {
+  // FacetAPI Collapsible only needs to inject or wrap these theming functions with additional markup.
+  // When replacing the theme funciton, we need to save the origial array and invoke the original theming
+  // function in ours. This allows compatibility with other modules and themes that have existing overrides.
+  foreach (array('facetapi_title', 'facetapi_link_inactive', 'facetapi_link_active') as $theme_function) {
+    $theme_registry['facetapi_collapsible_' . $theme_function . '_original'] = $theme_registry[$theme_function];
+    $theme_registry[$theme_function]['function'] = 'facetapi_collapsible_' . $theme_function;
+  }
+}
+
+/**
+ * Implements theme_facetapi_link_title().
+ */
+function facetapi_collapsible_facetapi_title($variables) {
+  return theme('facetapi_collapsible_facetapi_title_original', $variables) . '<span class="toggle"></span>';
+}
+
+/**
+ * Implements theme_facetapi_link_inactive().
+ */
+function facetapi_collapsible_facetapi_link_inactive($variables) {
+  return '<div class="facetapi-facet facetapi-inactive">'. theme('facetapi_collapsible_facetapi_link_inactive_original', $variables) .'</div>';
+}
+
+/**
+ * Implements theme_facetapi_link_active().
+ */
+function facetapi_collapsible_facetapi_link_active($variables) {
+  return '<div class="facetapi-facet facetapi-active">' . theme('facetapi_collapsible_facetapi_link_active_original', $variables) . '</div>';
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function facetapi_collapsible_block_view_alter($data, $block) {
+  if (isset($data['content']['#facet'])) {
+    $settings = $data['content']['#settings'];
+    if (is_object($settings) && isset($settings->settings) && $settings->settings['widget'] == 'collapsible') {
+      facetapi_collapsible_static($block->delta);
+    }
+  }
+}
+
+/**
+ * Function that manages a static array of the block deltas that contain
+ * collapsible facets.
+ */
+function facetapi_collapsible_static($delta = NULL) {
+  $facetapi_collapsible = &drupal_static(__FUNCTION__, array());
+  if ($delta) {
+    // Add the given delta to our array of collapsible facets.
+    $facetapi_collapsible[] = $delta;
+  }
+  return $facetapi_collapsible;
+}
+
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function facetapi_collapsible_preprocess_block(&$variables) {
+  $collapsible_facets = facetapi_collapsible_static();
+  if (in_array($variables['block']->delta, $collapsible_facets)) {
+    $variables['classes_array'][] = 'facetapi-collapsible';
+  }
+}

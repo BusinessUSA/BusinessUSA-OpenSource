@@ -1,0 +1,98 @@
+/*********************
+***   IE 8 Fixes  ****
+**********************/
+
+form input[type="text"]{
+  vertical-align: text-bottom;
+  line-height: 40px;
+}
+
+li:hover{
+  background-color: inherit;
+  padding: 0;
+}
+
+.region-footer ul li:hover{
+  margin-bottom: 12px;
+  margin-left: 12px;
+}
+
+.prettycheckbox a {
+  height: 17px;
+  width: 17px;
+  background: transparent url('/sites/all/themes/bizusa/css/prettyCheckable-blue.png') no-repeat 0px 0px;
+}
+.prettycheckbox a.checked {
+  background: transparent url('/sites/all/themes/bizusa/css/prettyCheckable-blue.png') no-repeat 0px -17px;
+}
+
+#main #sidebar .checkbox .has-pretty-child .prettycheckbox a{
+  position: static;
+}
+
+body.page-training-materials-portal .wrapper .region-content .block-system .training-materials-portal-dualarea .dualarea-right input.auto-fill-zip-code {
+  line-height: 40px;
+}
+
+body .view-Training-materials .view-filters .views-exposed-widget fieldset .fieldset-wrapper .bef-checkboxes .form-item .prettycheckbox a,
+body.page-search .region.region-sidebar-first .block-facetapi .item-list ul.facetapi-facetapi-checkbox-links li.leaf .prettycheckbox a ,
+body.page-events .wrapper .region-content .block-views form .views-exposed-form .views-exposed-widgets .views-exposed-widget .views-widget .form-item fieldset .fieldset-wrapper .form-checkboxes .bef-checkboxes .form-item .prettycheckbox a{
+  background: transparent url('/sites/all/themes/bizusa/images/icons/prettyCheckable-bizusa.png') no-repeat 0px 0px;
+}
+
+#subscribeSubmit li{
+  width: 500px;
+  float: left;
+}
+
+#subscribeSubmit .button_panel{
+  width: 50%;
+  float: left;
+  margin-left: 265px;
+}
+
+body.page-healthcare .wizard-has-outside-sidebar-true .slide.slide-id-0 .questions {
+  margin-left: 0px;
+}
+
+body.page-healthcare .slide.slide-id-0 .questions .question-container.widget-type-html.wiztag-custom-html .question-controle-container.question-controle-for-wiztag-custom-html.question-controle-widget-type-html .splashextension .splashextension-section.splashextension-toolsres div{
+  min-height: 270px;
+}
+
+body.page-healthcare .wrapper.wizard-has-outside-sidebar-true .wizard-outside-sidebars-container .share-export-email-container .exportexcelWidget a.exportexcelWidget-toggler, body.page-healthcare .wrapper.wizard-has-outside-sidebar-true .wizard-sidebars-container .share-export-email-container .exportexcelWidget a.exportexcelWidget-toggler {
+  background: transparent url('/sites/all/themes/bizusa/images/icons/excel-circle-ie8.png') no-repeat 0px 0px;
+}
+
+body.page-shop-tax-credit-calculator .region-content .block-system .stc-calculator-mastercontainer #stc-main-calculator #stc-calculator-form div .pre-submit-form .field-pair-wrapper .form-item input.form-text {
+  padding: 4px 10px;
+  vertical-align: initial;
+}
+
+body.page-contains-wizard .slide .questions .widget-type-radio-group .question-controle-container .prettyradio{
+  float:none;
+  width: 28px;
+  vertical-align: top;
+}
+
+body.page-contains-wizard .slide .questions .widget-type-radio-group .question-controle-container label{
+
+}
+
+.question-container.widget-type-radio-group.wiztag-dd214orotherformsofdischarge,
+.question-container.widget-type-radio-group.wiztag-disabledveteranratingletterifclaimingdisabledveteranstatus {
+  float: left;
+} 
+
+.noscript-message{
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.busatour-slideshowarea .busatour-slideshowarea-controles-back input{
+  background: url("/sites/all/themes/bizusa/images/tour-back-button-ie8.png");
+}
+
+.busatour-slideshowarea .busatour-slideshowarea-controles-next-btn input{
+  background: url("/sites/all/themes/bizusa/images/tour-back-next-ie8.png");
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Install functions for Feeds HTTPFetcher AA.
+ */
+
+/**
+ * Implements hook_enable().
+ *
+ * Clear Feed's plugin cache so that this plugin shows up.
+ */
+function feeds_httpfetcher_aa_enable() {
+  cache_clear_all('plugins:feeds:plugins', 'cache');
+}

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * The main file for qpa.
+ * @file
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function qpa_help($path, $args) {
+  if ($path == 'admin/help#qpa') {
+    return t('QueryPath Array utilities, inclding the qpa() function.');
+  }
+}

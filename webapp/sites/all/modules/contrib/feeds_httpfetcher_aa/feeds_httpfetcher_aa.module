@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Feeds HTTPFetcher AA - basic API functions and hook implementations.
+ */
+
+/**
+ * Implements hook_feeds_plugins().
+ */
+function feeds_httpfetcher_aa_feeds_plugins() {
+  $path = drupal_get_path('module', 'feeds_httpfetcher_aa') . '/plugins';
+  $info = array();
+  $info['FeedsHTTPFetcherAA'] = array(
+    'name'        => t('Advanced Authentication HTTP fetcher'),
+    'description' => t('Fetch using HTTP with advanced authentication options.'),
+    'handler' => array(
+      'parent' => 'FeedsHTTPFetcher',
+      'class'  => 'FeedsHTTPFetcherAA',
+      'file'   => 'FeedsHTTPFetcherAA.inc',
+      'path'   => $path,
+    ),
+  );
+  return $info;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function feeds_httpfetcher_aa_form_FeedsHTTPFetcherAA_feeds_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'feeds_httpfetcher_aa_form_FeedsHTTPFetcherAA_feeds_form_validate';
+}
+
+/**
+ * Validation for FeedsHTTPFetcherAA_feeds_form.
+ */
+function feeds_httpfetcher_aa_form_FeedsHTTPFetcherAA_feeds_form_validate($form, &$form_state) {
+  if ($form_state['values']['two_step_auth'] && empty($form_state['values']['login_url'])) {
+    form_set_error('login_url', t('You must set a login URL when using 2-step Authentication.'));
+  }
+}

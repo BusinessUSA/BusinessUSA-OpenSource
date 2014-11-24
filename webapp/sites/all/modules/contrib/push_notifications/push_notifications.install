@@ -1,0 +1,186 @@
+<?php
+
+/**
+ * @file
+ * Install files for Push Notifications module.
+ */
+
+/**
+ * Implements of hook_install().
+ */
+function push_notifications_install() {
+  // Generate a random ending for APNS certificates once.
+  _push_notifications_set_random_certificate_string();
+}
+
+
+
+/**
+ * Implements of hook_uninstall().
+ */
+function push_notifications_uninstall() {
+  // Delete all variables set by module.
+  variable_del('push_notifications_type_id_ios');
+  variable_del('push_notifications_type_id_anroid');
+  variable_del('push_notifications_apns_host');
+  variable_del('push_notifications_apns_feedback_host');
+  variable_del('push_notifications_apns_certificate_random');
+  variable_del('push_notifications_apns_certificate');
+  variable_del('push_notifications_apns_notification_sound');
+  variable_del('push_notifications_apns_query_feedback_service');
+  variable_del('push_notifications_apns_stream_context_limit');
+  variable_del('push_notifications_apns_environment');
+  variable_del('push_notifications_apns_passphrase');
+  variable_del('push_notifications_apns_certificate_folder');
+  variable_del('push_notifications_google_type');
+  variable_del('push_notifications_c2dm_username');
+  variable_del('push_notifications_c2dm_password');
+  variable_del('push_notifications_c2dm_client_login_action_url');
+  variable_del('push_notifications_c2dm_server_post_url');
+  variable_del('push_notifications_gcm_project_id');
+  variable_del('push_notifications_gcm_api_key');
+  variable_del('push_notifications_gcm_server_post_url');
+  variable_del('push_notifications_privatemsg_integration');
+  variable_del('push_notifications_require_enabled_language');
+}
+
+
+
+/**
+ * Implements hook_field_scheme().
+ */
+function push_notifications_schema() {
+  $schema = array();
+
+  $schema['push_notifications_queue'] = array(
+    'description' => 'Queue for scheduled push notifications',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'User ID',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'payload' => array(
+        'description' => 'Message',
+        'type' => 'varchar',
+        'length' => '256',
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => 'Timestamp when message was added',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('uid'),
+    'indexes' => array(
+      'timestamp' => array('timestamp'),
+    ),
+  );
+
+  $schema['push_notifications_tokens'] = array(
+    'description' => 'Stores device tokens',
+    'fields' => array(
+      'token' => array(
+        'description' => 'Device Token',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'User ID',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'Device Type (iPhone, Android)',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => 'Timestamp token was added',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'language' => array(
+        'description' => 'Language',
+        'type' => 'varchar',
+        'length' => 11,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('token', 'uid'),
+    'indexes' => array(
+      'timestamp' => array('timestamp'),
+      'token' => array('token'),
+      'type' => array('type'),
+      'language' => array('language'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_update_n.
+ */
+function push_notifications_update_7001() {
+  $table = 'push_notifications_tokens';
+
+  // Add a language field to push_notifications_tokens.
+  $spec = array(
+    'type' => 'varchar',
+    'description' => 'Language',
+    'length' => 2,
+    'not null' => TRUE,
+  );
+  db_add_field($table, 'language', $spec);
+
+  // Add an index for the language field.
+  db_add_index($table, 'language', array('language'));
+}
+
+/**
+ * Implements hook_update_n.
+ */
+function push_notifications_update_7002() {
+  $table = 'push_notifications_tokens';
+  $field = 'token';
+
+  // Drop all indexes using the token field.
+  db_drop_primary_key($table);
+  db_drop_index($table, $field);
+
+  // Recreate the field with the correct
+  // length and upated
+  $token_new = array(
+    'description' => 'Device Token',
+    'type' => 'varchar',
+    'length' => '255',
+    'not null' => TRUE,
+  );
+  $indexes_new = array(
+    'primary key' => array('token', 'uid'),
+    'indexes' => array(
+      'token' => array('token'),
+    ),
+  );
+  db_change_field($table, $field, $field, $token_new, $indexes_new);
+}
+
+/**
+ * Update the language field to allow 11 characters.
+ */
+function push_notifications_update_7003() {
+  $table = 'push_notifications_tokens';
+  $field = 'language';
+
+  $language_new = array(
+    'description' => 'Language',
+    'type' => 'varchar',
+    'length' => 11,
+    'not null' => TRUE,
+  );
+
+  db_change_field($table, $field, $field, $language_new);
+}

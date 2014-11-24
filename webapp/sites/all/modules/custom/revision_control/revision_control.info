@@ -1,0 +1,5 @@
+name = Revision Control
+description = Control contents from getting updated by feed importers after content has been edited by editor.
+core = 7.x
+version = 7.x-1.0-alpha1
+package = Custom

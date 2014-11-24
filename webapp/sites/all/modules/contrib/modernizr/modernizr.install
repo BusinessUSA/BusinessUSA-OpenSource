@@ -1,0 +1,124 @@
+<?php
+
+/**
+ * @file
+ *   Install file for Modernizr module.
+ */
+
+/**
+ * Implements hook_requirements.
+ *
+ * Changes its status based on ability to locate JS library.
+ * Changes its instructions based on Libraries API being enabled.
+ */
+function modernizr_requirements($phase) {
+  $requirements = array();
+
+  switch ($phase) {
+    case 'runtime':
+
+      /**
+       * Test for conditions
+       */
+
+      // Fetch the version and force it to skip cache.
+      $version = modernizr_get_version(TRUE);
+
+      // Fetch the path to the JS lib.
+      $path = modernizr_get_path();
+
+      // Test if Libraries module is being used by comparing output of path functions
+      if (module_exists('libraries')) {
+        // If this is truthy, the Modernizr is using Libraries API as best we can tell.
+        $using_libraries = (strpos($path, libraries_get_path('modernizr')) !== FALSE);
+      }
+      else {
+        $using_libraries = FALSE;
+      }
+
+      /**
+       * Generate status message and severity
+       */
+
+      // Modernizr / Libraries API installed and working correctly. Do the Drupal happy dance!
+      if ($path && $using_libraries) {
+        $description = FALSE;
+        $severity = REQUIREMENT_OK;
+      }
+      // Modernizr and Libraries API are installed, but something is wrong with
+      // Libraries copy of the JS lib.
+      elseif ($path && !$using_libraries && module_exists('libraries')) {
+        $description = t('Modernizr JS library and Libraries API are installed, but something is wrong with the Modernizr library inside !path.<br> Fell back to the copy within !path-module.',
+          array(
+            // !path has a hardcoded default because the libraries_get_path() function might not return
+            // the correct path when conditions lead to this block of code being executed
+            '!path' => (libraries_get_path('modernizr')) ? libraries_get_path('modernizr') : 'sites/all/libraries/modernizr',
+            '!path-module' => drupal_get_path('module', 'modernizr') . '/js',
+          )
+        );
+        $severity = REQUIREMENT_WARNING;
+      }
+      // Modernizr installed, but Libraries API not installed. Still acceptable, but nudge them.
+      elseif ($path && !$using_libraries) {
+        $description = t('Modernizr JS library is installed using the module directory. Have you considered using !libraries-api?',
+          array(
+            '!libraries-api' => l('Libraries API', 'http://drupal.org/project/libraries'),
+          )
+        );
+        $severity = REQUIREMENT_WARNING;
+      }
+      // Modernizr not installed, Libraries API is installed.
+      // Supply instructions recommending Libraries module
+      elseif (!$path && module_exists('libraries')) {
+        $description = t('Modernizr JS library cannot be found. Download it from !modernizr-site, copy it into !path and rename it to modernizr.min.js.',
+          array(
+            '!modernizr-site' => l(t('modernizr.com'), 'http://modernizr.com/download/'),
+            // !path has a hardcoded default because the libraries_get_path() function might not return
+            // the correct path when conditions lead to this block of code being executed
+            '!path' => (libraries_get_path('modernizr')) ? libraries_get_path('modernizr') : 'sites/all/libraries/modernizr',
+          )
+        );
+        $severity = REQUIREMENT_ERROR;
+      }
+      // Modernizr not installed, Libraries API not installed.
+      // Supply generic instructions
+      else {
+        $description = t('Modernizr JS library cannot be found. Download it from !modernizr-site, copy it to !path and rename it to modernizr.min.js.',
+          array(
+            '!modernizr-site' => l(t('modernizr.com'), 'http://modernizr.com/download/'),
+            '!path' => drupal_get_path('module', 'modernizr') . '/js',
+          )
+        );
+        $severity = REQUIREMENT_ERROR;
+      }
+
+      /**
+       * Declare requirement to Drupal
+       */
+      $requirements[] = array(
+        'title' => t('Modernizr'),
+        'value' => $version ? $version : t('Not installed'),
+        'description' => $description,
+        'severity' => $severity,
+      );
+      break;
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function modernizr_uninstall() {
+  variable_del('modernizr_load');
+}
+
+/**
+ * Delete the deprecated 'modernizr_serverside' variable.
+ */
+function modernizr_update_7300() {
+  variable_del('modernizr_serverside');
+
+  return t("Deleted 'modernizr_serverside' variable");
+}

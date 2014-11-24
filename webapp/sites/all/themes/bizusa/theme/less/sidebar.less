@@ -1,0 +1,59 @@
+//
+// Sidebar Styles
+// --------------------------------------------------
+body.one-sidebar{
+  .wrapper{
+    #contentArea{
+      .region.region-content{
+        .make-sm-column(8);
+      }
+      .region.region-sidebar-first{
+        .make-sm-column(4);
+        @media (min-width: @screen-sm-min) {
+          padding-left:30px;
+          padding-right:0px;
+        }
+
+        // styles for exposed forms
+        .views-exposed-form .views-exposed-widget{
+          float:none;
+          padding:0px;
+          margin-bottom:5px;
+          > label{
+            display:block;
+            width:auto;
+            margin:0px;
+            padding:0px;
+            font-size: 1px;
+            font-weight: normal;
+            text-indent:-9999px;
+          }
+          > label + button{
+            width:100%;
+            cursor: pointer;
+            font-size: 13px;
+            line-height: 13px;
+            text-transform: uppercase;
+            color: #5C5C5C;
+            border: none;
+            background: url('/sites/all/themes/bizusa/images/icons/block-collapsed.png') no-repeat 97% #E2E2E2;
+            padding: 20px;
+            text-align:left;
+            margin: 0px;
+            font-weight: normal;
+            font-family: "latoblack", sans-serif;
+          }
+          > label + button.collapsed{
+            background: url('/sites/all/themes/bizusa/images/icons/block-expanded.png') no-repeat 97% #E2E2E2;
+          }
+          .views-widget{
+            background-color:#fff;
+            > div{
+              padding:20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

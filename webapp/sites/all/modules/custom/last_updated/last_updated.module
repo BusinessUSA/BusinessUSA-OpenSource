@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * Implements hook_node_view().
+ */
+function last_updated_node_view($node, $view_mode) {
+    
+    // Don't run this functionality if this is the anonymous user (user must be signed in)
+    global $user;
+    if ( empty($user) ) {
+        return;
+    } else {
+        if ( empty($user->roles) || !is_array($user->roles) || count($user->roles) === 0 ) {
+            return;
+        } else {
+            foreach ( $user->roles as $userRole ) {
+                if ( strpos($userRole, 'anonymous') !== false ) {
+                    return;
+                }
+            }
+        }
+    }
+    
+	$last_date_modified = "<div class='field' style='float: right; clear: both;'>Last Date Modified: " . date('m/d/Y', $node->changed) . "</div>";
+    if( $view_mode ) {
+        $node->content['last_date_modified'] = array(
+            '#markup' => $last_date_modified,
+            '#weight' => 1000,
+        );
+    }
+    
+}

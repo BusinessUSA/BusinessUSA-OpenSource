@@ -1,0 +1,354 @@
+/****************************************
+***                                   ***
+***   ALL SCREEN RESOLUTIONS STYLES   ***
+***                                   ***
+*****************************************/
+
+/*******************************************************
+***   PART 3 - BROKEN IN PIECES FOR IE LIMITATION   ****
+*******************************************************/
+
+
+/**************************
+***   GENERAL STYLES   ****
+**************************/
+
+
+body.page-node{
+    #titleWrapper{
+        height: inherit;
+        .title {
+          float: left;
+          width: 80%;
+            h1 {
+              line-height: 28px;
+              width: 100%;
+              margin-top: 20px;
+              padding-bottom: 20px;
+              font-size: 28px;
+              letter-spacing: -1px;
+            }
+        }
+
+    }
+
+	.region-content{
+		background-color: #fff;
+		font: 14px/22px "latoregular",sans-serif;
+		padding: 3%;
+		float: left;
+        width: 94%;
+
+		.node-blog{
+			.blog-image{
+				float: left;
+				height: 85px;
+				width: 10%;
+				background: url("/sites/all/themes/bizusa/images/businessusa.png") no-repeat;
+			}
+
+			.blog-content-container{
+				float: left;
+				padding: 0 2%;
+				width: 85%;
+				.blog-content-title{
+					font-family: 'latoblack', sans-serif;
+					font-size: 19px;
+					margin-bottom: 10px;
+				}
+			}
+		}
+
+		.node-article,
+		.node-rules-status,
+		.node-export-gov-micro-site-page,
+		.node-wizard-result-reference-for-solr,
+		.node-appointment-office
+		.node-data,
+		.node-state-resource,
+		.node-success-story,
+        .node-quick-facts,
+		.node-tools,
+		.node-federal-register,
+		.node-swim-lane-page,
+		.node-grants,
+		.node-green-sbir-topic,
+		.node-business-news,
+		.node-video,
+		.node-featured-item,
+		.node-whats-new,
+		.node-browseregulations,
+		.node-solicitations,
+        .node-licenses-and-permits
+		{
+			.submitted{
+				display: none;
+			}
+			.field{
+				.field-items{
+					.field-item{
+						p{
+							margin-bottom: 15px;
+						}
+					}
+				}
+			}
+			.learnmore_column,
+			.tags_column{
+				margin-top: 20px;
+				float: left;
+				width: 100%;
+				a{
+					font:16px "latoregular", sans-serif;
+				}
+			}
+			.contact.info{
+				border-top: 1px dotted #ccc;
+				margin: 30px 0px;
+				padding-top: 15px;
+				float: left;
+				width: 100%;
+				.contact-information-prefix{
+					float: left;
+					margin-right: 25px;
+
+					h2{
+						font:22px "latoblack", sans-serif;
+						margin-bottom: 3px;
+					}
+				}
+				.contact-information-container{
+					float: left;
+				}
+			}
+			.lblclass, .field-label{
+				margin-right: 15px;
+				font:18px "latoblack_italic", sans-serif;
+				float: left;
+				div &{
+					clear: both;
+					margin: 10px 0px;
+				}
+			}
+          .field-label-above{
+              margin-bottom: 10px;
+          }
+		}
+		input[name=tags]{
+			float: left;
+			border: 1px solid #ccc;
+			width: 280px;
+			font-size: 18px;
+			background-color: #F8F8F8;
+			margin-left: 3px;
+			margin-bottom: 5px;
+			margin-top: 10px;
+		}
+		#recaptcha_widget_div{
+			float: left;
+			clear: both;
+		}
+		input[type=submit]{
+			float: left;
+			clear: both;
+			width: inherit;
+			font:18px "latoblack", sans-serif;
+			padding: 10px 20px;
+			height: inherit;
+			cursor: pointer;
+			margin-left: 3px;
+			margin-top: 5px;
+		}
+		input[type=submit]:hover{
+			background-color: darken(#F75B49, 10%)
+		}
+		#recaptcha_response_field{
+			height: 17px;
+		}
+
+	}
+	.region-sidebar-first,
+	.region-sidebar-second{
+		float: left;
+		margin-top: 15px;
+		background-color: #E9E9E9;
+		width: 49%;
+		h2{
+			font-weight: normal;
+			margin-top: 20px;
+			padding-left: 25px;
+			color: #5C5C5C;
+			text-transform: uppercase;
+			font: 15px "latoblack",sans-serif;
+		}
+		.boxes-box-content{
+			ul{
+				padding: 0px 20px 20px 20px;
+				li{
+					list-style: none;
+					padding:5px;
+					border-bottom:1px solid #ccc;
+					margin-bottom: 7px;
+					a{
+						font: 15px "latoregular", sans-serif;
+						font-weight: normal;
+					}
+					a:hover{
+						color: darken(#6885A2, 10%)
+					}
+					.description{
+						margin: 7px 0px;
+					}
+					&:last-child {
+			         border-bottom: none;
+			        }
+				}
+			}
+		}
+	}
+	.region-sidebar-second{
+		float: right;
+	}
+}
+
+.logoSearchWrapper {
+  #shareWidget {
+    display: none;
+  }
+}
+.mm-page {
+  #shareWidget {
+    display: none;
+  }
+  .logoSearchWrapper {
+    #shareWidget {
+      display: block;
+      width: 100%;
+      height: 80px;
+      margin-bottom: 10px;
+      clear: both;
+
+      .sharewidget-toggler {
+        display: none;
+      }
+      .sharewidget-popup {
+        float: right;
+        display: block !important;
+        position: relative;
+        top: 0px;
+        background: none;
+        padding-top: 0px;
+
+      }
+    }
+  }
+}
+
+/*********************************
+***   OPPORTUNITY NODE TYPE   ****
+**********************************/
+
+body.node-type-opportunity{
+	.region-content{
+		width: 100%;
+		#block-system-main{
+			background-color: #fff;
+			padding: 3%;
+			.row-container{
+				margin-bottom: 10px;
+				.leftcol{
+					label{
+						font-weight: normal;
+						font-family: "latoblack",sans-serif;
+					}
+				}
+				.rightcol{
+					font-size: 13px;
+					line-height: 17px;
+				}
+			}
+			.twocolumn{
+				.row-container{
+					float: left;
+					width: 50%;
+				}
+			}
+		}
+	}
+}
+
+/****************************************
+***   ACCESSIBILITY AND BROWSELOUD   ****
+****************************************/
+body.page-accessibility-and-browsealoud{
+	.region.region-content{
+		background-color: #fff;
+		padding:3%;
+		h2{
+			margin-top: 0;
+		}
+		ul{
+			padding-left: 14px;
+			li{
+				a{
+					cursor: pointer;
+				}
+			}
+		}
+	}
+	#colorbox{
+		width: 50% !important;
+		left: 25% !important;
+        max-width: 430px;
+		#cboxWrapper{
+			width: 100% !important;
+			#cboxContent{
+				width: 100% !important;
+				#cboxLoadedContent{
+					width: 100% !important;
+					.colorbox-logo{
+						height: 60px;
+						width: 100%;
+						.colorbox-logo-innerwrapper{
+							margin: 0;
+							padding-left: 7px;
+						}
+						.wizard-email-kill-colorbox{
+							display: none;
+						}
+						border-bottom: 1px solid #ccc;
+						img{
+							width: 160px;
+							padding: 15px 0 0 2%;
+						}
+					}
+					h2{
+						margin: 0;
+						font-size: 16px;
+						font-family: "latoblack", sans-serif;
+						font-weight: normal;
+						padding: 0 15px;
+						padding-top: 12px;
+					}
+					p{
+						margin:0;
+						font-size: 12px;
+						font-family: "latoitalic",sans-serif;
+						padding:5px 15px 10px 15px;
+						line-height: 14px;
+					}
+					input[type="button"]{
+						font-size: 12px;
+						padding: 5px 10px;
+						height: initial;
+                        margin: 0 15px 15px 15px
+					}
+					
+				}
+			}
+		}
+	}
+}
+
+
+

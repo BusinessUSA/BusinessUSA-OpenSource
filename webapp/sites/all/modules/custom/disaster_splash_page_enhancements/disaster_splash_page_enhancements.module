@@ -1,0 +1,117 @@
+<?php
+/**
+ * @file
+ * Code for the Disaster Splash Page Enhancements feature.
+ */
+
+//include_once 'disaster_splash_page_enhancements.features.inc';
+
+define('DISASTER_SPLASH_PAGE_ENHANCEMENTS_PERM_ADMINISTER_ENHANCEMENTS', 'administer disaster splash page enhancements');
+
+/**
+ * Implements hook_permission().
+ */
+function disaster_splash_page_enhancements_permission() {
+  $permissions = array(
+    DISASTER_SPLASH_PAGE_ENHANCEMENTS_PERM_ADMINISTER_ENHANCEMENTS => array(
+      'title' => t('Administer Disaster Splash Page Enhancements'),
+      'description' => t('Allows users to configure specials settings for the splash page.'),
+    ),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function disaster_splash_page_enhancements_menu() {
+  $items = array();
+
+  // Admin configuration page.
+  $items['admin/config/media/disaster-splash'] = array(
+    'title' => 'Disaster Splash Page',
+    'description' => 'Configuration settings for the disaster wizard splash page.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('disaster_splash_page_enhancements_settings_form'),
+    'access arguments' => array(DISASTER_SPLASH_PAGE_ENHANCEMENTS_PERM_ADMINISTER_ENHANCEMENTS),
+    'menu_name' => 'management',
+  );
+  // Settings tab.
+  $items['admin/config/media/disaster-splash/settings'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -50,
+  );
+
+  return $items;
+}
+
+/**
+ * Configuration form for the splash page enhancement
+ * settings.
+ */
+function disaster_splash_page_enhancements_settings_form() {
+  $form = array();
+  $form['disaster_splash_page_enhancements_youtube_embed_code'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Youtube Link'),
+    '#description' => t('Insert the youtube link of the video that should be generated on the disaster splash page.'),
+    '#default_value' => variable_get('disaster_splash_page_enhancements_youtube_embed_code', ''),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Validation for the splash page enhancement settings form.
+ */
+function disaster_splash_page_enhancements_settings_form_validate(&$form, &$form_state) {
+  $youtube_link = $form_state['values']['disaster_splash_page_enhancements_youtube_embed_code'];
+  $parsed_url = drupal_parse_url($youtube_link);
+  if (empty($parsed_url['query']['v'])) {
+    // The link isn't a permalink from youtube,
+    // there's a chance it could still be a share
+    // link.
+    if (strpos($parsed_url['path'], 'youtu.be') === FALSE) {
+      form_set_error('invalid_url', t('Please enter a valid youtube url that contains the video id.'));
+    }
+    $parsed_path = substr($parsed_url['path'], strpos($parsed_url['path'], 'youtu.be'));
+    $path_fragments = explode('/', $parsed_path);
+    if (empty($path_fragments[1])) {
+      form_set_error('invalid_url', t('Please enter a valid youtube url that contains the video id.'));
+    }
+  }
+}
+
+/**
+ * Generates a youtube embed code for a video from a saved url
+ * in the module settings. Assumes validation from the above
+ * handler.
+ *
+ * @return string
+ *   Returns the embed code string generated from the saved youtube url.
+ */
+function disaster_splash_page_enhancements_construct_youtube_embed_code() {
+  $raw_url = variable_get('disaster_splash_page_enhancements_youtube_embed_code', '');
+  if (empty($raw_url)) {
+    return '';
+  }
+
+  $parsed_url = drupal_parse_url($raw_url);
+  if (empty($parsed_url['query']['v'])) {
+    // The link isn't a permalink from youtube,
+    // assume it is a share link.
+
+    $parsed_path = substr($parsed_url['path'], strpos($parsed_url['path'], 'youtu.be'));
+    $path_fragments = explode('/', $parsed_path);
+    $video_id = $path_fragments[1];
+  }
+  else {
+    $video_id = $parsed_url['query']['v'];
+  }
+
+  $embed_code = '<iframe width="439" height="247" src="//www.youtube.com/embed/' . $video_id . '" frameborder="0" allowfullscreen></iframe>';
+  return $embed_code;
+}

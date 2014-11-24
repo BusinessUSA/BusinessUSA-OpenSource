@@ -1,0 +1,1830 @@
+/**************************
+***************************
+***                    ****
+***   DESKTOP STYLES   ****
+***                    ****
+***************************
+**************************/
+
+@media only screen and (min-width:1025px){
+
+
+
+	/**************************
+	***   GENERAL STYLES   ****
+	**************************/
+
+	body{
+		.wrapper{
+			width:960px;
+		}
+
+	}
+    .mobile-only {
+        display: none;
+    }
+    .mobile-only-inportant {
+        display: none !important;
+    }
+    .nonmobile-forceshow {
+        display: block;
+    }
+    .nonmobile-forceshow-important {
+        display: block !important;
+    }
+
+	/***************************
+	***   MAIN NAVIGATION   ****
+	***************************/
+
+	#navigation{
+		font-family: 'latoregular', sans-serif;
+		font-size: 14px;
+		font-weight: normal;
+		background-color:#2f2f2f;
+		width:100%;
+		height:60px;
+		position:fixed;
+		top:0px;
+		left:0px;
+		z-index:999;
+
+
+		/* scroll to top menu*/
+		#block-block-2{display:none;}
+		#block-system-main-menu{
+			ul{
+				list-style-type: none;
+				margin:0px;
+				padding:0px;
+				float:right;
+				li{
+					float:left;
+					list-style-image: none;
+					list-style-type: none;
+					position:relative;
+					padding: 0px;
+					margin: 0px;
+					a{
+						color:#fff;
+						text-decoration: none;
+						line-height: 60px;
+						padding:0px 13px;
+						display:block;
+						font-family: "latoregular",sans-serif;
+						font-weight: bold;
+					}
+					ul{
+						position:absolute;
+						left:0px;
+						top:60px;
+						margin:0px;
+						padding:0px;
+						display:none;
+						li{
+							clear:both;
+							margin:0px;
+							padding:0px;
+							width:100%;
+							background-color: #fff;
+							border:1px solid #c3ced9;
+							border-bottom:2px solid #c3ced9;
+							border-top: none;
+							a{
+								white-space: nowrap;
+								line-height: 48px;
+								font-weight: normal;
+								color: #3c6593;
+							}
+							ul{ // Third level navigation
+								display:none;
+								position:absolute;
+								left:148px;
+								top:0px;
+								margin:0px;
+								padding:0px;
+								background-color: #6885a2;
+							}
+							&.business-needs{
+								ul{
+									float: left;
+									width: 430px;
+									li{
+										width: 49%;
+										clear: none;
+										float: left;
+										border: none;
+										&.start-a-business,
+										&.explore-exporting,
+										&.find-opportunities,
+										&.browse-resources-for-veterans,
+										&.help-with-hiring-employees,
+										&.seek-disaster-assistance,
+										&.find-green-opportunities,
+										&.browse-all-resources{
+											border-right: 2px solid #c3ced9;
+										}
+										&.learn-about-new-health-care-changes,
+										&.browse-resources-for-veterans,
+										&.learn-about-taxes-and-credits,
+										&.help-with-hiring-employees{
+											a{
+												padding: 9px 10% 9px 10%;
+											}
+										}
+										a{
+											clear: none;
+											float: left;
+											display: block;
+											width: 80%;
+											padding: 17px 10% 16px 10%;
+											white-space: normal;
+											line-height: 15px;
+											font-size: 14px;
+										}
+									}
+								}
+							}
+							&.special-groups{
+								ul{
+									li{
+										border: none;
+									}
+								}
+							}
+						}
+						li.first{
+							border-top: none;
+						}
+						li:hover{
+							background-color: #6885a2;
+							border-bottom:2px solid #c3ced9;
+							a{
+								color:#fff;
+							}
+							ul{ // Third level navigation
+								display: block;
+								position:absolute;
+								left:150px;
+								top:0px;
+								margin:0px;
+								padding:0px;
+								li{
+									background-color: #6885a2;
+									a{
+										color: #fff;
+									}
+									a:hover{
+										color:#3c6593;
+									}
+								}
+								li:hover{
+									background-color: #fff;
+									border-bottom:2px solid #c3ced9;
+								}
+							}
+						}
+						li.business-needs:hover,
+						li.special-groups:hover{
+							border-right: none;
+							ul{
+								li{
+									border-bottom:2px solid #c3ced9;
+								}
+							}
+						}
+
+					}
+
+				}
+				li:hover{
+					background-color: #6885a2;
+					ul{
+						display:block;
+						li{
+							ul{ //third level navigation
+								display: none;
+							}
+						}
+						li:hover{
+							ul{//third level navigation
+								display: block;
+							}
+						}
+					}
+				}
+				li.expanded, li.collapsed, li.leaf{
+					padding-top:0px;
+					padding-bottom:0px;
+				}
+				li.twitter{
+					width: 12px;
+					margin-left: 18px;
+					a{
+						display: block;
+						height: 38px;
+						background: url("/sites/all/themes/bizusa/images/busatwitter.png") no-repeat;
+						margin-top: 24px;
+						text-indent: -999999px;
+					}
+				}
+				li.linkedin{
+					width: 12px;
+					margin-left: 15px;
+					a{
+						display: block;
+						height: 38px;
+						background: url("/sites/all/themes/bizusa/images/busalinkdin.png") no-repeat;
+						margin-top: 24px;
+						text-indent: -999999px;
+					}
+				}
+				li.translate{
+					margin-left: 30px;
+					width: 33px;
+					> a:first-child{
+						display: block;
+						height: 38px;
+						background: url("/sites/all/themes/bizusa/images/google-translate.png") no-repeat;
+						margin-top: 24px;
+						margin-left: 10px;
+						text-indent: -999999px;
+					}
+				}
+				li.linkedin:hover, li.twitter:hover, li.translate:hover{
+					background-color: transparent !important;
+				}
+
+
+			}
+		}
+
+		/* scroll down menu */
+        .logoscroll-containerlink {
+            float: left;
+            padding-right: 50px;
+            height: 50px;
+            overflow: hidden;
+        }
+		.mostVisited{
+			display:block;
+			float:left;
+			> ul{
+				display:block;
+				float:left;
+				background: #565656 url('../images/scroll-menu-most.png') no-repeat 16px 0px;
+				list-style-type: none;
+				padding:0px 0px 0px 80px;
+				margin:0px 83px 0px 0px;
+				li{
+					display:block;
+					width:67px;
+					height:60px;
+					float:left;
+					margin:0px;
+					padding:0px;
+					display:block;
+					cursor:pointer;
+					span{
+						display:block;
+						height:28px;
+						width:28px;
+						margin:16px auto;
+						text-indent: -99999px;
+					}
+					ul{
+						display:none;
+
+						a{
+							display:block;
+							height:60px;
+							line-height: 60px;
+							background-color: #f75b49;
+							position:absolute;
+						}
+					}
+				}
+				li:hover{
+					background-color:#f75b49;
+					ul{
+						display:block;
+						margin:0px;
+						padding:0px;
+						li{
+							background-color:#f75b49;
+							width:initial;
+							white-space: nowrap;
+							a{
+								padding:0px 30px;
+								color:#fff;
+
+							}
+						}
+					}
+				}
+				li.item1 span{background: transparent url('../images/scroll-start-a-business.png') no-repeat center center;}
+				li.item2 span{background: transparent url('../images/scroll-access-financing.png') no-repeat center center;}
+				li.item3 span{background: transparent url('../images/scroll-explore-exporting.png') no-repeat center center;}
+				li.item4 span{background: transparent url('../images/scroll-find-opportunities.png') no-repeat center center;}
+				li.item5 span{background: transparent url('../images/scroll-grow-your-biz.png') no-repeat center center;}
+				li.item6 span{background: transparent url('../images/scroll-taxes.png') no-repeat center center;}
+			}
+		}
+		.fullMenu{
+			position:relative;
+			float:left;
+			.toggleMenu{
+				display:block;
+				height:17px;
+				width:21px;
+				margin:24px 0px 0px 0px;
+				background: transparent url('../images/scroll-menu-mainMenu.png') no-repeat center center;
+				text-indent: -9999px;
+			}
+			ul{
+				position: absolute;
+				top:60px;
+				list-style-type:none;
+				margin:0px;
+				padding:0px;
+				li{
+					margin:0px;
+					padding:0px;
+					background-color: #f75b49;
+					border-bottom:1px dashed #f98477;
+					position:relative;
+					a{
+						display: block;
+						position: relative;
+						white-space: nowrap;
+						padding:0px 30px;
+						line-height: 48px;
+						color:#fff;
+					}
+					ul{
+						display:none;
+						position:absolute;
+						top:0px;
+						left:-310px;
+						li{
+							background-color:#fff;
+							border-color:#fdcec9;
+						}
+
+						li:hover{
+							background-color: #f75b49;
+							a{
+								color:#fff;
+							}
+						}
+					}
+				}
+				li.last{border:none;}
+				li:hover{
+					background-color:#fff;
+					a{
+						color: #f75b49;
+					}
+					ul{
+						display:block;
+					}
+				}
+				li.expanded,
+				li.leaf{
+					list-style-image:none;
+					list-style-type:none;
+				}
+			}
+		}
+		.searchArea{
+			display:block;
+			float:left;
+			margin-left:20px;
+			position:relative;
+			> a {
+				display:block;
+				margin-top:22px;
+				height:20px;
+				width:20px;
+				background: transparent url('../images/scroll-menu-search.png') no-repeat center center;
+				text-indent: -9999px;
+			}
+			> form{
+				position:absolute;
+				top:60px;
+				left:-170px;
+				width:195px;
+				display:block;
+				float:left;
+				padding:10px;
+				background-color:#2f2f2f;
+				input[type="text"]{
+					width:100px;
+				}
+			}
+		}
+	}
+
+	/***************************************/
+	/*     Search Results Page Title      */
+	/**************************************/
+	body.node-type-services,
+	body.node-type-program,
+	body.node-type-article,
+	body.node-type-blog,
+	body.node-type-data,
+	body.node-type-success-story,
+	body.node-type-tools,
+	body.node-type-federal-register,
+	body.node-type-grants,
+	body.node-type-green-sbir-topic,
+	body.node-type-business-news,
+	body.node-type-rules-status,
+	body.node-type-export-gov-micro-site-page,
+	body.node-type-wizard-result-reference-for-solr,
+	body.node-type-appointment-office,
+	body.node-type-state-resource,
+	body.node-type-swim-lane-page,
+	body.node-type-video,
+	body.node-type-featured-item,
+	body.node-type-whats-new,
+	body.node-type-browseregulations
+	{
+		#titleWrapper{
+			.title{
+				width: 828px;
+			}
+			.h1{
+				padding-top: 19px;
+			}
+		}
+	}
+
+
+	/**********************
+	***   FRONT PAGE   ****
+	**********************/
+
+	body.front:not(.myusa-frontpage){
+
+		/* wizard list */
+		.wizardStandard{
+			width: 258px;
+		}
+
+
+		#block-views-wizard_list-block{
+			float:left;
+			margin-right:8px;
+			.block-title{display:none;}
+			.views-row{
+				width:100%;
+				.views-field-title .field-content a{
+					padding-left:20%;
+					width:80%;
+					overflow: hidden;
+					font-size: 12px;
+				}
+				.views-field-title .field-content a:hover{
+					overflow: visible;
+					width:100px;
+				}
+
+			}
+
+
+			/* spotlight wizards */
+			.wizardSpotlight{
+				.views-row.views-row-1,
+				.views-row.views-row-2{
+					height:223px;
+					width:347px;
+					margin-bottom:0px;
+					padding:0px 13px;
+					position:relative;
+					.views-field-title,
+					.views-field-title .field-content,
+					.views-field-title .field-content a{
+						height:auto;
+						width:auto;
+						line-height:normal;
+						padding:0px;
+						font-size:32px;
+						font-family: 'latoblack', sans-serif;
+						font-style:initial;
+						font-weight: normal;
+						letter-spacing: -2px;
+					}
+					.views-field-title .field-content a{
+						padding-left:42px;
+						background-position: top left;
+					}
+					.views-field-title{
+						padding-top:30px;
+					}
+					.views-field-field-summary{
+						display:block;
+					    font-size: 14px;
+					    font-weight: normal;
+					    line-height: 19px;
+					    margin:0px 10px 0px 42px;
+
+					}
+					.wizardLink{
+						position:absolute;
+						bottom:24px;
+	                    padding: 3px 20px 0px 42px;
+	                    font-family: "latoregular",sans-serif;
+	                    font-weight: bold;
+	                    &:hover{
+
+	                    }
+					}
+				}
+				.views-row.views-row-1{
+					background-color:#fff;
+					.views-field-title .field-content a{
+						color:#f75b49;
+						text-shadow:none;
+					}
+					.views-field-field-summary{
+						color: #797979;
+					}
+	              .wizardLink{
+	                background: transparent url('../images/green_arrow.png') no-repeat right top;
+	              }
+				}
+				.views-row.views-row-2{
+					background-color:#6885a2;
+					color:#fff;
+					a{
+						color:#fff;
+					}
+	              .wizardLink{
+	                background: transparent url('../images/red_arrow.png') no-repeat right top;
+	              }
+				}
+			}
+			.menuMoreWrap{
+				width:285px;
+				height:446px;
+				float:left;
+				position:relative;
+				.bx-wrapper{
+					height:446px !important;
+					.wizardStandard.bx-clone{
+						background-color:#97e8c1 !important;
+						.views-row{
+							visibility:hidden !important;
+						}
+					}
+					.bx-controls.bx-has-pager.bx-has-controls-direction{
+						position:absolute!important;
+						bottom:0px !important;
+						height:54px !important;
+						width:100% !important;
+						background-color:#6885a2;
+						border-top:1px solid #fff !important;
+					}
+
+				}
+
+				.bx-wrapper .bx-pager,
+				.bx-wrapper .bx-controls-auto{
+					position: absolute;
+					top: 22px;
+					width: 100%;
+				}
+				.bx-wrapper .bx-pager.bx-default-pager a:hover,
+				.bx-wrapper .bx-pager.bx-default-pager a.active{
+					background-color: #97e8c1;
+				}
+				.bx-wrapper .bx-prev{background: transparent url('../images/wiz-slider-prev.png') no-repeat 0px 7px; z-index: 2;}
+				.bx-wrapper .bx-next{background: transparent url('../images/wiz-slider-next.png') no-repeat 0px 7px; z-index: 2;}
+			}
+
+			/* backlight wizards */
+			.wizardBacklight{
+				background-color: #6885a2;
+				width:54px;
+				height:446px;
+				position:relative;
+				z-index:997;
+
+				.views-row,
+				.views-field-title,
+				.views-field-title .field-content,
+				.views-field-title .field-content a{
+					width:54px;
+					overflow:hidden;
+					background-color:#6885a2;
+					opacity:0.85;
+					filter:alpha(opacity=85);
+
+				}
+
+				.views-row .views-field-title .field-content a{
+					width:190px;
+					padding-left: 64px;
+					font-style: normal;
+					font-size: 14px
+				}
+
+
+
+			}
+
+
+				.views-row.start-a-business .views-field-title .field-content a{
+					background: transparent url('../images/wiz-start-a-business-new.png') no-repeat 10px 10px;
+				}
+				.views-row.resource-grow-your-business .views-field-title .field-content a{
+					background: transparent url('../images/wiz-grow-your-business.png') no-repeat 10px 10px;
+				}
+				.views-row.access-financing .views-field-title .field-content a{
+					background: transparent url('../images/wiz-access-financing.png') no-repeat 10px 10px;
+				}
+				.views-row.export .views-field-title .field-content a{
+					background: transparent url('../images/wiz-explore-exporting.png') no-repeat 10px 10px;
+				}
+				.views-row.find-opportunities .views-field-title .field-content a{
+					background: transparent url('../images/wiz-find-opportunities.png') no-repeat 10px 10px;
+				}
+				.views-row.veterans .views-field-title .field-content a{
+					background: transparent url('../images/wiz-veterans.png') no-repeat 10px 10px;
+				}
+				.views-row.disaster-assistance .views-field-title .field-content a{
+					background: transparent url('../images/wiz-disaster-assistance.png') no-repeat 10px 10px;
+				}
+				.views-row.select-usa .views-field-title .field-content a{
+					background: transparent url('../images/wiz-select-usa.png') no-repeat 10px 10px;
+				}
+				.views-row.jobcenter-wizard .views-field-title .field-content a{
+					background: transparent url('../images/wiz-jobs.png') no-repeat 10px 10px;
+				}
+				.views-row.healthcare .views-field-title .field-content a{
+					background: transparent url('../images/wiz-healthcare.png') no-repeat 10px 10px;
+				}
+				.views-row.taxes-and-credits .views-field-title .field-content a{
+					background: transparent url('../images/wiz-taxes.png') no-repeat 10px 10px;
+				}
+				.views-row.find-green-opportunities .views-field-title .field-content a{
+					background: transparent url('../images/wiz-green-opportunities.png') no-repeat 10px 10px;
+				}
+				.views-row.browseregulations .views-field-title .field-content a{
+					background: transparent url('../images/wiz-browse-regulations.png') no-repeat 10px 10px;
+				}
+				.views-row.tour .views-field-title .field-content a{
+					background: transparent url('../images/wiz-tour.png') no-repeat 10px 10px;
+				}
+				.views-row.training-materials-portal .views-field-title .field-content a{
+					background: transparent url('../images/wiz-training.png') no-repeat 10px 10px;
+				}
+
+
+
+		}
+
+		/* Carousel */
+		#block-boxes-front_page_news_block{
+			float:left;
+			width:286px;
+			height:446px;
+			background-color:#fff;
+			h2.block-title{
+				color:#f75b49;
+				text-align:center;
+				text-transform: uppercase;
+				margin-top:10px;
+				margin-bottom:40px;
+				font-size: 19px;
+				font-weight: normal;
+				letter-spacing: -.5px;
+				a{color:#f75b49;}
+			}
+			.views-row{
+				float:left;
+				clear:both;
+				width:236px;
+				padding:0px 25px;
+				margin-bottom:25px;
+				.field-content{
+					a{
+					    font-family: "latoregular",sans-serif;
+					    font-size: 14px;
+					    font-weight: bold;
+					    line-height: 16px;
+					    margin-top: 1px;
+					}
+					p{
+						margin-top: 3px;
+					}
+				}
+				.views-field-field-newsnote-icon{
+					float:left;
+					margin-right:15px;
+				}
+			}
+			.frontpagenews-container-businessnews{
+				.views-row{
+					.views-field-title{
+						float:left;
+						font-size:14px;
+						width:170px;
+						height:51px;
+						a{
+							color:#44809e;
+							text-decoration: none;
+							display:block;
+							width:100%;
+							height:51px;
+						}
+					}
+				}
+			}
+			.bx-viewport{
+				height:446px !important;
+			}
+			#carousel{
+				.view-content {
+					float: left;
+				}
+			}
+		}
+
+		/* Resources and Events */
+		.view-header h2#header-resourcecenters, .view-header h2#header-localresources, .view-header h2#header-localevents {
+			padding-left: 30px;
+			font-weight: normal;
+			font-family: "latoblack_italic",sans-serif;
+			margin-top: 5px;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*************************
+	***   SITE MAP PAGE   ****
+	**************************/
+
+	body.page-sitemap{
+		.sitemap-contentContainer{
+			background-color: #fff;
+			float:left;
+			clear:both;
+			width:890px;
+			padding:10px 35px 35px 23px;
+		}
+	}
+
+
+
+
+
+	/*********************
+	***   APIS PAGE   ****
+	*********************/
+
+	body.page-apis{
+		.apis-contentContainer{
+			background-color: #fff;
+			float:left;
+			clear:both;
+			width:890px;
+			padding:35px;
+		}
+	}
+
+
+
+
+	/****************************
+	***   QUICK FACTS PAGE   ****
+	****************************/
+
+	body.page-quick-facts{
+		.region-content{
+			background-color: #fff;
+			float:left;
+			clear:both;
+			width:94%;
+			padding:3%;
+
+			.view-content {
+				width: 60%;
+				float: left;
+				margin-right: 4%;
+				margin-left: 2%;
+			}
+
+			.view-filters {
+				width: 34%;
+				float: right;
+
+				.form-item{
+					margin-right: 3px;
+					margin-bottom: 4px;
+					.dk_container {
+						margin-top: 5px;
+
+						.dk_toggle{
+							background: url(/sites/all/themes/bizusa/images/bluearrow.png) no-repeat transparent;
+							background-position: 97%;
+							background-color: #f2f2f2;
+							color: #6885a2;
+						}
+						.dk_options_inner{
+							z-index: 99999;
+						}
+
+						a.dk_toggle.dk_label {
+							width: 90px !important;
+						}
+						&.date-day{
+							a.dk_toggle.dk_label {
+								width: 50px !important;
+							}
+						}
+						&.date-year{
+							a.dk_toggle.dk_label {
+								width: 55px !important;
+							}
+						}
+					}
+
+					.date-day{
+						.dk_options_inner{
+							height: 315px;
+						}
+					}
+					#dk_container_edit-field-publishrange-value-op {
+						width: 262px;
+						.dk_toggle{
+								width: 242px !important;
+							}
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+
+
+
+	/**************************
+	***  LINK TO US PAGE   ****
+	***************************/
+	body.page-link-to-us{
+		.region.region-content{
+			.block{
+				&.block-system{
+					.linktous-master-page-container{
+						.linktous-nonmobile-container{
+							.wizard-section-container{
+								.wizard-section{
+									width: 170px;
+								}
+							}
+						}
+						form{
+							.find-widget{
+								.floatleft{
+									width: 75%;
+									.select-country-list,
+									.select-state-list,
+									.select-industry-list{
+										.dk_container{
+											a.dk_toggle, select{
+												width: 620px !Important;
+											}
+										}
+									}
+								}
+								.floatright{
+									float: right;
+									width: 25%;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+	/**********************
+	***   SEARCH PAGE   ***
+	**********************/
+
+	body.page-search{
+		#titleWrapper{
+				h1{
+					font-size: 28px;
+					letter-spacing: -.5px;
+					padding-right: 30px;
+					margin-right: 30px;
+					border-right: 1px dotted #ccc;
+				}
+
+				.current-search-item{
+					float: left;
+					padding-left: 10px;
+					color: #505050;
+					font-family: 'latoitalic',sans-serif;
+					line-height: 15px;
+					.search-results-searchfor{
+						font-size: 16px;
+						margin-top: 24px;
+					}
+					.search-results-container{
+						margin-top: 19px;
+						background-color: #E8E8E8;
+						font-size: 12px;
+						color: #282828;
+						padding: 5px 5px;
+						line-height: 15px;
+					}
+					.search-export-container{
+						margin-top: 18px;
+					}
+				}
+                .current-search-item:last-child{
+                    max-width: 83%;
+                }
+			}
+		.region.region-content{
+			width:680px;
+			float: left;
+			#search-form{
+				display: none;
+			}
+			.searchresults-topwizardarea-wizarditem-colorspacer{
+				float: left;
+				margin-bottom: 15px;
+				.searchresults-topwizardarea-wizarditem-leftright-container{
+					background-color: #E8E8E8;
+					margin-left: 5px;
+					padding: 15px;
+					float: left;
+					.searchresults-topwizardarea-wizarditem-leftside{
+						width:200px;
+						float: left;
+                        .searchresults-topwizardarea-wizarditem-icon{
+                            float: left;
+                        }
+                        .searchresults-topwizardarea-wizarditem-title{
+                            float: left;
+                            width: 140px;
+                            line-height: 16px;
+                            padding-top: 8px;
+                            padding-left: 10px;
+                        }
+					}
+					.searchresults-topwizardarea-wizarditem-rightside{
+						width: 440px;
+						font-size: 14px;
+						color: #202020;
+						float: left;
+					}
+				}
+			}
+			.search-results{
+				.search-result-container{
+					float: left;
+			        background-color: #fff;
+			        padding: 20px 40px 10px 15px;
+			        .search-result-content-type{
+				        float: left;
+				        width: 60px;
+				        text-align: center;
+				        text-transform: uppercase;
+				        letter-spacing: -.5px;
+				        color: #6885A2;
+				        font-size: 11px;
+				        margin-right: 10px;
+						word-wrap: break-word;
+						font-family: "latoitalic",sans-serif;
+                        img.search-result-icon-img {
+                            display: inline-block;
+                        }
+                        .ptype-is-Data{
+                            display: block;
+                        }
+				    }
+				    .search-result-panel-content{
+				        float: left;
+				        width: 550px;
+				        h3{
+					        margin:0px 0px 5px 0px;
+					        font-weight: normal;
+					        font-size: 16px;
+					    }
+					    p{
+					        color: #202020;
+					        font-size: 14px;
+					        line-height: 16px;
+					    }
+					    .search-score{
+					        display: none;
+					    }
+				    }
+			    }
+			}
+
+			.search-acrossbusinessagencies-mastercontainer{
+				border: 4px solid #ffffff;
+				background-color: #F8F8F8;
+				margin-top: 20px;
+				float: left;
+				.search-acrossbusinessagencies-innercontainer{
+					padding: 15px 20px 0px 20px;
+					.search-acrossbusinessagencies-title a{
+						font-weight: normal;
+						font-size: 17px;
+						font-family: 'latoitalic',sans-serif;
+					}
+					.search-acrossbusinessagencies-results-container{
+						margin:15px 0px 0px 70px;
+						.search-acrossbusinessagencies-result-container{
+							margin-bottom: 20px;
+							font-size: 13px;
+							color: #202020;
+							.search-acrossbusinessagencies-result-titlelinked a{
+								font-size: 14px;
+								font-family: 'latoitalic',sans-serif;
+							}
+						}
+					}
+				}
+			}
+			.pager{
+				margin-top: 30px;
+				float: left;
+				a{
+					font-size: 15px;
+				}
+				li{
+					float: left;
+				}
+				.pager-first{
+					display: none;
+
+				}
+				.pager-current{
+					font-family: 'latoregular',sans-serif;
+					color: #A8A8A8;
+					font-size: 15px;
+				}
+				.pager-next a{
+					display: block;
+					width: 21px;
+					height: 21px;
+					text-indent: -9999999px;
+					background: url("../images/pager-next.png") no-repeat transparent;
+				}
+				.pager-previous a{
+					display: block;
+					width: 21px;
+					height: 21px;
+					background: url("../images/pager-previous.png") no-repeat transparent;
+					text-indent: -9999999px;
+				}
+				.pager-ellipsis{
+					font-size: 25px;
+					line-height: 0px;
+					margin: 0px;
+				}
+				.pager-last.last{
+					display:none;
+				}
+			}
+		}
+		.region.region-sidebar-first{
+			width: 260px;
+			float: right;
+			background-color: #fff;
+			#block-boxes-search_page_refine_by_title{
+				h1{
+					text-transform: uppercase;
+					font-size: 13px;
+					background-color: #E8E8E8;
+					color: #505050;
+					padding: 18px 0px 18px 18px;
+					margin:0px;
+					font-weight: normal;
+					font-family: "latoblack",sans-serif;
+				}
+				.boxes-box-controls .links{
+					margin: 0px;
+				}
+			}
+			.block-facetapi{
+				padding: 0px 0px 20px 0px;
+				border-bottom:1px solid #ccc;
+				margin: 18px;
+				h2.block-title{
+					margin:0px 0px 10px 0px;
+					font-size: 12px;
+					color: #6885A2;
+					text-transform: uppercase;
+					font-family: 'latoblack',sans-serif;
+					font-weight: normal;
+				}
+				.item-list{
+					ul.facetapi-facetapi-checkbox-links{
+						float: left;
+						width: 100%;
+						li.leaf{
+							list-style: none;
+							margin-left: 0px;
+							font-size: 12px;
+							color: #505050;
+							padding: 2px 0px;
+							width: 100%;
+							font-family: 'latoregular',sans-serif;
+							float: left;
+							clear: both;
+							.prettycheckbox{
+								float: left;
+								a{
+									background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+									width: 14px;
+									height: 13px;
+									margin-top: 0px;
+									margin-right: 5px;
+									&.checked{
+										background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+										background-position: 0 -13px;
+									}
+								}
+								label{
+									margin: 0;
+								}
+
+							}
+							a.facetapi-checkbox-processed{
+								color: #797979;
+								font-family: 'latoregular',sans-serif;
+								display: inline-block;
+								float: left;
+								width: 90%;
+								&:hover{
+									text-decoration: underline;
+								}
+								span.facet-result-count{
+									background-color: #F0F0F0;
+									font-size: 10px;
+									line-height: 12px;
+									padding: 3px;
+									color:  #606060;
+									float: right;
+								}
+							}
+						}
+					}
+					a.facetapi-limit-link{
+						font-family: "latoblack_italic",sans-serif;
+						font-weight: normal;
+						font-size: 12px;
+						&:after{
+						   content: " \00BB";
+						}
+					}
+				}
+
+			}
+			.block-facetapi.last{
+				border-bottom: 0px solid #fff;
+			}
+		}
+
+	}
+
+
+
+	/********************************
+	***   FEDERAL RESOURCES PAGE   ****
+	*********************************/
+
+	body.page-federal-resources{
+		.greensba-section-container{
+			background-color: #fff;
+			float:left;
+			clear:both;
+			width:890px;
+			padding:35px;
+		}
+		.greensba-section{
+			width: 48%;
+			float: left;
+			margin-right:2%;
+			margin-bottom: 20px;
+			ul{height: 96px; overflow: hidden; border: 1px solid #EEEEEE; border-radius: 0 0 5px 5px; margin: 0; padding: 0;}
+			ul li{list-style: none; padding: 9px;}
+			ul li:nth-child(even) {background-color: #F9F9F9;}
+		}
+
+		.greensba-section-header {
+			background-color: #E9E9E9;
+			color: #5C5C5C;
+			font-family: bitter-bold;
+			line-height: 36px;
+			padding: 5px 10px;
+			font-size: 18px;
+		}
+		.viewmoreless{
+			float: right;
+			border: 1px solid #EEEEEE;
+			border-radius: 3px;
+			background-color: #F9F9F9;
+			padding: 5px;
+		}
+		.morelessrow{
+			margin: 5px 0;
+		}
+		a.viewmoreless{
+			margin-bottom: 30px;
+		}
+	}
+
+
+
+
+	/*************************************
+	***   PRIVACY AND SECURITY PAGE   ****
+	*************************************/
+
+	body.page-privacy-and-security{
+		.privacyandsecurity_masterContainer{
+			background-color: #fff;
+			float:left;
+			clear:both;
+			width:890px;
+			padding:35px;
+		}
+	}
+
+	/****************************************
+	***   SBIR Certification Tool PAGE   ****
+	*****************************************/
+
+	body.page-sbir-certification-tool, .sbir-certification-tool-mastercontainer-wrapper {
+
+
+        .cell1{
+            width: 15%;
+            height: 110px;
+            float: left;
+        }
+        .cell2{
+            border-right: 1px dashed;
+			border-left: 1px dashed;
+            width: 52%;
+			min-height: 111px;
+
+        }
+        .cell3{
+            min-height: 111px;
+			width: 20%;
+        }
+
+		#eligibility-message{
+			#success_message{
+
+				p{
+					width: 65%;
+					margin-right: 15px;
+					padding: 0;
+					margin-top: 6px;
+				}
+
+			}
+			#fail_message{
+
+				p{
+					width: 55%;
+					margin-top: 6px;
+					margin-right: 15px;
+				}
+
+			}
+			.btn-Continue{
+				float: right;
+				margin-top: 25px;
+
+			}
+		}
+
+	}
+
+
+	/****************************************
+	***   Reverse Information Flow PAGE   ****
+	*****************************************/
+
+	body.page-reverse-information-flow{
+
+		.region-content{
+			width: 100%;
+		}
+		.reverse-information-flow-mastercontainer{
+			width: 100%;
+			background-color: #fff;
+		}
+		.tabs-container{
+
+		}
+		.tabstrip{
+			width: 100%;
+			float: left;
+		}
+		.tabs {
+			width: 15%;
+			padding: 2%;
+			background-color: #97e8c1 ;
+			float: left;
+		}
+
+		.tabs:hover{
+			background-color: #6885a2;
+			color: #fff;
+		}
+
+
+		#results{
+			width: 96%;
+			margin-left: 2%;
+			margin-right: 2%;
+		}
+		#results td{
+			width: 25%;
+			padding: 3%;
+		}
+		#pageNavPosition {
+			text-align: center;
+			padding-top: 15px;
+			padding-bottom: 30px;
+		}
+
+	}
+
+/**************************
+***   JOB CENTER PAGE   ***
+***************************/
+
+body.page-jobcenter-wizard{
+	#block-system-main{
+		.wizard-sidebars-container{
+
+			.jobcenterajax-container {
+				.jobcenteroffice-result {
+					.jobcenteroffice-result-hours{
+						.jobcenteroffice-result-hours-label {
+							width: 25%;
+							float: left;
+						}
+						.jobcenteroffice-result-hours-data {
+							margin-left: 25%;
+						}
+					}
+					.jobcenteroffice-result-phone{
+						.jobcenteroffice-result-phone-label {
+							float: left;
+							width: 25%;
+						}
+						.jobcenteroffice-result-phone-data {
+							margin-left: 25%;
+						}
+					}
+					.jobcenteroffice-result-description{
+						.jobcenteroffice-result-description-label {
+							float: left;
+							width: 25%;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+	/********************************
+	***   TRAINING PAGE   ****
+	*********************************/
+	body .view-Training-materials{
+		position: relative;
+		#mobile-accordion {
+			display: none;
+		}
+		.view-filters{
+			position: absolute;
+			margin-top: -64px;
+			right: 0px;
+			.views-exposed-widget{
+				padding: 0px;
+				fieldset{
+					margin: 0px;
+					padding: 0px;
+					height: 100%;
+					border: none;
+					&.collapsible .fieldset-legend{
+						background-image: url("../images/icons/menu-expanded.png");
+					}
+					&.collapsed .fieldset-legend{
+						background-image: url("../images/icons/menu-collapsed-rtl.png");
+					}
+					legend{
+						text-transform: uppercase;
+					    font: 15px "latoblack", sans-serif;
+					    background-color: #6885a2;
+					    padding: 20px 25px;
+					    display: block;
+					    float: right;
+					    span.fieldset-legend{
+					    	padding: 0px 15px 0px 0px;
+					    	background-position: right center;
+					    }
+					    a{
+					    	color: #fff;
+					    	outline: 0;
+					    }
+					}
+					.fieldset-wrapper{
+						float: left;
+						clear: both;
+						background-color: #fff;
+						border: 1px solid #ccc;
+						padding: 15px;
+						a.bef-toggle{
+							display: none;
+						}
+						.bef-checkboxes{
+							padding: 10px 0;
+							background-color: #fff;
+							float: left;
+							width: 100%;
+							.form-item{
+								float: left;
+								clear: both;
+								margin-bottom: 10px;
+								margin-left: 3%;
+								width: 97%;
+								.prettycheckbox{
+									float: left;
+									a{
+										background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+										width: 14px;
+										height: 13px;
+										margin-top: 3px;
+										margin-left: 5px;
+										&.checked{
+											background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+											background-position: 0 -13px;
+										}
+									}
+									label{
+										margin: 0;
+									}
+								}
+								label{
+									display: block;
+								    float: left;
+								    font-size: 12px;
+								    font-weight: normal;
+								    line-height: 18px;
+								    width: 79%;
+								    margin-left: 3%;
+								    cursor: pointer;
+								    &:hover{
+								    	text-decoration: underline;
+								    }
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		.view-content{
+			margin-top: 60px;
+			.views-table{
+				display: block;
+				thead{
+					background-color: #6885a2;
+					color: #fff;
+					text-transform: uppercase;
+					th{
+						font: 14px "latoblack", sans-serif;
+						padding: 20px 0px;
+						a{
+							color: #fff;
+							font-weight: normal;
+							font: 14px "latoblack", sans-serif;
+							img{
+								padding-left: 10px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 10px;
+							font: 12px "latoregular", sans-serif;
+							a{
+								font: 13px "latoregular", sans-serif;
+								font-weight: bold;
+							}
+							img{
+								padding-left: 10px;
+							}
+						}
+						td.views-field-field-agency{
+							text-transform: uppercase;
+							font-weight: bold;
+						}
+						td.active{
+							background-color: inherit;
+						}
+					}
+					tr.even{
+						background-color: #fff;
+						border-bottom: none;
+					}
+					tr.odd{
+						background-color: #f6f7f7;
+						border-bottom: none;
+					}
+				}
+			}
+		}
+
+		.pager{
+			margin-top: 30px;
+			float: left;
+			a{
+				font-size: 15px;
+			}
+			li{
+				float: left;
+			}
+			.pager-first{
+				display: none;
+
+			}
+			.pager-current{
+				font-family: 'latoregular',sans-serif;
+				color: #A8A8A8;
+				font-size: 15px;
+			}
+			.pager-next a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				text-indent: -9999999px;
+				background: url("../images/pager-next.png") no-repeat transparent;
+			}
+			.pager-previous a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				background: url("../images/pager-previous.png") no-repeat transparent;
+				text-indent: -9999999px;
+			}
+			.pager-ellipsis{
+				font-size: 25px;
+				line-height: 0px;
+				margin: 0px;
+			}
+			.pager-last.last{
+				display:none;
+			}
+		}
+	}
+
+    /********************************
+      ***   HEALTHCARE WIZARD   ****
+    *********************************/
+    body.page-healthcare{
+    	#block-system-main{
+    		.wizard-outside-sidebar-upcoming-events{
+    			.wizard-sidebarresults-results-container{
+    				.viewmore-healthcare{
+    					width: 180px;
+    				}
+    			}
+    		}
+    	}
+    	.wizard-has-outside-sidebar-true{
+    		width:100%;
+    		.wizard-container{
+    			.wizardHeader{
+    				width: 100%;
+    				.tabs{
+    					ul.slide-selector{
+    						li{
+    							a{
+    								padding: 40px 10px 0px 10px;
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    		.slide{
+    			width:100%;
+    			background-size:30%;
+    			.questions{
+    				margin-left: 350px;
+    				.widget-type-radio-group{
+    					label{
+    						width:257px;
+    					}
+    				}
+    			}
+    			.wizard-continue{
+    				margin-left: 445px;
+    			}
+    		}
+    	}
+    }
+
+	/***********************************
+	***  ICONS FOR WIZARDS           ****
+	************************************/
+	body.page-start-a-business, body.page-access-financing,
+	body.page-export, body.page-find-opportunities,
+	body.page-resource-grow-your-business, body.page-taxes-and-credits,
+	body.page-jobcenter-wizard, body.page-select-usa,
+	body.page-veterans, body.page-tour, body.page-disaster-assistance,
+	body.page-find-green-opportunities, body.page-browseregulations,
+	body.page-expand-exporting, body.page-begin-exporting,
+    body.page-rural-exporting
+	{
+		.splash-icon-image {
+			display: block;
+			float: left;
+			padding: 19px;
+			margin-left: 20%;
+		}
+		.wizard-splash-icon {
+			height: 48px;
+		}
+		.splash-title {
+			width: 50%;
+			float: left;
+			margin-left: 4%;
+		}
+		.splash-title label {
+			float: left;
+		}
+	}
+
+
+
+
+
+	/**********************************
+	****  BROWSE REGULATIONS         **
+	**********************************/
+	body.page-browseregulations{
+		.dk_options_inner li a
+		{
+			white-space: normal;
+		}
+		.dk_toggle{
+			min-width: 375px;
+		}
+		#wiztag-keyword_textbox {
+			width: 375px;
+		}
+	}
+
+	/********************************
+	****  FIND OPPORTUNITIES WIZARD **
+	**********************************/
+	body.page-find-opportunities{
+        #txtgosearch-container{
+            margin-bottom: 15px;
+        }
+		#findopportunities-search-container{
+			margin-bottom: 25px;
+			text-align: center;
+		}
+		#findopportunities-searchtxt {
+			display: inline-block;
+		}
+		#txtgosearch {
+			width: 175px;
+			margin-right: 10px;
+		}
+		.wizard-goButton-inner{
+			display: inline-block;
+			input{
+				font-size: 18px;
+			}
+		}
+		.more-fbo-open-link {
+			float: right;
+			background-color: #f75b49;
+			width: 101px;
+			height: 45px;
+			margin-bottom: 15px;
+		}
+		#ancmorefbo_and {
+			display: inline-block;
+			padding: 15px 23px 15px 23px;
+			color: #fff;
+		}
+		.question-controle-for-wiztag-Industry{
+			width: 100%;
+			#wiztag-Industry{
+				width: 65%;
+			}
+		}
+		.question-controle-widget-type-textbox {
+			width: 100%;
+			.question-controle{
+				width: 60%;
+			}
+		}
+
+	}
+
+
+
+
+	/***************************************************************
+	***   FULL TIME EMPLOYEE CALCULATOR PAGE STYLES   **** **** ****
+	******************************************** **** **** **** ****/
+	body.page-full-time-employee-calculator{
+		.empcalculator-mastercontainer{
+
+			.empcalculator-input-ui {
+				.empcalculator-input-ui-input1-ui, .empcalculator-input-ui-input2-ui{
+					float: left;
+					width: 100%;
+				}
+				.empcalculator-input-ui-label.empcalculator-input-ui-label-1, .empcalculator-input-ui-label.empcalculator-input-ui-label-2 {
+					line-height: 15px;
+					font-size: 15px;
+					padding-bottom: 15px;
+					display: inline-block;
+					width: 70%;
+					margin-right: 6%;
+				}
+
+			}
+			.empcalculator-controles-ui {
+				text-align: right;
+				float: right;
+			}
+			.empcalculator-specialcountingrules-btncontainer{
+				display: inline-block;
+				input {
+					cursor: pointer;
+					padding-top: 10px;
+					color: #1a6894;
+				}
+			}
+			.empcalculator-results-ui-container{
+				.empcalculator-results-ui-1{
+					padding-top: 30px;
+					.empcalculator-results-ui-1-rightside{
+						width: 84%;
+					}
+				}
+			}
+
+		}
+
+		#colorbox{
+			.empcalculator-specialcountingrules-colorboxcontents-container{
+				width: 350px;
+                padding: 25px;
+			}
+		}
+
+	}
+
+
+}
+

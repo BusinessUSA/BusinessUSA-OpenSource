@@ -1,0 +1,2129 @@
+//
+// Temp Less Files
+// --------------------------------------------------
+
+/**************************
+***************************
+***                    ****
+***   GENERAL STYLES   ****
+***                    ****
+***************************
+**************************/
+
+body.role-administrator .not-admin-only {
+    display: none;
+}
+
+body.not-logged-in {
+    .admin-only, .auth-only {
+        display: none;
+    }
+}
+
+
+body.admin-menu {
+    padding-top: 5px;
+    #mainNavigation {
+        margin-top: 25px;
+    }
+    #admin-menu {
+        li.admin-menu-search {
+            display: none;
+        }
+        ul#admin-menu-users {
+            display: none;
+        }
+        a.shortcut-toggle {
+            display: none !important;
+        }
+        .shortcut-toolbar.active {
+            display: none !important;
+        }
+    }
+}
+
+/**********************************
+***   TRAINING PAGE   ***
+**********************************/
+body.page-training-materials{
+  .view-Training-materials{
+    > .view-filters{
+      float:left;
+      clear:both;
+      width:100%;
+      background-color: #eff2f5;
+      ul.training-materials-filter-list{
+        float:left;
+        list-style-type: none;
+        margin: 4px 0px 0px 0px;
+        padding:0px;
+        li{
+          float:left;
+          background-color:#fff;
+          margin-right:8px;
+          a{
+            display:block;
+            padding:20px 20px 20px 50px;
+            background: url("/sites/all/themes/bizusa/images/train-chat-grey.png") no-repeat scroll 10px 14px transparent;
+          }
+        }
+        li a:hover,
+        li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-chat-green.png');
+        }
+        li + li a{
+          background-image: url('/sites/all/themes/bizusa/images/train-online-training-grey.png');
+        }
+        li + li a:hover,
+        li + li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-online-training-green.png');
+        }
+        li + li + li a{
+          background-image: url('/sites/all/themes/bizusa/images/train-video-grey.png');
+        }
+        li + li + li a:hover,
+        li + li +li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-video-green.png');
+        }
+        li + li + li + li{display:none;}
+      }
+      .ctools-auto-submit-full-form{
+        float:right;
+      }
+    }
+    .view-content .views-table thead th{padding:20px 10px;}
+    .view-content .views-table thead th.views-field-field-agency{padding-right:30px;}
+    .view-empty{
+      width: 960px;
+      margin-top: 60px;
+      height: 200px;
+      background: #FFF;
+      p{
+        padding:30px;
+      }
+    }
+  }
+  #edit-field-searchtags-value-wrapper > div > div > fieldset > legend{
+    cursor: pointer;
+  }
+  .contextual-links-region{
+    position: inherit;
+  }
+}
+
+
+
+/**************************
+***************************
+***                    ****
+***   DESKTOP STYLES   ****
+***                    ****
+***************************
+**************************/
+@media only screen and (min-width:1025px){
+
+/********************************
+***   FEDERAL RESOURCES PAGE   ****
+*********************************/
+
+  body.page-federal-resources{
+    .greensba-section-container{
+      background-color: #fff;
+      float:left;
+      clear:both;
+      width:890px;
+      padding:35px;
+    }
+    .greensba-section{
+      width: 48%;
+      float: left;
+      margin-right:2%;
+      margin-bottom: 20px;
+      ul{height: 109px; overflow: hidden; border: 1px solid #EEEEEE; border-radius: 0 0 5px 5px; margin: 0; padding: 0;}
+      ul li{list-style: none; padding: 9px;}
+      ul li:nth-child(even) {background-color: #F9F9F9;}
+    }
+
+    .greensba-section-header {
+      background-color: #E9E9E9;
+      color: #5C5C5C;
+      font-family: bitter-bold;
+      line-height: 36px;
+      padding: 5px 10px;
+      font-size: 18px;
+    }
+    .viewmoreless{
+      float: right;
+      border: 1px solid #EEEEEE;
+      border-radius: 3px;
+      background-color: #F9F9F9;
+      padding: 5px;
+    }
+    .morelessrow{
+      margin: 5px 0;
+    }
+    a.viewmoreless{
+      margin-bottom: 30px;
+    }
+  }
+  /**********************************
+  ***   MICRO SITE   ***
+  **********************************/
+  body.page-micro-site{
+    .region-content {
+      // 
+      // background-color: #ffffff;
+      // width: 94%;
+      // padding: 3%; 
+      .mapcontainer-tablet{
+        display: none;
+      }
+
+      .stateslist-container {
+        float: left;
+        width: 94%;
+        padding: 3%;
+        ul{
+          padding-left: 0;
+          float: left;
+          margin-left: 0;
+          padding-left: 0;
+          -webkit-column-count: 5; /* Chrome, Safari, Opera */
+          -moz-column-count: 5; /* Firefox */
+          column-count: 5;
+          width: 100%;
+          li{
+            list-style: none;
+            margin-bottom: 10px;
+          }
+          &.states-list-has-no-css3{
+            float: left;
+            margin-right: 2%;
+            width: 18%;
+
+          }
+        }
+
+      }
+    }
+    /**********************************
+    ***   MICRO SITE LANDING PAGE  ***
+    **********************************/
+    &.page-micro-site-state-resource-landing, &.page-micro-site-ownership-landing{
+
+      .region-content {
+        // background-color: #eff2f5;
+        // width: 100%;
+        // padding: 0;
+        .microsite-sections-container{
+          // background-color: #ffffff;
+          // margin-left: 0;
+          // width: 66%;
+          // float: left;
+          // margin-right: 3%;
+          // padding: 3%;
+          .sections-message{
+            margin-bottom: 20px;
+          }
+          .microsite-section, .has-border-above{
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eff2f5;
+            float: left;
+            width: 100%;
+          }
+
+
+
+          .microsite-section-title{
+            font-family: 'latoblack', sans-serif;
+            font-size: 21px;
+            margin-bottom: 20px;
+          }
+          .views-row{
+            margin-bottom: 25px;
+            .views-field{
+              .field-content{
+                p{
+                  margin: 5px 0;
+                }
+              }
+            }
+          }
+          .item-list{
+            width: 100%;
+            .pager{
+              margin-top: 10px;
+              float: left;
+              a{
+                font-size: 15px;
+              }
+              li{
+                float: left;
+              }
+              .pager-first{
+                display: none;
+
+              }
+              .pager-current{
+                font-family: 'latoregular',sans-serif;
+                color: #A8A8A8;
+                font-size: 15px;
+              }
+              .pager-next a{
+                display: block;
+                width: 21px;
+                height: 21px;
+                text-indent: -9999999px;
+                background: url("../images/pager-next.png") no-repeat transparent;
+              }
+              .pager-previous a{
+                display: block;
+                width: 21px;
+                height: 21px;
+                background: url("../images/pager-previous.png") no-repeat transparent;
+                text-indent: -9999999px;
+              }
+              .pager-ellipsis{
+                font-size: 25px;
+                line-height: 0px;
+                margin: 0px;
+              }
+              .pager-last.last{
+                display:none;
+              }
+            }
+          }
+
+        }
+        .microsite-sidebars-container{
+          width: 25%;
+          padding: 0;
+          background-color: #eff2f5;
+          float: left;
+          .microsite-sidebar{
+            margin-bottom: 10px;
+            width: 100%;
+            float: left;
+            .microsite-sidebar-title-container{
+              width: 100%;
+              background-color: #E2E2E2;
+              .microsite-sidebar-title{
+                font: 13px 'latoblack', sans-serif;
+                width: 84%;
+                padding: 20px 8%;
+                font-size: 13px;
+                text-transform: uppercase;
+                color: #5C5C5C;
+                margin-left: 0;
+              }
+              background: url(/sites/all/themes/bizusa/images/icons/block-collapsed.png) no-repeat 97% #E2E2E2;
+
+              &.expanded{
+                background: url(/sites/all/themes/bizusa/images/icons/block-expanded.png) no-repeat 97% #E2E2E2;
+              }
+
+            }
+            .microsites-sidebarresults-results-container{
+              padding: 15px 8%;
+              background-color: #ffffff;
+              width: 84%;
+              float: left;
+              a{
+                font-family: latoregular;
+                display: block;
+              }
+              .views-row{
+                margin-bottom: 20px;
+                .date-display-single{
+                  color: #f75b49;
+                }
+              }
+              .viewmore{
+                background: url("/sites/all/themes/bizusa/images/icons/viewall.png")G no-repeat scroll 90% 49% rgba(0,0,0,0);
+                float: right;
+                color: #6885a2;
+                font-family: 'latoblack', sans-serif;
+                font-size: 12px;
+                background-color: #EFF2F5;
+                padding: 10px 15px 10px 15px;
+                cursor: pointer;
+                width: 60px;
+                text-align: center;
+              }
+
+            }
+            &.sidebar-resource-centers{
+              .microsites-sidebarresults-results-container{
+                min-height: 130px;
+                .begex-useac-askingforzip-input-container{
+                  border: 1px solid #ccc;
+                  margin-right: 5px;
+                }
+              }
+            }
+            &.sidebar-top-web-resources{
+              .microsites-sidebarresults-results-container{
+                a{
+                  margin-bottom: 10px;
+                }
+                .view-empty-top-web{padding: 15px 0;}
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  /***************************************
+  ***   CONTENT LANDING PAGES   ****
+  ****************************************/
+
+  body.page-node{
+    // #titleWrapper h1 {
+    //   font-weight: normal;
+    // }
+    .region-content{
+      //background-color: #fff;
+      //font: 14px/22px "latoregular",sans-serif;
+      padding: 2%;
+      // float: left;
+      // width: 100%;
+
+      .node-blog{
+        .blog-image{
+          float: left;
+          height: 85px;
+          width: 13%;
+          background: url("/sites/all/themes/bizusa/images/businessusa.png") no-repeat;
+        }
+
+        .blog-content-container{
+          float: left;
+          padding: 0 2%;
+          width: 85%;
+          .blog-content-title{
+            font-family: 'latoblack', sans-serif;
+            font-size: 19px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+
+  .node-article,
+  .node-rules-status,
+  .node-export-gov-micro-site-page,
+  .node-wizard-result-reference-for-solr,
+  .node-appointment-office
+  .node-data,
+  .node-state-resource,
+  .node-success-story,
+  .node-quick-facts,
+  .node-tools,
+  .node-federal-register,
+  .node-swim-lane-page,
+  .node-grants,
+  .node-green-sbir-topic,
+  .node-business-news,
+  .node-video,
+  .node-featured-item,
+  .node-whats-new,
+  .node-browseregulations,
+  .node-solicitations,
+  .node-appointment-office
+  {
+    .submitted{
+      display: none;
+    }
+    .field{
+      .field-items{
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+    }
+    .learnmore_column,
+    .tags_column{
+      margin-top: 20px;
+      float: left;
+      width: 100%;
+      a{
+        font:16px "latoregular", sans-serif;
+      }
+    }
+    .contact.info{
+      border-top: 1px dotted #ccc;
+      margin: 30px 0px;
+      padding-top: 15px;
+      float: left;
+      width: 100%;
+      .contact-information-prefix{
+        float: left;
+        margin-right: 25px;
+
+        h2{
+          font:22px "latoblack", sans-serif;
+          margin-bottom: 3px;
+        }
+      }
+      .contact-information-container{
+        float: left;
+      }
+    }
+    .lblclass, .field-label{
+      margin-right: 15px;
+      font:18px "latoblack_italic", sans-serif;
+      float: left;
+      div &{
+        clear: both;
+        margin: 10px 0px;
+      }
+    }
+    .field-label-above{
+      margin-bottom: 10px;
+    }
+  }
+  
+
+}
+.region-sidebar-first,
+.region-sidebar-second{
+  float: left;
+  margin-top: 15px;
+  background-color: #E9E9E9;
+  width: 49%;
+  h2{
+    font-weight: normal;
+    margin-top: 20px;
+    padding-left: 25px;
+    color: #5C5C5C;
+    text-transform: uppercase;
+    font: 15px "latoblack",sans-serif;
+  }
+  .boxes-box-content{
+    ul{
+      padding: 0px 20px 20px 20px;
+      li{
+        list-style: none;
+        padding:5px;
+        border-bottom:1px solid #ccc;
+        margin-bottom: 7px;
+        a{
+          font: 15px "latoregular", sans-serif;
+          font-weight: normal;
+        }
+        a:hover{
+          color: darken(#6885A2, 10%)
+        }
+        .description{
+          margin: 7px 0px;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+.region-sidebar-second{
+  float: right;
+}
+}
+
+/***************************************************************************************
+***   WHATS NEW, EXPORT NEWS & PAGE ANNOUNCEMENTS AND RESOURCES  ***
+***************************************************************************************/
+
+  body.page-whats-new,
+  body.page-export-news,
+  body.page-annoucements-and-resources,
+  body.page-rural-export-initiative-news{
+    &.no-sidebars{
+      .wrapper{
+        .region-content{
+          // width: 100%;
+          .block-system{
+            .view{
+              .view-content{
+                width: 68%;
+              }
+              .view-filters{
+                #edit-field-latest-news-source-tid-wrapper{
+                  .form-item{
+                    .dk_container{
+                      outline: none;
+                      margin: 10px 0px 10px 10px;
+                      a{
+                        height: inherit;
+                        line-height: 16px;
+                        font-family: "latoblack",sans-serif;
+                        font-weight: normal;
+                        font-size: 11px;
+                        text-transform: uppercase;
+                        border:1px solid #fff;
+                        background-color: #6784a3;
+                        color: #fff;
+                        padding:10px;
+                      }
+                      &.dk_open .dk_options{
+                        z-index: 1000;
+                        width: 90%;
+                        overflow: auto;
+                        overflow-x: hidden;
+                        max-height: 315px;
+                        right: inherit;
+                        .dk_options_inner{
+                          li a{
+                            font-size: 12px;
+                            line-height: 25px;
+                            text-transform: none;
+                            background-color: #6784a3;
+                            font-family: "latoregular",sans-serif;
+                            &:hover{
+                              color: #fff;
+                              text-decoration: none;
+                              background-color: darken(#6784a3, 10%)
+                            }
+                          }
+                        }
+                      }
+                    }
+                    select{
+                      width: 80%;
+                      outline: 0;
+                    }
+                  }
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .wrapper{
+      // #titleWrapper{
+      //   .title{
+      //     h1{
+      //       font-size: 28px;
+      //       letter-spacing: -1.5px;
+      //     }
+      //   }
+      // }
+      .region-content{
+        //width: 68%;
+        .block-system{
+          //border: 1px solid;
+          width: 100%;
+          .view{
+            //border: 1px solid;
+            .view-content{
+              .views-row{
+                .views-field{
+                  .field-content{
+                    a{
+                      font-weight: normal;
+                      display: block;
+                      width: 94%;
+                      padding: 15px 3%;
+                      background-color: #fff;
+                      margin-bottom: 3px;
+                      &:hover{
+                        background-color: #839BB3;
+                        color: #fff;
+                      }
+                    }
+                    p{
+                      margin:0;
+                      padding: 0;
+                      padding: 3px 3% 20px 3%;
+                      font-size: 12px;
+                      font-family: "latoitalic",sans-serif;
+                    }
+                  }
+                }
+              }
+            }
+            .view-footer{
+              p{
+                a{
+                  display: none;
+                  background-color: #839BB3;
+                  color: #fff;
+                  padding:10px;
+                  text-transform: uppercase;
+                  font-weight: normal;
+                  font-size: 12px;
+                  &:hover{
+                    background-color: darken(#839BB3, 10%)
+                  }
+                }
+              }
+            }
+            .item-list{
+              .pager{
+                margin-top: 10px;
+                float: left;
+                a{
+                  font-size: 15px;
+                }
+                li{
+                  float: left;
+                }
+                .pager-first{
+                  display: none;
+
+                }
+                .pager-current{
+                  font-family: 'latoregular',sans-serif;
+                  color: #A8A8A8;
+                  font-size: 15px;
+                }
+                .pager-next a{
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  text-indent: -9999999px;
+                  background: url("../images/pager-next.png") no-repeat transparent;
+                }
+                .pager-previous a{
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: url("../images/pager-previous.png") no-repeat transparent;
+                  text-indent: -9999999px;
+                }
+                .pager-ellipsis{
+                  font-size: 25px;
+                  line-height: 0px;
+                  margin: 0px;
+                }
+                .pager-last.last{
+                  display:none;
+                }
+              }
+            }
+          }
+        }
+      }
+      .region-sidebar-first,
+      .view-rural-export-initiatives-news{
+        float: right;
+        width: 30%;
+        .block-views,
+        .view-filters{ //added for rural_export_initiative_news
+          form{
+            .views-exposed-form{
+              .views-exposed-widgets{
+                #edit-date-filter-wrapper{
+                  .views-widget{
+                    margin-bottom: 20px;
+                  }
+                }
+                input[type="submit"]{
+                  text-transform: uppercase;
+                  background-color: #F75B49;
+                  &:hover{
+                    background-color: darken(#F75B49, 10%)
+                  }
+                }
+
+                .views-exposed-widget{
+                  float: left;
+                  width: 100%;
+                  padding: 0px;
+                  margin-bottom: 2px;
+                  label[for="edit-date-filter"],
+                  label[for="edit-field-news-source-tid"],
+                  label[for="edit-field-latest-news-source-tid"],
+                  label[for="edit-field-exportnews-agency-tid"]{
+                    background-color: #e2e2e2;
+                    background-position: 15px 50%;
+                    font-size: 12px;
+                    letter-spacing: -.5px;
+                    padding: 20px 0 20px 30px;
+                    font-family: "latoblack",sans-serif;
+                    font-weight: normal;
+                    cursor: pointer;
+                    text-transform: uppercase;
+                    color: #3b3b3b;
+                    //background-image: url("/sites/all/themes/bizusa/images/icons/block-collapsed.png");
+                    background-repeat: no-repeat;
+                    background-position: 95%;
+                    &.active{
+                      //background-image: url("/sites/all/themes/bizusa/images/icons/block-expanded.png");
+                      background-position: 95%;
+                    }
+                  }
+                  .views-widget{
+                    background-color: #fff;
+                    float: left;
+                    width: 100%;
+                    #edit-date-filter-value-wrapper{
+                      width: 100%;
+                      float: left;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                    }
+                    .container-inline-date{
+                      margin-left: 3%;
+                      padding-top: 0px;
+                      padding-bottom: 0px;
+                      margin-bottom: 10px;
+                      margin-top: 10px;
+                      float: left;
+                      width: 97%;
+                      .form-item{
+                        float: left;
+                        &.form-type-date-select{
+                          width: 97%;
+                          margin-right: 3%;
+                        }
+                        label{
+                          font-weight: normal;
+                          font-size: 14px;
+                          padding-bottom: 5px;
+                          font-family: latoblack;
+                        }
+                        .date-padding{
+                          width: 100%;
+                          .form-item{
+                            .hasDatepicker{
+                              width: 220px;
+                              border: 1px solid #eff2f5;
+                            }
+                            .dk_container{
+                              outline: none;
+                              a{
+                                height: inherit;
+                                line-height: 35px;
+                                font-family: "latoblack",sans-serif;
+                                font-weight: normal;
+                                font-size: 11px;
+                                text-transform: uppercase;
+                                border:1px solid #fff;
+                                background-color: #6784a3;
+                                color: #fff;
+                              }
+                              &.dk_open .dk_options{
+                                z-index: 1000;
+                                overflow: auto;
+                                overflow-x: hidden;
+                                max-height: 315px;
+                                .dk_options_inner{
+                                  li a{
+                                    font-size: 12px;
+                                    line-height: 25px;
+                                    text-transform: none;
+                                    background-color: #6784a3;
+                                    font-family: "latoregular",sans-serif;
+                                    &:hover{
+                                      color: #fff;
+                                      text-decoration: none;
+                                      background-color: darken(#6784a3, 10%)
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                            .date-month{
+                              select{
+                                width: 70px;
+                                outline: 0;
+                              }
+                            }
+                            .date-day{
+                              select{
+                                width: 40px;
+                              }
+                            }
+                            .date-year{
+                              select{
+                                width: 40px;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    .form-item{
+                      .form-checkboxes{
+                        float: left;
+                        width: 100%;
+                        border-bottom: 20px solid #EFF2F5;
+                        a.bef-toggle{
+                          display: none;
+                        }
+                        .bef-checkboxes{
+                          padding: 10px 0;
+                          background-color: #fff;
+                          float: left;
+                          width: 100%;
+                          .form-item{
+                            float: left;
+                            clear: both;
+                            margin-bottom: 10px;
+                            margin-left: 3%;
+                            width: 97%;
+                            .prettycheckbox{
+                              float: left;
+                              a{
+
+                                margin-top: 3px;
+                                margin-left: 5px;
+
+                              }
+                              label{
+                                margin: 0;
+                              }
+                            }
+                            label{
+                              display: block;
+                              float: left;
+                              font-size: 12px;
+                              font-weight: normal;
+                              line-height: 18px;
+                              width: 79%;
+                              margin-left: 3%;
+                              cursor: pointer;
+                              &:hover{
+                                text-decoration: underline;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .view-rural-export-initiatives-news{ //added for rural_export_initiative_news
+        float: none;
+        width: inherit;
+        .view-filters{
+          float: right;
+          width: 30%;
+        }
+      }
+    }
+  }
+
+  /********************************
+  ***   TRAINING PAGE   ****
+  *********************************/
+	body .view-Training-materials{
+		position: relative;
+		#mobile-accordion {
+			display: none;
+		}
+		.view-filters{
+			position: absolute;
+			margin-top: -64px;
+            height: 71px;
+			right: 0px;
+			.views-exposed-widget{
+				padding: 0px;
+				fieldset{
+					margin: 0px;
+					padding: 0px;
+					height: 100%;
+					border: none;
+					&.collapsible .fieldset-legend{
+						background-image: url("../images/icons/menu-expanded.png");
+					}
+					&.collapsed .fieldset-legend{
+						background-image: url("../images/icons/menu-collapsed-rtl.png");
+					}
+					legend{
+						text-transform: uppercase;
+					    font: 15px "latoblack", sans-serif;
+					    background-color: #6885a2;
+					    padding: 20px 25px;
+					    display: block;
+					    float: right;
+                        margin: 0;
+					    span.fieldset-legend{
+					    	padding: 0px 15px 0px 0px;
+					    	background-position: right center;
+					    }
+					    a{
+					    	color: #fff;
+					    	outline: 0;
+					    }
+					}
+					.fieldset-wrapper{
+						float: left;
+						clear: both;
+						background-color: #fff;
+						border: 1px solid #ccc;
+						padding: 15px;
+						a.bef-toggle{
+							display: none;
+						}
+					}
+				}
+			}
+
+		}
+		.view-content{
+			margin-top: 60px;
+			.views-table{
+				display: block;
+				thead{
+					background-color: #6885a2;
+					color: #fff;
+					text-transform: uppercase;
+					th{
+						font: 14px "latoblack", sans-serif;
+						padding: 20px 0px;
+						a{
+							color: #fff;
+							font-weight: normal;
+							font: 14px "latoblack", sans-serif;
+							img{
+								margin-left: 10px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 10px;
+							font: 12px "latoregular", sans-serif;
+							a{
+								font: 13px "latoregular", sans-serif;
+								font-weight: bold;
+							}
+							img{
+								padding-left: 10px;
+							}
+						}
+						td.views-field-field-agency{
+							text-transform: uppercase;
+							font-weight: bold;
+						}
+						td.active{
+							background-color: inherit;
+						}
+					}
+					tr.even{
+						background-color: #fff;
+						border-bottom: none;
+					}
+					tr.odd{
+						background-color: #f6f7f7;
+						border-bottom: none;
+					}
+				}
+			}
+		}
+
+		.pager{
+			margin-top: 30px;
+			float: left;
+			a{
+				font-size: 15px;
+			}
+			li{
+				float: left;
+			}
+			.pager-first{
+				display: none;
+
+			}
+			.pager-current{
+				font-family: 'latoregular',sans-serif;
+				color: #A8A8A8;
+				font-size: 15px;
+			}
+			.pager-next a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				text-indent: -9999999px;
+				background: url("../images/pager-next.png") no-repeat transparent;
+			}
+			.pager-previous a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				background: url("../images/pager-previous.png") no-repeat transparent;
+				text-indent: -9999999px;
+			}
+			.pager-ellipsis{
+				font-size: 25px;
+				line-height: 0px;
+				margin: 0px;
+			}
+			.pager-last.last{
+				display:none;
+			}
+		}
+	}
+
+
+}
+
+
+/**************************
+ ***                   ****
+ ***   TABLET STYLES   ****
+ ***                   ****
+ **************************/
+
+@media only screen and (min-width:768px) and (max-width:1024px){
+
+  body.page-node{
+    .region-content{
+      padding: 2%;
+    }
+  }
+
+
+/********************************
+***   FEDERAL RESOURCES PAGE   ****
+*********************************/
+
+  body.page-federal-resources{
+    .greensba-section-container{
+      background-color: #fff;
+      float:left;
+      clear:both;
+      padding:35px;
+    }
+    .greensba-section{
+      width: 100%;
+      float: left;
+      margin-right:2%;
+      margin-bottom: 20px;
+      ul{height: 96px; overflow: hidden; border: 1px solid #EEEEEE; border-radius: 0 0 5px 5px; margin: 0; padding: 0;}
+      ul li{list-style: none; padding: 9px;}
+      ul li:nth-child(even) {background-color: #F9F9F9;}
+    }
+
+    .greensba-section-header {
+      background-color: #E9E9E9;
+      color: #5C5C5C;
+      font-family: bitter-bold;
+      line-height: 36px;
+      padding: 5px 10px;
+      font-size: 18px;
+    }
+    .viewmoreless{
+      float: right;
+      border: 1px solid #EEEEEE;
+      border-radius: 3px;
+      background-color: #F9F9F9;
+      padding: 5px;
+    }
+    .morelessrow{
+      margin: 5px 0;
+    }
+    a.viewmoreless{
+      margin-bottom: 30px;
+    }
+  }
+/**********************************
+***   MICRO SITE   ***
+**********************************/
+  body.page-micro-site{
+    .region-content {
+      .mapcontainer-tablet{
+        display: block;
+      }
+      .mapcontainer-desktop{
+        display: none;
+      }
+      .stateslist-container {
+        ul{
+          -webkit-column-count: 3; /* Chrome, Safari, Opera */
+          -moz-column-count: 3; /* Firefox */
+          column-count: 3;
+
+          &.states-list-has-no-css3{
+            margin-right: 3%;
+            width: 30%;
+          }
+        }
+
+      }
+    }
+
+  }
+  /****************************
+***   QUICK FACTS PAGE   ****
+****************************/
+
+  body.page-quick-facts{
+    .region-content{
+      background-color: #fff;
+      // float:left;
+      // clear:both;
+      // width:94%;
+      // padding:3%;
+
+      .view-content {
+        width: 100%;
+        float: left;
+        margin-right: 4%;
+        margin-left: 2%;
+      }
+
+      .view-filters {
+        width: 100%;
+        float: left;
+
+        .form-item{
+          margin-right: 3px;
+          .dk_container {
+            margin-top: 5px;
+
+            .dk_toggle{
+              background: url(/sites/all/themes/bizusa/images/bluearrow.png) no-repeat transparent;
+              background-position: 97%;
+              background-color: #f2f2f2;
+              color: #6885a2;
+            }
+            .dk_options_inner{
+              z-index: 9;
+            }
+            #dk_container_edit-field-publishrange-value-op{
+
+
+            }
+          }
+          .date-day{
+            .dk_options_inner{
+              height: 315px;
+            }
+          }
+          #dk_container_edit-field-publishrange-value-op {
+            width: 280px;
+            .dk_toggle{
+              width: 260px !important;
+            }
+            .dk_options{
+              width: 280px;
+            }
+          }
+        }
+        .views-exposed-widget{
+          float: none;
+        }
+
+      }
+
+    }
+
+  }
+	/********************************
+	***   TRAINING PAGE   ****
+	*********************************/
+	body .view-Training-materials{
+		position: relative;
+		#mobile-accordion {
+			display: none;
+		}
+		.view-filters{
+			position: absolute;
+			margin-top: -64px;
+			right: 0px;
+			.views-exposed-widget{
+				padding: 0px;
+				fieldset{
+					margin: 0px;
+					padding: 0px;
+					height: 100%;
+					border: none;
+					&.collapsible .fieldset-legend{
+						background-image: url("../images/icons/menu-expanded.png");
+					}
+					&.collapsed .fieldset-legend{
+						background-image: url("../images/icons/menu-collapsed-rtl.png");
+					}
+					legend{
+						text-transform: uppercase;
+					    font: 15px "latoblack", sans-serif;
+					    background-color: #6885a2;
+					    padding: 20px 25px;
+					    display: block;
+					    float: right;
+					    span.fieldset-legend{
+					    	padding: 0px 15px 0px 0px;
+					    	background-position: right center;
+					    }
+					    a{
+					    	color: #fff;
+					    	outline: 0;
+					    }
+					}
+					.fieldset-wrapper{
+						float: left;
+						clear: both;
+						background-color: #fff;
+						border: 1px solid #ccc;
+						padding: 15px;
+						a.bef-toggle{
+							display: none;
+						}
+						.bef-checkboxes{
+							padding: 10px 0;
+							background-color: #fff;
+							float: left;
+							width: 100%;
+							.form-item{
+								float: left;
+								clear: both;
+								margin-bottom: 10px;
+								margin-left: 3%;
+								width: 97%;
+								.prettycheckbox{
+									float: left;
+									a{
+										background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+										width: 14px;
+										height: 13px;
+										margin-top: 3px;
+										margin-left: 5px;
+										&.checked{
+											background: url("../images/icons/prettyCheckable-bizusa.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+											background-position: 0 -13px;
+										}
+									}
+									label{
+										margin: 0;
+									}
+								}
+								label{
+									display: block;
+								    float: left;
+								    font-size: 12px;
+								    font-weight: normal;
+								    line-height: 18px;
+								    width: 79%;
+								    margin-left: 3%;
+								    cursor: pointer;
+								    &:hover{
+								    	text-decoration: underline;
+								    }
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		.view-content{
+			margin-top: 60px;
+			.views-table{
+				display: block;
+				thead{
+					background-color: #6885a2;
+					color: #fff;
+					text-transform: uppercase;
+					th{
+						font: 14px "latoblack", sans-serif;
+						padding: 20px 0px;
+						a{
+							color: #fff;
+							font-weight: normal;
+							font: 14px "latoblack", sans-serif;
+							img{
+								padding-left: 10px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 10px;
+							font: 12px "latoregular", sans-serif;
+							a{
+								font: 13px "latoregular", sans-serif;
+								font-weight: bold;
+							}
+							img{
+								padding-left: 10px;
+							}
+						}
+						td.views-field-field-agency{
+							text-transform: uppercase;
+							font-weight: bold;
+						}
+						td.active{
+							background-color: inherit;
+						}
+					}
+					tr.even{
+						background-color: #fff;
+						border-bottom: none;
+					}
+					tr.odd{
+						background-color: #f6f7f7;
+						border-bottom: none;
+					}
+				}
+			}
+		}
+
+		.pager{
+			margin-top: 30px;
+			float: left;
+			a{
+				font-size: 15px;
+			}
+			li{
+				float: left;
+			}
+			.pager-first{
+				display: none;
+
+			}
+			.pager-current{
+				font-family: 'latoregular',sans-serif;
+				color: #A8A8A8;
+				font-size: 15px;
+			}
+			.pager-next a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				text-indent: -9999999px;
+				background: url("../images/pager-next.png") no-repeat transparent;
+			}
+			.pager-previous a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				background: url("../images/pager-previous.png") no-repeat transparent;
+				text-indent: -9999999px;
+			}
+			.pager-ellipsis{
+				font-size: 25px;
+				line-height: 0px;
+				margin: 0px;
+			}
+			.pager-last.last{
+				display:none;
+			}
+		}
+	}
+
+}
+
+
+/*************************
+ ***                   ***
+ ***   MOBILE STYLES   ***
+ ***                   ***
+ *************************/
+
+@media only screen and (max-width: 767px) {
+
+  body.page-node{
+    .region-content{
+      padding: 2%;
+      background-color: #fff;
+    }
+  }
+
+/********************************
+***   FEDERAL RESOURCES PAGE   ****
+*********************************/
+
+  body.page-federal-resources{
+    .greensba-section-container{
+      background-color: #fff;
+      float:left;
+      clear:both;
+      padding:35px;
+    }
+    .greensba-section{
+      width: 100%;
+      float: left;
+      margin-right:2%;
+      margin-bottom: 20px;
+      ul{height: 96px; overflow: hidden; border: 1px solid #EEEEEE; border-radius: 0 0 5px 5px; margin: 0; padding: 0;}
+      ul li{list-style: none; padding: 9px;}
+      ul li:nth-child(even) {background-color: #F9F9F9;}
+    }
+
+    .greensba-section-header {
+      background-color: #E9E9E9;
+      color: #5C5C5C;
+      font-family: bitter-bold;
+      line-height: 36px;
+      padding: 5px 10px;
+      font-size: 18px;
+    }
+    .viewmoreless{
+      float: right;
+      border: 1px solid #EEEEEE;
+      border-radius: 3px;
+      background-color: #F9F9F9;
+      padding: 5px;
+    }
+    .morelessrow{
+      margin: 5px 0;
+    }
+    a.viewmoreless{
+      margin-bottom: 30px;
+    }
+  }
+  /**********************************
+  ***   MICRO SITE   ***
+  **********************************/
+  body.page-micro-site{
+    .region-content {
+      .mapcontainer-tablet{
+        display: none;
+      }
+      .mapcontainer-desktop{
+        display: none;
+      }
+      .stateslist-container {
+        ul{
+
+          -webkit-column-count: 1; /* Chrome, Safari, Opera */
+          -moz-column-count: 1; /* Firefox */
+          column-count: 1;
+
+          &.states-list-has-no-css3{
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    /**********************************
+    ***   MICRO SITE LANDING PAGE  ***
+    **********************************/
+    &.page-micro-site-state-resource-landing, &.page-micro-site-ownership-landing{
+
+      .region-content {
+        // background-color: #eff2f5;
+        // width: 100%;
+        // padding: 0;
+        .microsite-sections-container{
+          // width: 94%;
+          // margin-right: 0;
+          // padding: 3%;
+          // margin-bottom: 10px;
+          .item-list{
+            .pager{
+              li{
+                float: left;
+                padding: 0;
+                margin: 4px;
+              }
+            }
+          }
+        }
+        .microsite-sidebars-container{
+          width: 100%;
+          .microsite-sidebar{
+            .microsite-sidebar-title-container{
+              .microsite-sidebar-title{
+                width: 94%;
+                padding: 20px 3%;
+              }
+
+            }
+            .microsites-sidebarresults-results-container{
+              padding: 15px 3%;
+              width: 94%;
+            }
+          }
+        }
+      }
+    }
+
+
+  }
+
+  /****************************
+  ** RURAL EXP INITIATIVE NWS *
+  ****************************/
+  body.page-rural-export-initiative-news{
+    &.no-sidebars{
+      .wrapper{
+        .region-content{
+          // width: 100%;
+          .block-system{
+            .view{
+              .view-content{
+                width: 100%;
+                float: left;
+              }
+              .view-filters{
+                float: left;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /****************************
+  ***   QUICK FACTS PAGE   ****
+  ****************************/
+
+  body.page-quick-facts{
+    .region-content{
+      background-color: #fff;
+      float:left;
+      clear:both;
+      width:94%;
+      padding:3%;
+
+      .view-content {
+        width: 100%;
+        float: left;
+        margin-right: 4%;
+        margin-left: 2%;
+      }
+
+      .view-filters {
+        width: 100%;
+        float: left;
+
+        .form-item{
+          margin-right: 2px;
+          .dk_container {
+            margin-top: 5px;
+
+            .dk_toggle{
+              background: url(/sites/all/themes/bizusa/images/bluearrow.png) no-repeat transparent;
+              background-position: 97%;
+              background-color: #f2f2f2;
+              color: #6885a2;
+            }
+            .dk_options_inner{
+              z-index: 9;
+            }
+            #dk_container_edit-field-publishrange-value-op{
+
+
+            }
+          }
+
+          .date-day{
+            .dk_options_inner{
+              height: 315px;
+            }
+          }
+          #dk_container_edit-field-publishrange-value-op {
+            width: 280px;
+            .dk_toggle{
+              width: 260px !important;
+            }
+            .dk_options{
+              width: 280px;
+            }
+          }
+        }
+        .views-exposed-widget{
+          float: none;
+        }
+
+      }
+
+    }
+
+  }
+	/********************************
+	***   TRAINING PAGE   ****
+	*********************************/
+	body .view-Training-materials{
+		.view-filters{
+			ul.training-materials-filter-list,
+			.ctools-auto-submit-full-form{display:none;}
+			.views-exposed-widget{
+				padding: 0px;
+				width: 100%;
+				fieldset{
+					margin: 0px;
+					padding: 0px;
+					border: none;
+					height: 100%;
+					&.collapsible .fieldset-legend{
+						background-image: url("../images/icons/menu-expanded.png");
+					}
+					&.collapsed .fieldset-legend{
+						background-image: url("../images/icons/menu-collapsed-rtl.png");
+					}
+					legend{
+						text-transform: uppercase;
+					    font: 15px "latoblack", sans-serif;
+					    background-color: #6885a2;
+					    padding: 20px 0px;
+					    display: block;
+					    width: 100%;
+					    span.fieldset-legend{
+					    	padding: 0px 0px 0px 20px;
+					    	background-position: 95% center;
+					    }
+					    a{
+					    	color: #fff;
+					    	font:18px "latoblack_italic", sans-serif;
+					    }
+					}
+					.fieldset-wrapper{
+						float: left;
+						clear: both;
+						background-color: #fff;
+						//border: 1px solid #ccc;
+						padding: 2%;
+						width: 96%;
+						a.bef-toggle{
+							display: none;
+						}
+					}
+				}
+			}
+
+		}
+		.views-table{
+			display: none;
+		}
+		#mobile-accordion {
+		    list-style: none;
+		    padding: 0 0 0 0;
+		    width: 100%;
+		    display: block;
+		    .title-field {
+			    display: block;
+			    cursor: pointer;
+			    background-color: #6885a2;
+			    color: #fff;
+			    font: 18px "latoblack_italic", sans-serif;
+			    padding: 20px 80px 20px 15px;
+			    border-bottom: 3px solid #fff;
+			    background-image: url("../images/training/arrow.png");
+			    background-repeat: no-repeat;
+			    background-position: 95% center;
+			}
+			.training-content{
+			    display: none;
+			    padding: 20px;
+			    background-color: #fff;
+			    margin-bottom: 70px;
+			    .agency-field{
+				    font: 20px "latoblack_italic", sans-serif;
+				    color: #6885a2;
+				    padding-bottom: 5px;
+				}
+				.description-field{
+				    font: 20px "latoregular", sans-serif;
+				    color: #6b6b6b;
+				}
+				.mediatype-field{
+				    margin-top: 20px;
+				    img{
+					    display: block;
+					    float: left;
+					}
+					span{
+					    text-transform: capitalize;
+					    font: 15px "latoregular", sans-serif;
+					    color: #6885a2;
+					    line-height: 45px;
+					    display: block;
+					    float: left;
+					}
+				}
+				.learnmore-field{
+				    float: right;
+				}
+				.learnmore-field a{
+				    text-transform: uppercase;
+				    font: 15px "latoblack", sans-serif;
+				    background-color: #6885a2;
+				    padding: 20px 25px;
+				    color: #fff;
+				    display: block;
+				}
+			}
+		}
+		.pager{
+			margin-top: 30px;
+			float: left;
+			a{
+				font-size: 15px;
+			}
+			li{
+				float: left;
+			}
+			.pager-first{
+				display: none;
+
+			}
+			.pager-current{
+				font-family: 'latoregular',sans-serif;
+				color: #A8A8A8;
+				font-size: 15px;
+			}
+			.pager-next a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				text-indent: -9999999px;
+				background: url("../images/pager-next.png") no-repeat transparent;
+			}
+			.pager-previous a{
+				display: block;
+				width: 21px;
+				height: 21px;
+				background: url("../images/pager-previous.png") no-repeat transparent;
+				text-indent: -9999999px;
+			}
+			.pager-ellipsis{
+				font-size: 25px;
+				line-height: 0px;
+				margin: 0px;
+			}
+			.pager-last.last{
+				display:none;
+			}
+		}
+	}
+
+}
+
+/***************************************************************************************
+***  MARKET RESEARCH LIBRARY LANDING PAGES  ***
+***************************************************************************************/
+
+body.page-node.node-type-market-research-library {
+    .region-content {
+        .field-container {
+            padding: 5px 0px;
+            clear: both;
+            float: left;
+            width: 100%;
+            .field-label {
+                float: left;
+                width: 20%;
+                font-weight: bold;
+            }
+            .field-value {
+                float: right;
+                width: 79%;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+***  PROGRAM & SERVICES, LANDING PAGES  ***
+***************************************************************************************/
+body.node-type-program, .node-type-services, .node-type-appointment-office  {
+    .wrapper .region.region-content {
+        // background-color: white;
+        // width: 100%;
+        
+        .node-landing-toparea {
+        
+            padding-bottom: 20px;
+        
+            /* Top-Left details area */
+            .detail-descr {
+                padding-bottom: 15px;
+            }
+            .node-fieldlabelvalue {
+                padding: 5px 0px;
+                .fieldlabel {
+                    font-weight: bold;
+                }
+            }
+            #tagsform {
+                border: 1px solid #ccc;
+                overflow: hidden;
+                padding: 10px;
+                margin-top: 20px;
+                .tag-labelinput {
+                    label {
+                        margin-bottom: 0px;
+                        padding-bottom: 0px;
+                    }
+                    input#tags {
+                        width: 100%;
+                        margin-top: 0px;
+                    }
+                }
+                .tags-submit, .tags-cancel {
+                    float: left;
+                    padding: 10px 20px;
+                    margin: 5px;
+                }
+            }
+            
+            /* Top-Right "Contact" area */
+            .contactinfo-container {
+                background-color: #f5f5f5;
+                padding: 20px;
+                h2 {
+                    margin: 0px;
+                    padding-bottom: 20px;
+                }
+                .contactinfo-organization {
+                    margin-bottom: 5px;
+                }
+                .contactinfo-list {
+                    list-style: none;
+                    padding: 0px;
+                    overflow: hidden;
+                    .contactinfo-item {
+                        clear: both;
+                        overflow: hidden;
+                        padding: 5px 0px;
+                        .contactinfo-fieldvalue {
+                            width: 50%;
+                            display: block;
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .related-events  {
+            .description {
+                display: none;
+            }
+            .event-calendarlinks {
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+/*************************
+ ***                   ***
+ ***   EVENTS DETAILS  ***
+ ***                   ***
+ *************************/
+.node-event { padding:2%;}
+ 
+.eventslanding-columns .node-title { display:none;}
+ 
+.eventslanding-columns {
+	float:left;
+	margin-bottom:20px;
+	width:100%;
+}
+.eventslanding-columns .eventslanding-column-left {
+	float:left;
+	margin-bottom:20px;
+	width:33%;
+}
+.eventslanding-columns .eventslanding-column-right {
+	float:left;
+	width:65%;
+}
+.eventslanding-columns .eventslanding-column-left .when{
+	color:#363636;
+	font-family:"latoblack", sans-serif;
+	font-weight:normal;
+}
+.eventslanding-columns .eventslanding-column-left .when h3,
+.eventslanding-columns .eventslanding-column-right .where h3{
+	color:#6885a2;
+	font-family:"latoblack", sans-serif;
+	font-size:18px;
+	font-weight:normal;
+	margin: 0 0 5px;
+	padding:0px;
+}
+
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer {
+	float:left; 
+	margin-top:10px;
+	width:100%;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container {
+	float:left;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container.calendar-outlook a{
+	background-color:#f0d124;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container a {
+	color:#ffffff;
+	display:block;
+	float:left;
+	font-family:"latoregular", sans-serif;
+	font-size:10px;
+	font-weight:normal;
+	height:15px;
+	line-height:15px;
+	margin-right:10px;
+	padding-left:3px;
+	width:12px;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container a img {
+	display:none;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container.calendar-gcal a{
+	background-color:#44b3e7;
+}
+.eventslanding-columns .eventslanding-column-left .calendar-icons-mastercontainer .calendar-icon-container.calendar-ycal a {
+	background-color:#8c30bb;
+}
+
+.eventslanding-columns .eventslanding-column-right .event-address {
+	color:#363636;
+	float:left;
+	font-family:"latoblack", sans-serif;
+	font-weight:normal;
+	margin-bottom:15px;
+	width:100%;
+}
+.eventslanding-columns .eventslanding-column-right .details{
+		color:#363636;
+		float:left; 
+		font-family: "latoregular", sans-serif;
+		font-weight:normal;
+		width:100%;
+}
+.eventslanding-columns .eventslanding-column-right .contact-info { color:#363636; margin-top:10px;}
+.eventslanding-columns .eventslanding-column-right .contact-info .eventslanding-label { color:#363636; font-family:"latoblack", sans-serif; font-weight:normal;}
+
+.viewhide-map{ color:#6885a2;}
+
+ /*************************
+ ***                    ***
+ *** EXPORT DRILL DOWN  ***
+ *** /export/opportunities/by-industry?cat=learn&subcat=information ***
+ **************************/
+ .mobile-only { display:none;}
+	body.page-export.page-exportportal .exportdotgov-landingpage-mastercontainer {
+		float: none;
+	}
+
+/**************************
+ ***                    ***
+ ***  WHATS NEW THEME   ***
+ ***                    ***
+ **************************/
+ 
+ .view-what-s-new {
+	.views-row { 
+		margin-left:-15px;
+		margin-right:-15px;
+		.views-field-field-whats-new-link {	}
+		.views-field-body {
+			background-color:#eff2f5;
+		}
+		
+	}
+ }
+ 
+ #edit-submit-what-s-new {
+	background-color:#f75b49;
+	border:0px solid;
+	color:#ffffff;
+	cursor:pointer;
+	float:left;
+	font-family:"latoblack";
+	height:40px;
+	margin:0px;
+	padding:0 10px;
+	width:60px;
+ }
+ 
+ #edit-date-filter-value-wrapper{
+	float:left;
+	margin-bottom:10px;
+	margin-top:10px;
+	width:100%;
+	.container-inline-date {
+		float:left;
+		margin-bottom:10px;
+		margin-left:3%;
+		margin-top:10px;
+		padding-bottom:0;
+		padding-top:0;
+		width:97%;
+		clear:both;
+		.form-item {
+			float:left;
+			display:inline-block;
+			label {
+				font-family:"latoblack";
+				font-size:14px;
+				font-weight:normal;
+				padding-bottom:5px;
+			}
+			.date-padding{
+				width:100%;
+				padding:0;
+			}
+		}
+
+		.form-item.form-type-date-select{
+			margin-right:3%;
+			width:97%;
+			
+		}
+	}
+	
+	.views-exposed-form .form-item,
+	.views-exposed-form .form-submit{
+		margin-right:5px;
+	}
+	.dk_container{
+	float:left;
+	width:100%;
+		a{
+			background-color: #6784a3;
+			border: 1px solid #fff;
+			color: #fff;
+			font-family: "latoblack",sans-serif;
+			font-size: 11px;
+			font-weight: normal;
+			height: inherit;
+			line-height: 35px;
+			text-transform: uppercase;
+		}
+	}
+	.dk-selected:after { border:0px solid; text-transform:uppercase;}
+	.dk-selected { border:0px solid;}
+	.element-invisible {
+		clip: rect(1px, 1px, 1px, 1px);
+		height:1px;
+		overflow:hidden;
+		position:absolute;
+	}
+ }
+ 
+ /**************************
+ ***                    ***
+ ***  PROGRAMS/SERVICES ***
+ ***                    ***
+ **************************/
+ .node-services,
+ .node-program {
+ 	.node-landing-toparea {
+		padding:20px 5px 20px 5px;
+			.showtagui {
+			top:10px;
+			position:relative;
+			}
+			
+		}
+	
+	.has-results {
+				margin-top:30px;
+			}
+ 
+ }
+ 

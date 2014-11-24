@@ -1,0 +1,5 @@
+The preferred location for your APNS certificate files is a folder outside of
+your web root, i.e. a folder not accessible through the Internet.
+Alternatively, you can place your certificates into this folder.
+
+Please consult the README.txt file for more details.

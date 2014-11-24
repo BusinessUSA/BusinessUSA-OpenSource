@@ -1,0 +1,465 @@
+//
+// Front Page
+// --------------------------------------------------
+
+.region.region-frontcontent{
+	.make-xs-column(12);
+
+	#wizard-list-with-description{
+		.make-sm-column(4.5;4px);
+	}
+
+	#wizard-list-all{
+		.make-sm-column(3.5;4px);
+	}
+
+	#news-section-carousel{
+		.make-sm-column(4;4px);
+	}
+
+	#frontpage-locateresources{
+		.make-sm-column(8;4px);
+	}
+
+	#frontpage-successstories{
+		.make-sm-column(4;4px);
+	}
+}
+body.not-administrator .wizard-list-all .node-add-swim-lane-page {
+    display: none !important;
+}
+
+//
+// List Group
+// --------------------------------------------------
+
+
+//
+// List group variables
+// --------------------------------------------------
+
+
+@images: "/sites/all/themes/bizusa/images";
+
+
+// List group mixins
+// --------------------------------------------------
+
+.grouplist-wizarditem(@my-background-image;) {
+	background-image: url("@{images}/@{my-background-image}");
+	background-position: 10px 50%;
+	background-repeat: no-repeat;
+	background-color: @brand-primary-green;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 55px;
+	&:hover,
+	&:focus {
+		color: #fff;
+	  	background-color: @brand-primary-blue;
+	}
+}
+
+//
+// List group for wizards that have a description (front page)
+// --------------------------------------------------
+
+.list-group.wizard-list{
+	margin-bottom: 0;
+	.list-group-item:hover,
+	.list-group-item:focus {
+	  &.start-a-business .launch-link{
+	  	color: #555;
+	  }
+	}
+	a.list-group-item{
+		padding-top: 15px;
+		padding-left: 50px;
+		.list-group-item-heading{
+			font-size: @font-size-h2;
+			line-height: 20px;
+			letter-spacing: -1px;
+			padding-top: 5px;
+		}
+		p{
+			font-family: @font-family-sans-serif;
+			padding-bottom: 15px;
+			padding-top: 5px;
+		}
+	}
+	a.example-wizard-1{
+		background: url("@{images}/wiz-start-a-business-new.png") no-repeat 10px 9px transparent;
+		background-color: #fff;
+		.list-group-item-heading{
+			color: @btn-primary-bg;
+		}
+		p{
+			color: @text-color;
+		}
+	}
+	a.example-wizard-2{
+		background: url("@{images}/wiz-access-financing.png") no-repeat 10px 9px transparent;
+		background-color: @brand-primary-blue;
+		.list-group-item-heading{
+			color: #fff;
+		}
+		p{
+			color: #fff;
+		}
+		.launch-link{
+			color: #fff;
+		}
+	}
+}
+
+
+//
+// List group for all wizards(front page)
+// --------------------------------------------------
+
+.list-group.wizard-list-all{
+	.list-group-item{
+		border-color: #fff;
+		color: darken(@brand-primary-blue, 10%);
+		background-color: @brand-primary-green;
+		font-family: @font-family-sans-serif-bold-italic;
+		&:hover,
+		&:focus {
+			color: #fff;
+		  	background-color: @brand-primary-blue;
+		}
+
+		//Adding icon to wizard list
+
+		&.example-wizard-1 { .grouplist-wizarditem("wiz-start-a-business.png"); }
+		&.example-wizard-2 { .grouplist-wizarditem("wiz-access-financing.png"); }
+		&.export { .grouplist-wizarditem("wiz-explore-exporting.png"); }
+		&.find-opportunities { .grouplist-wizarditem("wiz-find-opportunities.png"); }
+		&.resource-grow-your-business { .grouplist-wizarditem("wiz-grow-your-business.png");}
+		&.healthcare {.grouplist-wizarditem("wiz-healthcare.png");}
+		&.veterans {.grouplist-wizarditem("wiz-veterans.png");}
+		&.taxes-and-credits {.grouplist-wizarditem("wiz-taxes.png");}
+		&.jobcenter-wizard {.grouplist-wizarditem("wiz-jobs.png");}
+		&.select-usa {.grouplist-wizarditem("wiz-select-usa.png");}
+		&.disaster-assistance {.grouplist-wizarditem("wiz-disaster-assistance.png");}
+		&.find-green-opportunities {.grouplist-wizarditem("wiz-green-opportunities.png");}
+		&.browseregulations {.grouplist-wizarditem("wiz-browse-regulations.png");}
+		&.tour {.grouplist-wizarditem("wiz-tour.png");}
+		&.training-materials-portal {.grouplist-wizarditem("wiz-training.png");}
+		&.-patent-trademark-office {.grouplist-wizarditem("wizard-images/PTO-icon.png");}
+	}
+}
+
+
+
+
+//
+// Panel
+// --------------------------------------------------
+
+
+//
+// panel inside a carousel (front page)
+// --------------------------------------------------
+.panel.panel-carousel{
+	box-shadow: none;
+	.panel-heading{
+		text-align: center;
+		text-transform: uppercase;
+		padding-bottom: 30px;
+		//border-bottom: 1px solid #F0F0F0;
+		a{
+			color: @btn-primary-bg;
+		}
+	}
+}
+
+//
+// panel success stories (front page)
+// --------------------------------------------------
+.panel.panel-success-stories{
+	background: url("@{images}/SuccessStories_bg.jpg") no-repeat scroll bottom center #797b81;
+	background-size: 105%;
+	a{
+		color: #fff;
+	}
+	.panel-heading{
+		text-align: center;
+		a{
+			font-size: @font-size-h3;
+		}
+	}
+	.panel-body{
+		text-align: center;
+		a{
+			font-family: @font-family-sans-serif-italic;
+			font-size: @font-size-h4;
+			&:hover{
+				text-decoration: none;
+			}
+		}
+		.views-slideshow-controls-bottom{
+			a{
+				margin-right: 10px;
+				font-family: @font-family-sans-serif-bold-italic;
+			}
+		}
+	}
+}
+
+
+//
+// Carousel
+// --------------------------------------------------
+
+#carousel1{
+	.bx-controls{
+		background-color: @brand-primary-blue;
+	}
+	.bx-wrapper {
+	    margin-bottom: 0;
+	    background-color: @brand-primary-green;
+	}
+	.bx-wrapper .bx-pager, 
+	.bx-wrapper .bx-controls-auto {
+	    bottom: 0px;
+	    position: static;
+	}
+	.bx-wrapper .bx-pager {
+		padding-bottom: 10px;
+	}
+	.bx-wrapper .bx-controls-direction a {
+		top: 94%;
+	}
+	.bx-wrapper .bx-viewport{
+		background-color: transparent;
+	}
+}
+
+#carousel2{
+	.bx-wrapper .bx-pager, 
+	.bx-wrapper .bx-controls-auto {
+	    position: absolute;
+    	top: 20px;
+    	width: 100%;
+    	height: 30px;
+    	text-align: center;
+	}
+	.bx-wrapper {
+	    margin-bottom: 0;
+	}
+}
+
+#carousel1 .bx-wrapper .bx-pager.bx-default-pager a:hover, 
+#carousel1 .bx-wrapper .bx-pager.bx-default-pager a.active{
+	background-color: @brand-primary-green;
+}
+
+#carousel1 .bx-wrapper .bx-controls-direction a {
+	z-index: 1029;
+}
+
+#carousel1 .bx-wrapper .bx-pager.bx-default-pager a,
+#carousel2 .bx-wrapper .bx-pager.bx-default-pager a{
+	background-color: #ccc;
+}
+
+#carousel2 .bx-wrapper .bx-pager.bx-default-pager a:hover, 
+#carousel2 .bx-wrapper .bx-pager.bx-default-pager a.active{
+	background-color: @btn-primary-bg;
+}
+
+/***********************
+***                  ***
+*** HOMEPAGE UPDATES ***
+***                  ***
+***********************/
+
+
+#locationsList{
+	.view-front-page-resource-and-events-views{
+		.make-sm-column(4;4px);
+		.view-header{
+			h2{
+				font-family: @font-family-sans-serif-bold-italic;
+				margin-top: 0;
+				padding-left: 25px;
+			}
+		}
+		.view-content{
+			.views-row{
+				background: url("/sites/all/themes/bizusa/images/check.png") no-repeat scroll 0 3px rgba(0, 0, 0, 0);
+			    margin-bottom: 20px;
+			    padding-left: 25px;
+				a{
+					font-family: @font-family-sans-serif;
+				}
+			}
+		}
+	}
+}
+
+
+
+.slider .panel .panel-heading {
+	margin-top:10px;
+	h3 {font-size:19px;}
+}
+#carousel2 .bx-wrapper .bx-pager,
+#carousel2 .bx-wrapper .bx-controls-auto {
+	top:30px;
+}
+
+#mainNavigation .nav.navbar-nav > li > a, #scrollNavigation .nav.navbar-nav > li > a {
+	color:#ffffff;
+}
+ul.navbar-nav li.dropdown ul.dropdown-menu {
+	padding-bottom:0px;
+	padding-top:0px;
+	background-color:#ffffff;
+	.sub-arrow {
+		margin-top:16px;
+		}
+	li { border-bottom: 2px solid #c3ced9;
+		.mega-menu {
+			li{ border-bottom:0px solid;
+				.container { padding:0px;
+					
+				}
+			}
+		}
+		a { line-height:40px}
+	}
+	li:hover { background-color:#7892ac; color:#ffffff;}
+	.list-group-item,
+	.dropdown-menu li	{ 
+		border:1px solid #c3ced9; 
+		background-color: #7892ac;
+		color:#ffffff;
+	}
+	ul.mega-menu {
+		margin-top:-47px !important;
+		background-color:transparent;
+		border:0px solid;
+		box-shadow:none;
+		left:16px !important;
+		
+		.list-group{
+			margin-right:-5px;
+		}
+	}
+	
+}
+.mega-menu-left, .mega-menu-right {
+	width:50%;
+	float:left;
+	display:inline;
+	a{ background-color:#7892ac;}
+	a:hover { background-color:#ffffff!important; color:#7892ac !important}
+}
+.mega-menu-right { position:relative; left:5px;}
+.mega-menu-anchor { background-color:transparent !important; border:0px solid !important; margin-top:1px;}
+
+ul.navbar-nav li.dropdown ul.dropdown-menu li a.list-group-item { line-height: 18px; padding: 20px 10px; margin:0px;}
+
+#special-group-dropdown {
+	background-color:#7892ac;
+	li {
+		margin-left:0px;
+		padding:0px;
+		a{
+			line-height:18px;
+			padding:20px 15px;
+			color:#ffffff;
+		}
+		a:hover { background-color:#ffffff!important; color:#7892ac !important}
+	}
+}
+
+.translate ul .container {
+	background-color: rgba(255, 255, 255, 0.9);
+	border:1px solid #cccccc;
+	height:65px;
+	min-width:290px;
+	padding:10px 7px 10px 10px;
+	position:absolute;
+	right:-70px;
+	top:0px;
+	width:auto;
+	
+	#google_translate {
+	
+		.sitewide-googletranslate-leftside {
+			float:left;
+			.sitewide-googletranslate-googleicon-container {
+				float:left;
+				height:45px;
+				padding-right:10px;
+				img {
+					height:15px;
+					margin-top:10px;
+					width:15px;
+				}
+			}
+			.sitewide-googletranslate-label {
+				float:left;
+				font-family:"latoblack";
+				line-height:38px;
+				text-transform:uppercase;
+			}
+		}
+		.sitewide-googletranslate-rightside {
+			float:right;
+			input.sitewide-googletranslate-busa-translate-language-indicator {
+				background-color: #6885a2 !important;
+				background-image: url("/sites/all/themes/bizusa/images/translate-selectlanguage.png");
+				border: medium none;
+				color: white;
+				cursor: pointer;
+				font-family: "latoblack",sans-serif;
+				font-weight: normal !important;
+				height: 45px;
+				line-height:38px;
+				margin-right:5px;
+				padding-left:20px;
+				position:absolute;
+				right:0px;
+				text-align:left;
+				text-transform:uppercase;
+				top:7px;
+				width:175px;
+			}
+		}
+	
+	}
+}
+.sitewide-googletranslate-optionsmastercontainer {
+	background-color: #f75b49;
+	font-weight: normal;
+	height: 300px;
+	overflow: auto;
+	position: absolute;
+	right: 0px;
+	top: 52px;
+	width: 180px;
+	z-index: 1;	
+}
+.sitewide-googletranslate-optioncontainer {
+	padding:0px;
+}
+.sitewide-googletranslate-optioncontainer a {
+	border-bottom:1px solid #f98477;
+	display:block;
+	font-weight:normal;
+	line-height:20px !important;
+	outline:0;
+	padding: 5px 30px 5px 20px;
+	color:#ffffff;
+	font-family:"latoregular";
+	text-decoration:none;
+}
+#navigation #block-system-main-menu ul li a {
+	color:#ffffff;
+	font-family:"latoregular";
+	text-decoration:none;
+}

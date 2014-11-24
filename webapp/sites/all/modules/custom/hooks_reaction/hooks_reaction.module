@@ -1,0 +1,543 @@
+<?php
+/*
+	Version 1.8
+	
+	ChangeLog
+        1.8
+            2013-12-13
+            Removed usage of drupal_get_path(), since this function is not guaranteed to be loaded every time this module-file is included/executed (when Drupe is not fully bootstrapped - i.e. When drupal is not fully-bootstrapping to print a cached page and there is an implementation of HOOK_exit)
+        1.7
+            Implemented use of reactions-preinit directory
+        1.5
+            Made sure pre-init code of this .module file only gets fired once (even if this file is included multiple times)
+                This may not have been necessary since we have unwrapped function declarations in this time at the current time
+			Force loads overridable_include when the module is enabled but not loaded yet
+			Creates overridable_include safe-guards when that module is disabled
+            Flushes the module_implements() cache when saving new code
+        1.4
+            Implemented options to execute code from db on pre-init (through Drupal configuration)
+		1.3
+			Bug-fix - ONLY use overridable_include when the function is available (failed this in last revision)
+		1.2
+			Uses overridable_include when the function is available
+		1.1
+			Fixed an issue where hook_menu could not be created through hooks_reaction_add()
+			Fixed a bug where hook-reactions would not return data
+*/
+
+
+/* 
+    START: PRE-INIT CODE - This code will execute during inclusion of this file - 
+    This code within this function will only execute once.
+    The call to this function will and MUST be at the end of this file (after all the functions in this file are declared)
+*/
+function hooks_reaction_preinit() {
+
+    global $initTracker;
+    if ( empty($initTracker) ) { $initTracker = array(); }
+
+    // Only fire the following code block once (even if this file is included multiple times)
+    if ( empty($initTracker['hooks_reaction']) ) {
+
+        // Ensure this code block does not get run again 
+        $initTracker['hooks_reaction'] = microtime();
+        
+        // Setup
+        global $hookReactions;
+        $hookReactions = new HookListenerCollection();
+        global $hookReactionsHasInitialized;    // This marker states if hook_init() for this module has fired and completed or not 
+        $hookReactionsHasInitialized = false;
+
+        // Execute pre-init code 
+        if ( 
+            strpos( $_SERVER["REQUEST_URI"], "-NO-HOOK-REACTION-") === false 
+            || strpos( $_SERVER["REQUEST_URI"], "-NO-PREINIT-HOOK-REACTION-") === false 
+            || strpos( $_SERVER["REQUEST_URI"], "-NO-DB-HOOK-REACTION-") === false 
+        ) {
+            if ( variable_get('hooksreaction_nopreinit', '') !== 'nopreinit' ) {
+                $code = hooks_reaction_loadCodeFromSettings('preinit');
+                if ( !empty($code) && $code !== "" ) {
+                    eval($code);
+                }
+            }
+        }
+        
+        // Eval (include) code from (organizaed reaction) files
+        if ( 
+            strpos( $_SERVER["REQUEST_URI"], "-NO-HOOK-REACTION-") === false 
+            || strpos( $_SERVER["REQUEST_URI"], "-NO-FILE-HOOK-REACTION-") === false 
+            || strpos( $_SERVER["REQUEST_URI"], "-NO-PREINIT-HOOK-REACTION-") === false 
+        ) {
+            if ( is_dir(__DIR__  . '/reactions-preinit') ) {
+                $files = scandir(__DIR__  . '/reactions-preinit');
+                foreach ( $files as $file ) {
+                    if ( strtolower(substr($file, -4)) === '.php' ) {
+                        $filePath = __DIR__  . '/reactions-preinit/' . $file;
+                        include $filePath;
+                    }
+                }
+            }
+        }
+    }
+}
+/* END: PRE-INIT CODE - This code will execute during inclusion of this file */
+
+function hooks_reaction_init() {
+
+	// Safe-guard option incase we ever shoot ourselvs in the foot (i.e. someon puts an exit() into a common hook or global-code)
+	if ( strpos( $_SERVER["REQUEST_URI"], "-NO-HOOK-REACTION-") !== false ) {
+        // No not implement this module
+		return;
+	}
+	
+	// Eval (include) code from settings (pre-file-reactions)
+	$code = hooks_reaction_loadCodeFromSettings('pre');
+    if ( 
+        strpos( $_SERVER["REQUEST_URI"], "-NO-DB-HOOK-REACTION-") === false 
+        && strpos( $_SERVER["REQUEST_URI"], "-NO-PREFILE-HOOK-REACTION-") === false 
+    ) {
+        if ( !empty($code) && $code !== "" ) {
+            eval($code);
+        }
+    }
+    
+	// Eval (include) code from (global reactions) file
+	$filePath = __DIR__ . '/reactions.php';
+	if ( file_exists($filePath) ) {
+        include($filePath);
+	}
+	
+	// Eval (include) code from (organizaed reaction) files
+    if ( strpos( $_SERVER["REQUEST_URI"], "-NO-FILE-HOOK-REACTION-") === false ) {
+        if ( is_dir(__DIR__  . '/reactions') ) {
+            $files = scandir(__DIR__  . '/reactions');
+            foreach ( $files as $file ) {
+                if ( strtolower(substr($file, -4)) === '.php' ) {
+                    if ( stripos( $_SERVER["REQUEST_URI"], "-NO-" . $file . "-HOOK-REACTION-") === false ) {
+                        $filePath = __DIR__  . '/reactions/' . $file;
+                        include $filePath;
+                    }
+                }
+            }
+        }
+	}
+    
+	// Eval (include) code from settings (post-file-reactions)
+    if ( 
+        strpos( $_SERVER["REQUEST_URI"], "-NO-DB-HOOK-REACTION-") === false 
+        && strpos( $_SERVER["REQUEST_URI"], "-NO-POSTFILE-HOOK-REACTION-") === false 
+    ) {
+        $code = hooks_reaction_loadCodeFromSettings();
+        if ( !empty($code) && $code !== "" ) {
+            eval($code);
+        }
+	}
+    
+	global $hookReactionsHasInitialized;
+	$hookReactionsHasInitialized = true;
+}
+
+/*
+ * resource connectMySQL()
+ * Connects to the MySQL database that this Drupal instance is/will-be using
+ * This is meant to create a connection to the database that bypasses Drupal's db_query() and query alter hooks
+ * This is also ment to be used in situations where a connection to the database is needed when Drupal is not fully boot-strapped
+ */
+if ( function_exists('connectMySQL') === false ) {
+	function connectMySQL() {
+		$dbAuth = $GLOBALS["databases"]["default"]["default"];
+		$host = $dbAuth["host"];
+		$user = $dbAuth["username"];
+		$pass = $dbAuth["password"];
+		$port = $dbAuth["port"];
+		$db = $dbAuth["database"];
+		if ( !empty($port) ) {
+		  $host .= ":" . $port;
+		}
+		$link = mysql_connect($host, $user, $pass);
+		mysql_select_db($db, $link);
+		return $link;
+	}
+}
+
+/*
+ *  Adds a function to the hook array for a given hook
+ * @arg $drupalHookName * in the drupal hook function name; hook_*
+ * @arg $functionObj callable PHP function to run with this drupal hook
+ * @arg groupName an optional string to group this code with for organization sake when visually looking 
+ *          at hooks, it does not effect anything functonality wise.
+ * @arg $priorityWeight Determins if this instance of hook_foo is fired before or after other instances of hook_foo - 
+ *          The higher the number the later it will be fired, the lower the earlier. Setting to nagative -100 for example 
+ *          may make this instance of hook_fire first first (before other instances of hook_foo).
+ *          If boolean given -
+ *				if given TRUE:	Places this instance of the top of the stack of hooks (fire first)
+ *				if given FALSE:	Places this instance to the bottom of the stack of hooks (fire last)
+ *			It is NOT recommended to use booleans for this parameter.
+ */
+function hooks_reaction_add($drupalHookName, $functionObj, $groupName = "", $priorityWeight = 0) {
+
+	// Make sure $drupalHookName dosnt start with hook_
+	if ( strtolower(substr($drupalHookName, 0, 5)) === 'hook' ) {
+		$drupalHookName = substr($drupalHookName, 5);
+	}
+
+	// Get the source code of this function if possible (we are going to assume the previous call in stack has this)
+	if ( variable_get('hooks_reaction_sourcescan', 'enabeled') === 'enabeled' ) {
+		$backtrace = debug_backtrace();
+		$thisCaller = $backtrace[0];
+		if ( file_exists($thisCaller["file"]) ) {
+			$sourceFile = file_get_contents($thisCaller["file"]);
+			include_once('sites/all/libraries/PHPParser/bootstrap.php');
+			$parser = new PHPParser_Parser;
+			$statements = $parser->parse(new PHPParser_Lexer($sourceFile));
+			$functSource ="";
+			for ( $x = 0 ; $x < count($statements) ; $x++ ) {
+				if ( $statements[$x]->line > $thisCaller['line'] ) {
+					$prettyPrinter = new PHPParser_PrettyPrinter_Zend;
+					if ($x !== 0) { $x--; }
+					$thisCallerCode = $statements[$x];
+					$functSource = $prettyPrinter->prettyPrintExpr($thisCallerCode);
+					break;
+				}
+			}
+		} else {
+			$functSource = "(Unable to obtain source-code)";
+		}
+	}
+	
+	// Setup hookReactions array if it is not already
+	global $hookReactions;
+	if ( !isset($hookReactions) ) {
+		$hookReactions = new HookListenerCollection();
+	}
+	
+	// Setup a Hook Listener for this Drupal hook if it is not setup already
+	$hookReactions->addHookListener($drupalHookName);
+	
+	// Add this function associated under this Hook Listener
+	$hookReactions->getListener($drupalHookName)->addReaction(
+		$functionObj, 
+		$functSource, 
+		$thisCaller["file"], 
+		$thisCaller['line'], 
+		$groupName, 
+		$priorityWeight
+	);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function hooks_reaction_menu() {
+
+  $items = array();
+
+  // Execute hook-reactions for this hook if there is one
+	global $hookReactions;
+	$listener = $hookReactions->getListener('menu');
+	if ( $listener !== false ) {
+		$args = array();
+		$responses = $listener->executeAllReactions( $args );
+		foreach ( $responses as $response ) {
+			if ( is_array($response) ) {
+				$items = array_merge($items, $response);
+				
+			}
+		}
+	}
+  
+  $items['admin/config/content/hooks_reaction'] = array(
+    'title' => 'Drupal Hook Reactions',
+    'description' => 'Configure code to execute when certain Drupal hooks are triggered',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hooks_reaction_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+function _removeClosures($mixed) {
+	if ( is_array($mixed) ) {
+		foreach( $mixed as &$value ) {
+			$value = _removeClosures($value);
+		}
+		return $mixed;
+	} elseif ( is_callable($mixed) ) {
+		return "(function)";
+	} elseif ( is_object($mixed) ) {
+		$props = get_object_vars($mixed);
+		$retObj = new stdClass();
+		foreach ( $props as $key=>$prop ) {
+			$retObj->$key = _removeClosures($prop);
+		}
+		return $retObj;
+	} else {
+		return $mixed;
+	}
+}
+
+function hooks_reaction_form($form, $form_state) {
+	
+	$form = array();
+	global $hookReactions;
+	$form['CurrentHooks'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Current Hooks',
+		'#collapsible' => 1,
+		'#collapsed' => 1,
+		'#description' => ( !is_callable('kprint_r') ) ? "You must enable the dev module to see this information" : kprint_r(_removeClosures($hookReactions), true)
+    );
+	
+	if ( isset($_POST["newPreInitCode"]) ) {
+		$code = $_POST["newPreInitCode"];
+		hooks_reaction_saveCodeToSettings($code, 'preinit');
+        module_implements(null, null, true);
+		drupal_set_message("Your configuration has been saved.", "status", false);
+	}
+    
+	if ( isset($_POST["newPreCode"]) ) {
+		$code = $_POST["newPreCode"];
+		hooks_reaction_saveCodeToSettings($code, 'pre');
+        module_implements(null, null, true);
+		drupal_set_message("Your configuration has been saved.", "status", false);
+	}
+    
+	if ( isset($_POST["newCode"]) ) {
+		$code = $_POST["newCode"];
+		hooks_reaction_saveCodeToSettings($code);
+        module_implements(null, null, true);
+		drupal_set_message("Your configuration has been saved.", "status", false);
+	}
+
+	$form['newPreInitCodeContainer'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Reactions stored in settings (Drupal\'s DB) - pre-init (before hook_init is called)',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+		'newPreInitCode' => array(
+			'#type' => 'textarea',
+			'#default_value' => hooks_reaction_loadCodeFromSettings('preinit'),
+			'#description' => t('Do not use php &lt;?php ~ ?&gt; tags.<br/>This code will be run before all the below files are loaded.'),
+			'#size' => 30,
+			'#rows' => 15,
+			'#required' => FALSE,
+		)
+    );
+    
+	$form['newPreCodeContainer'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Reactions stored in settings (Drupal\'s DB) - pre-file run',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+		'newPreCode' => array(
+			'#type' => 'textarea',
+			'#default_value' => hooks_reaction_loadCodeFromSettings('pre'),
+			'#description' => t('Do not use php &lt;?php ~ ?&gt; tags.<br/>This code will be run before all the below files are loaded.'),
+			'#size' => 30,
+			'#rows' => 15,
+			'#required' => FALSE,
+		)
+    );
+
+	$form['CurrentReactionsCode'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Reactions stored in file(s)',
+		'#collapsible' => 1,
+		'#collapsed' => 0
+    );
+	$form['CurrentReactionsCode']['reactions'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'reactions.php',
+		'#collapsible' => 1,
+		'#collapsed' => 1,
+		'#description' =>
+			'<textarea style="width: 100%;" rows="25" disabled="disabled">' . 
+			file_get_contents(__DIR__ . '/reactions.php') . 
+			'</textarea>'
+    );
+	if ( is_dir(__DIR__  . '/reactions') ) {
+		$files = scandir(__DIR__  . '/reactions');
+		foreach ( $files as $file ) {
+			if ( strtolower(substr($file, -4)) === '.php' ) {
+                $fileContents = file_get_contents( __DIR__  . '/reactions/' . $file );
+				$form['CurrentReactionsCode'][] = array(
+					'#type' => 'fieldset',
+					'#title' => $file,
+					'#collapsible' => 1,
+					'#collapsed' => 1,
+					'#description' =>
+						'<textarea style="width: 100%;" rows="25" disabled="disabled">' . 
+						$fileContents . 
+						'</textarea>'
+				);
+			}
+		}
+	}
+	
+	$form['newCodeContainer'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Reactions stored in settings (Drupal\'s DB) - post-file run',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+		'newCode' => array(
+			'#type' => 'textarea',
+			'#default_value' => hooks_reaction_loadCodeFromSettings(),
+			'#description' => t('Do not use php &lt;?php ~ ?&gt; tags.<br/>This code will be run after all the above files are loaded.'),
+			'#size' => 30,
+			'#rows' => 15,
+			'#required' => FALSE,
+		)
+    );
+	
+	$form['submitButton'] = array(
+		'#type'  => 'button',
+		'#value' =>  t('Save Configuration'),
+	);
+	
+	return $form;
+}
+
+function hooks_reaction_loadCodeFromSettings($storage = '') {
+    $storageKey = 'hooks_reaction_' . $storage . '_code';
+    $codeEncoded = variable_get($storageKey, "");
+	$code = base64_decode($codeEncoded);
+	return $code;
+}
+
+function hooks_reaction_saveCodeToSettings($code, $storage = '') {
+    $codeEncoded = base64_encode($code);
+    $storageKey = 'hooks_reaction_' . $storage . '_code';
+	variable_set($storageKey, $codeEncoded);
+}
+
+class HookListenerCollection {
+
+	public $hookListeners = array();	// An array of HookListener objects with the key being the Drupal hook associated with the listener
+	
+	public function addHookListener($drupalHook) {
+		if ( !isset($this->hookListeners[$drupalHook]) ) {
+			$newListener = new HookListener();
+			$newListener->drupalHook = $drupalHook;
+			$this->hookListeners[$drupalHook] = $newListener;
+		}
+	}
+	
+	public function getListener($drupalHook) {
+		if ( isset($this->hookListeners[$drupalHook]) ) {
+			return $this->hookListeners[$drupalHook];
+		} else {
+			return false;
+		}
+	}
+	
+	public function getInstalledTriggerFunctions() {
+		$triggerFunctions = array();
+		foreach( $this->hookListeners as $listener ) {
+			$triggerFunctions[$listener->$drupalHook] = ( $listener->triggerFunctionCode !== "" ) ? $listener->triggerFunctionCode : "(No trigger functions installed yet)" ;
+		}
+	}
+}
+
+class HookListener {
+
+	public $drupalHook = "";
+	public $reactions = array();						// An array of HookReaction objects
+	public $triggerFunctionInstalled = false;
+	public $triggerFunctionCode = "";
+	
+	public function addReaction($callable, $functSource, $addedFromFile, $addedFromLine, $groupName = "", $priorityWeight = 'default') {
+		$newReaction = new HookReaction();
+		$newReaction->function = $callable;
+		$newReaction->source = $functSource;
+		$newReaction->addedFromFile = $addedFromFile;
+		$newReaction->addedFromLine = $addedFromLine;
+		
+		switch ($priorityWeight) {
+		case 'default':
+			$this->reactions[] = $newReaction;
+			break;
+		case true:
+			array_unshift($this->reactions, $newReaction);
+			break;
+		case false:
+			$this->reactions[] = $newReaction;
+			break;
+		default:
+			if ( is_numeric($priorityWeight) ) {
+				$this->reactions[$priorityWeight] = $newReaction;
+				ksort();
+			} else {
+				$this->reactions[] = $newReaction;
+			}
+			break;
+		}
+		
+		$this->_installTriggerFunction();
+	}
+	
+	private function _installTriggerFunction() {
+		if ( $this->triggerFunctionInstalled === false ) {
+			$this->triggerFunctionCode = $this->_buildHookTriggerFunction();
+			if ( $this->triggerFunctionCode !== false ) {
+				eval( $this->triggerFunctionCode );
+				$this->triggerFunctionInstalled = true;
+			}
+		}
+	}
+	
+	public function executeAllReactions(&$arguments = array()) {
+		$ret = array();
+		foreach ( $this->reactions as $reaction ) {
+			$ret[] = $reaction->execute($arguments);
+		}
+		return $ret;
+	}
+	
+	private function _buildHookTriggerFunction() {
+	
+		// If the trigger-function exists already, then this is a hook that is in use by this (hooks_reaction) module
+		$hook = $this->drupalHook;
+		if ( function_exists("hooks_reaction_$hook") ) {
+			return false;
+		}
+	
+		$arguments = array();
+		$firstReaction = new ReflectionFunction($this->reactions[0]->function);
+		foreach ( $firstReaction->getParameters() as $hookListenerParam ) {
+			$newArgument = '';
+			if ( $hookListenerParam->isPassedByReference() ) { $newArgument .= '&'; }
+			$newArgument .= '$';
+			$newArgument .= $hookListenerParam->getName();
+			$arguments[] = $newArgument;
+		}
+		$arguments = implode(", ", $arguments);
+		
+		// Add this function to be triggered by drupal when calling its hooks
+		return "
+			function hooks_reaction_$hook($arguments) {
+				\$args = array($arguments);
+				global \$hookReactions;
+				return \$hookReactions->getListener('$hook')->executeAllReactions(\$args);
+			}
+		";
+	}
+}
+
+class HookReaction {
+	public $function;
+	public $source;
+	public $addedFromFile;
+	public $addedFromLine;
+	
+	public function execute(&$arguments = array()) {
+		$refFunc = new ReflectionFunction($this->function);
+		$ret = $refFunc->invokeArgs($arguments);
+		return $ret;
+	}
+}
+
+
+// Call and execute pre-init / on-inclusion code - this call MUST remain at the end of this file
+hooks_reaction_preinit();

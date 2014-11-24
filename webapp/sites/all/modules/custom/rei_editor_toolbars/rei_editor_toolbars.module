@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Code for the REI Editor Toolbars feature.
+ */
+
+//include_once 'rei_editor_toolbars.features.inc';
+
+/**
+ * Implements hook_admin_menu_output_build().
+ *
+ * Creates a new success stories link that editors can use.
+ */
+function rei_editor_toolbars_admin_menu_output_build(&$content) {
+  global $user;
+
+  // Add new top-level item to the menu.
+  if (in_array('Editor', $user->roles)) {
+    if (isset($content['menu'])) {
+      $content['menu']['custom_report'] = array(
+        '#title' => t('Reports'),
+        '#href' => 'custom-report',
+        '#weight' => 5,
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_admin_menu_output_alter().
+ *
+ * Removes unnecessary links for editors.
+ */
+function rei_editor_toolbars_admin_menu_output_alter(&$content) {
+  global $user;
+
+  if (in_array('Editor', $user->roles)) {
+    //$content['menu']['node/add']['#title'] = t('Content');
+    //$content['menu']['node/add']['#weight'] = -14;
+
+    // Remove unnecessary links.
+    unset($content['menu']['admin/structure']);
+    unset($content['menu']['admin/appearance']);
+    unset($content['menu']['admin/config']);
+    unset($content['menu']['admin/help']);
+    unset($content['search']);
+    unset($content['users']);
+  }
+}

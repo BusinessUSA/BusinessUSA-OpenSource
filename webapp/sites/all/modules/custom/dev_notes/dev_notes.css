@@ -1,0 +1,30 @@
+.devnote {
+    background-color: #fff8ec;
+    color:#aa9572;
+    border: 1px solid #efe5d3; 
+    padding: 5px;
+    clear: both;
+}
+
+.devnote .devnote-controles {
+    padding-top: 8px;
+}
+
+.devnote .devnote-controles.controles-showmode-never {
+    display: none;
+}
+
+.devnote .devnote-controles-showmode-hover {
+    display: none;
+}
+.devnote:hover .devnote-controles-showmode-hover {
+    display: block;
+}
+
+.devnote .devnote-welcomemsg {
+    font-style: italic
+}
+
+.devnote-message {
+    padding-top: 8px;
+}

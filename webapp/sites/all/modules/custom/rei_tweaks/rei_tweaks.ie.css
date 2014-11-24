@@ -1,0 +1,34 @@
+/*** IE 7-8 Adjustments ***/
+@media \0screen\,screen\9 {
+  body.page-rural-export-initiative-news .dk-select-options,
+  body.one-sidebar.page-export-news .dk-select-options,
+  body.page-blog #dk0-edit-field-blog-submit-dt-value-value-month .dk-select-options,
+  body.page-whats-new .dk-select-options,
+  body.page-business-news .dk-select-options {
+    width: 102px !important;
+  }
+  body.page-rural-export-initiative-news .dk-select-options li,
+  body.one-sidebar.page-export-news .dk-select-options li,
+  body.page-blog #dk0-edit-field-blog-submit-dt-value-value-month .dk-select-options li,
+  body.page-whats-new .dk-select-options li,
+  body.page-business-news .dk-select-options li {
+    width: 102px !important;
+  }
+}
+/*** IE 9-10 Adjustments ***/
+@media screen and (min-width:0\0) {
+  body.page-rural-export-initiative-news .dk-select-options,
+  body.one-sidebar.page-export-news .dk-select-options,
+  body.page-blog #dk0-edit-field-blog-submit-dt-value-value-month .dk-select-options,
+  body.page-whats-new .dk-select-options,
+  body.page-business-news .dk-select-options {
+    width: 102px !important;
+  }
+  body.page-rural-export-initiative-news .dk-select-options li,
+  body.one-sidebar.page-export-news .dk-select-options li,
+  body.page-blog #dk0-edit-field-blog-submit-dt-value-value-month .dk-select-options li,
+  body.page-whats-new .dk-select-options li,
+  body.page-business-news .dk-select-options li {
+    width: 102px !important;
+  }
+}

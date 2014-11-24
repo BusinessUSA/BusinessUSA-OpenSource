@@ -1,0 +1,557 @@
+/*********************
+***   BLOG PAGE   ****
+*********************/
+body.page-blog {
+
+  .region-content {
+    float: left;
+    width: 70%;
+    margin-right: 3%;
+
+    #block-system-main {
+      width: 100%;
+      float: left;
+      .view-content {
+        .blog-item-container {
+          background-color: #fff;
+          width: 94%;
+          padding: 3%;
+          margin-bottom: 15px;
+          float: left;
+          box-shadow: 0 8px #E1E7ED;
+          .img-businessusa, .img-whitehouse, .img-smallbusinessadministration, .img-departmentofcommerce {
+            float: left;
+            width: 13%;
+            height: 85px;
+            display: block;
+          }
+          .img-businessusa {
+            background: url("/sites/all/themes/bizusa/images/businessusa.png") no-repeat;
+            background-position: 3px 10px;
+          }
+          .img-whitehouse {
+            background: url("/sites/all/themes/bizusa/images/whitehouse.png") no-repeat;
+            background-position: 3px 10px;
+          }
+          .img-smallbusinessadministration {
+            background: url("/sites/all/themes/bizusa/images/smallbusinessadministration.png") no-repeat;
+            background-position: 5px 15px;
+          }
+          .img-departmentofcommerce {
+            background: url("/sites/all/themes/bizusa/images/departmentofcommerce.png") no-repeat;
+            background-position: 18px 10px;
+          }
+          .businessusa, .whitehouse, .smallbusinessadministration, .departmentofcommerce {
+            float: left;
+            width: 80%;
+            margin-left: 25px;
+            h2.field-content {
+              font-size: 17px;
+              margin-top: 0;
+              padding-top: 0;
+            }
+            p {
+              margin: 0;
+            }
+            .date-display-single {
+              display: block;
+              margin-bottom: 10px;
+            }
+            a {
+              display: block;
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+      .item-list {
+        .pager {
+          li {
+            display: block;
+            float: left;
+            padding: 8px 9px;
+            font-size: 14px;
+            color: #b7b7b7;
+
+            &.pager-first.first, &.pager-last.last {
+              display: none;
+            }
+            &.pager-previous {
+              a {
+                display: block;
+                width: 21px;
+                height: 21px;
+                background: transparent url(/sites/all/themes/bizusa/images/pager-previous.png) no-repeat;
+                text-indent: -2222222px;
+              }
+            }
+            &.pager-next {
+              a {
+                display: block;
+                width: 21px;
+                height: 21px;
+                background: transparent url(/sites/all/themes/bizusa/images/pager-next.png) no-repeat;
+                text-indent: -2222222px;
+              }
+            }
+          }
+        }
+        .item-list {
+          .pager {
+            li {
+              display: block;
+              float: left;
+              padding: 8px 9px;
+              font-size: 14px;
+              color: #b7b7b7;
+
+              &.pager-first.first, &.pager-last.last {
+                display: none;
+              }
+              &.pager-previous {
+                a {
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url(/sites/all/themes/bizusa/images/pager-previous.png) no-repeat;
+                  text-indent: -2222222px;
+                }
+              }
+              &.pager-next {
+                a {
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url(/sites/all/themes/bizusa/images/pager-next.png) no-repeat;
+                  text-indent: -2222222px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+  .region-sidebar-first {
+    width: 27%;
+    float: left;
+    #block-views-blog-block_1 {
+      background-color: #fff;
+      margin-bottom: 15px;
+      h2.block-title {
+        cursor: pointer;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: #5C5C5C;
+        padding: 20px;
+        margin: 0px;
+        font-weight: normal;
+        font-family: "latoblack", sans-serif;
+        background: url(/sites/all/themes/bizusa/images/icons/block-collapsed.png) no-repeat 97% #E2E2E2;
+        &.expanded {
+          background: url(/sites/all/themes/bizusa/images/icons/block-expanded.png) no-repeat 97% #E2E2E2;
+        }
+      }
+      .view-blog {
+        .view-content {
+          padding: 10px 20px;
+          .-field-blog-source-list {
+            h2.field-content {
+              font-size: 14px;
+              margin-bottom: 15px;
+
+            }
+          }
+        }
+      }
+    }
+
+    #block-views--exp-blog-page {
+      #views-exposed-form-blog-page {
+        .views-exposed-form {
+          .views-exposed-widgets {
+            .views-exposed-widget {
+              width: 100%;
+              margin-bottom: 15px;
+              background-color: #fff;
+              padding: 0;
+
+              label:first-child {
+                cursor: pointer;
+                font-size: 13px;
+                text-transform: uppercase;
+                color: #5C5C5C;
+                padding: 20px;
+                margin: 0px;
+                font-weight: normal;
+                font-family: "latoblack", sans-serif;
+                background: url(/sites/all/themes/bizusa/images/icons/block-collapsed.png) no-repeat 97% #E2E2E2;
+                &.expanded {
+                  background: url(/sites/all/themes/bizusa/images/icons/block-expanded.png) no-repeat 97% #E2E2E2;
+                }
+              }
+
+              .views-widget {
+                .form-type-date-select {
+                  padding: 20px;
+                  #edit-field-blog-submit-dt-value-value, #edit-field-blog-submit-dt-value-value--2 {
+                    .form-item-field-blog-submit-dt-value-value-month {
+                      width: 114px;
+                      margin-right: 10px;
+                      float: left;
+                      .date-month {
+                        .dk_container {
+                          a.dk_toggle.dk_label {
+                            width: 94px !important;
+                          }
+                          .dk_options {
+                            z-index: 999;
+                          }
+                        }
+                      }
+                    }
+                    .form-item-field-blog-submit-dt-value-value-year {
+                      width: 83px;
+                      .date-year {
+                        .dk_container {
+                          a.dk_toggle.dk_label {
+                            width: 63px !important;
+                          }
+                          .dk_options {
+                            z-index: 999;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                .form-item-field-blog-category-value,
+                .form-item-field-blog-source-list-value {
+                  padding: 10px;
+                  .form-checkboxes {
+                    .bef-checkboxes {
+                      .form-item {
+                        float: left;
+                        width: 100%;
+                        .prettycheckbox {
+                          float: left;
+                        }
+                        label {
+                          display: inline-block;
+                          font-weight: normal;
+                          vertical-align: middle;
+                          position: relative;
+                          width: 82%;
+                          top: 5px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              &.views-submit-button {
+                background-color: #eff2f5;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/*********************
+***   BLOG PAGE   ****
+*********************/
+
+body.page-blog{
+
+
+  .views-widget {
+    padding: 10px 0 15px 0;
+  }
+  .prettycheckbox{
+    float: left;
+  }
+
+
+  .prettycheckbox label{
+    display: block;
+    float: left;
+    cursor: pointer;
+  }
+  label.option {
+    display: inline;
+    font-weight: normal;
+    vertical-align: middle;
+  }
+
+  .prettycheckbox a.checked {
+    position: relative;
+    //right: -6px;
+    //top: 4px;
+    background-position: 0 -17px;
+  }
+
+  .ui-datepicker {
+    width: 17em;
+    padding: .2em .2em 0;
+    display: none !important;
+  }
+}
+
+
+
+
+
+
+
+
+/**************************
+ ***                   ****
+ ***   TABLET STYLES   ****
+ ***                   ****
+ **************************/
+
+@media only screen and (min-width:768px) and (max-width:1024px){
+
+
+  /*********************
+  ***   BLOG PAGE   ****
+  *********************/
+  body.page-blog{
+    .region-content{
+      #block-system-main {
+        .view-blog{
+          .view-content{
+            .blog-item-container{
+              .img-businessusa{
+                background: url("/sites/all/themes/bizusa/images/businessusa-tab.png") no-repeat;
+                                background-position: 3px 10px;
+              }
+              .img-whitehouse{
+                background: url("/sites/all/themes/bizusa/images/whitehouse-tab.png") no-repeat;
+                                background-position-y: 10px;
+              }
+              .img-smallbusinessadministration{
+                background: url("/sites/all/themes/bizusa/images/smallbusinessadministration-tab.png") no-repeat;
+                                background-position-y: 15px;
+              }
+              .img-departmentofcommerce{
+                background: url("/sites/all/themes/bizusa/images/departmentofcommerce.png") no-repeat;
+                                background-position: 10px;
+              }
+
+            }
+          }
+        }
+      }
+    }
+    .region-sidebar-first{
+      #block-views--exp-blog-page {
+        #views-exposed-form-blog-page{
+          .views-exposed-form{
+            .views-exposed-widgets{
+              .views-exposed-widget{
+                .views-widget{
+                  .form-type-date-select{
+                    #edit-field-blog-submit-dt-value-value{
+                      .form-item-field-blog-submit-dt-value-value-month{
+                        width: 85px;
+                        margin-right: 5px;
+                        .date-month{
+                          .dk_container{
+                            a.dk_toggle.dk_label{
+                              width: 65px !important;
+                            }
+
+                          }
+                        }
+                      }
+                      .form-item-field-blog-submit-dt-value-value-year{
+                        width: 70px;
+                        .date-year{
+                          .dk_container{
+                            a.dk_toggle.dk_label{
+                              width: 50px !important;
+                            }
+
+                          }
+                        }
+                      }
+                    }
+                    .ui-datepicker{
+                      display: none !important;
+                    }
+                  }
+                  .form-item-field-blog-category-value{
+
+                    .form-checkboxes{
+                      .bef-checkboxes{
+                        .form-item {
+                          label{
+                            width: 78%;
+                          }
+                          .prettycheckbox{
+                            a.checked {
+                              background-position: 0px -17px;
+                              position: relative;
+                              top: 0px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+
+
+
+
+/*************************
+ ***                   ***
+ ***   MOBILE STYLES   ***
+ ***                   ***
+ *************************/
+
+@media only screen and (max-width: 767px) {
+
+
+  /*********************
+  ***   BLOG PAGE   ****
+  *********************/
+  body.page-blog{
+    .region-content{
+      width: 100%;
+      margin-right: 0;
+
+      #block-system-main {
+        width: 100%;
+        float: left;
+        .view-blog{
+          .view-content{
+            .blog-item-container{
+              .img-businessusa,.img-whitehouse, .img-smallbusinessadministration, .img-departmentofcommerce{
+                width: 65px;
+                height: 60px;
+                margin-right: 10px;
+              }
+              .img-businessusa{
+                background: url("/sites/all/themes/bizusa/images/businessusa-tab.png") no-repeat;
+              }
+              .img-whitehouse{
+                background: url("/sites/all/themes/bizusa/images/whitehouse-tab.png") no-repeat;
+                                background-position: 0 5px;
+              }
+              .img-smallbusinessadministration{
+                background: url("/sites/all/themes/bizusa/images/smallbusinessadministration-tab.png") no-repeat;
+                                background-position: 0 10px;
+              }
+              .img-departmentofcommerce{
+                background: url("/sites/all/themes/bizusa/images/departmentofcommerce.png") no-repeat;
+                                background-position: 10px;
+              }
+              .businessusa, .whitehouse, .smallbusinessadministration, .departmentofcommerce {
+                width: 100%;
+                float: none;
+                margin-left: 0;
+
+              }
+            }
+          }
+          .item-list{
+            .pager{
+              li{
+                margin: 0;
+              }
+            }
+          }
+
+        }
+      }
+    }
+    .region-sidebar-first{
+      width: 100%;
+      #block-views--exp-blog-page {
+        #views-exposed-form-blog-page{
+          .views-exposed-form{
+            .views-exposed-widgets{
+              .views-exposed-widget{
+                .views-widget{
+                  .form-type-date-select{
+                    #edit-field-blog-submit-dt-value-value{
+                      .form-item-field-blog-submit-dt-value-value-month{
+                        width: 120px;
+                        margin-right: 5px;
+                        .date-month{
+                          .dk_container{
+                            a.dk_toggle.dk_label{
+                              width: 100px !important;
+                            }
+                            .ui-datepicker-inline{
+                              display: none;
+                            }
+                          }
+                        }
+                      }
+                      .form-item-field-blog-submit-dt-value-value-year{
+                        width: 85px;
+                        .date-year{
+                          .dk_container{
+                            a.dk_toggle.dk_label{
+                              width: 65px !important;
+                            }
+                            .ui-datepicker-inline{
+                              display: none;
+                            }
+                          }
+                        }
+                      }
+                    }
+                    .ui-datepicker{
+                      display: none !important;
+                    }
+                  }
+                  .form-item-field-blog-category-value{
+
+                    .form-checkboxes{
+                      .bef-checkboxes{
+                        .form-item {
+                          label{
+                            width: 78%;
+                          }
+                          .prettycheckbox{
+                            a.checked {
+                              background-position: 0px -17px;
+                              position: relative;
+                              top: 0px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

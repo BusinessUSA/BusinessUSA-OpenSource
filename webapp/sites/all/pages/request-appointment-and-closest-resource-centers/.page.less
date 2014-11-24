@@ -1,0 +1,91 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import (reference) "../../themes/bizusa/theme/less/theme.less";
+
+//
+// Utilities
+//------------------------------------------------------------------
+body > .wrapper .region.region-content {
+	background-color: transparent;
+}
+
+.resourcecenters-filter-filters{
+	list-style: none;
+	padding: 0;
+}
+
+label{
+	font-weight: normal;
+}
+
+.adjust-padding-right{
+	padding-right: 15px;
+}
+
+.adjust-padding-left{
+	padding-left: 15px;
+}
+
+@media (min-width: @screen-sm-min) {
+	.adjust-padding-right{
+		padding-right: 5px;
+	}
+
+	.adjust-padding-left{
+		padding-left: 5px;
+	}
+}
+
+
+
+//
+// Request Appointment and Closest Resource Centers Styles
+//------------------------------------------------------------------
+
+#map-canvas{
+	height: 400px;
+	@media (min-width: @screen-sm-min) {
+		height:1115px;
+	}
+	@media (min-width: @screen-md-min) {
+		height:955px;
+	}
+	margin-bottom: 20px;
+}
+
+#dataList{
+	.panel-body{
+		@media (min-width: @screen-sm-min) {
+			min-height: 1090px;
+		}
+		@media (min-width: @screen-md-min) {
+			min-height: 800px;
+		}
+	}
+}
+
+.prettycheckbox.labelright{
+	width: 90%;
+}
+
+.prettycheckbox.labelright label{
+	float: left;
+	width: 80%;
+	line-height: 16px;
+}
+
+.views-field{
+	margin-left: 40px;
+	line-height: 18px;
+}
+
+.views-field.views-field-php-1{
+	float: left;
+	margin-left: 0;
+}
+
+.views-row{
+	margin-bottom: 20px;
+}
+

@@ -1,0 +1,160 @@
+<?php
+// $Id: feeds_querypath_parser.test,v 1.1.2.2 2011/02/08 15:40:31 twistor Exp $
+
+/**
+ * @file
+ * Tests for FeedsQueryPathParser.inc.
+ */
+
+/**
+ * Test single feeds.
+ */
+class FeedsQueryPathParserParserTestCase extends FeedsWebTestCase {
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('QueryPath Parser'),
+      'description' => t('Regression tests for Feeds QueryPath parser.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp(array('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'feeds_querypath_parser'));
+
+    // Set the front page to show 30 nodes so we can easily see what is aggregated.
+    $edit = array('default_nodes_main' => 30);
+    $this->drupalPost('admin/config/system/site-information', $edit, 'Save configuration');
+  }
+
+  /**
+   * Run tests.
+   */
+  public function test() {
+    $this->createImporterConfiguration('QueryPath', 'querypath');
+
+    $this->setPlugin('querypath', 'FeedsQueryPathParser');
+    $this->addMappings('querypath',
+      array(
+        array(
+          'source' => 'querypathparser:0',
+          'target' => 'title',
+          'unique' => FALSE,
+        ),
+        array(
+          'source' => 'querypathparser:1',
+          'target' => 'url',
+          'unique' => TRUE,
+        ),
+      )
+    );
+    // Set importer default settings.
+    $edit = array(
+      'querypath[context]' => 'td.views-field-title',
+      'querypath[sources][querypathparser:0]' => 'a',
+      'querypath[sources][querypathparser:1]' => 'a',
+      'querypath[attrs][querypathparser:1]' => 'href',
+    );
+    $this->drupalPost('admin/structure/feeds/edit/querypath/settings/FeedsQueryPathParser', $edit, 'Save');
+    $this->assertText('Your changes have been saved.');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-context"][1]/@value', 'td.views-field-title');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-sources-querypathparser0"][1]/@value', 'a');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-sources-querypathparser1"][1]/@value', 'a');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-attrs-querypathparser1"][1]/@value', 'href');
+
+    // Test import.
+    $path = $GLOBALS['base_url'] .'/'. drupal_get_path('module', 'feeds_querypath_parser') .'/tests/feeds_querypath_parser/';
+    $nid = $this->createFeedNode('querypath', $path . 'issues_drupal.org.htm', 'Testing QueryPath HTML Parser');
+    $this->assertText('Created 8 nodes');
+
+    // Import again, this verifies url field was mapped correctly.
+    $this->drupalPost('node/'. $nid .'/import', array(), 'Import');
+    $this->assertText('There are no new nodes');
+
+    // Assert accuracy of aggregated content. I find humor in using our own
+    // issue queue to run tests against.
+    $this->drupalGet('node');
+    $this->assertText('PhpQuery');
+    $this->assertText('Pass a string via QueryPath expression');
+    $this->assertText('Drupal 7 port?');
+    $this->assertText('How does one add a QueryPath Expression');
+    $this->assertText('Add documentation to handbook.');
+    $this->assertText('Different charset support');
+    $this->assertText('Option to return raw XML/HTML');
+    // I'm doing this one now.
+    $this->assertText('Port awesome new features from XPath parser.');
+
+    // Test that overriding default settings works.
+    $edit = array(
+      'feeds[FeedsQueryPathParser][querypath][context]' => 'foo',
+      'feeds[FeedsQueryPathParser][querypath][sources][querypathparser:0]' => 'bar',
+      'feeds[FeedsQueryPathParser][querypath][sources][querypathparser:1]' => 'baz',
+      'feeds[FeedsQueryPathParser][querypath][attrs][querypathparser:1]' => 'oogey',
+    );
+    $this->drupalPost('node/'. $nid .'/edit', $edit, 'Save');
+    $this->drupalGet('node/'. $nid .'/edit');
+    // Why not use XPath to test QueryPath?
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-context"][1]/@value', 'foo');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser0"][1]/@value', 'bar');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser1"][1]/@value', 'baz');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-attrs-querypathparser1"][1]/@value', 'oogey');
+
+    // Assert the we don't create an empty node when XPath values don't return anything.
+    // That happened at one point.
+    $this->drupalPost('node/'. $nid .'/import', array(), 'Import');
+    $this->assertText('There are no new nodes');
+
+    // Test validation.
+    $edit = array(
+      'feeds[FeedsQueryPathParser][querypath][context]' => '$#GFWEG',
+      'feeds[FeedsQueryPathParser][querypath][sources][querypathparser:0]' => '##$%Y',
+    );
+    $this->drupalPost('node/'. $nid .'/edit', $edit, 'Save');
+    $this->assertText('CSS selector is not well formed.');
+    $this->assertText('Expected string after #');
+    // Why not use XPath to test QueryPath?
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-context"][1]/@class', 'form-text required error');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser0"][1]/@class', 'form-text error');
+
+    // Put the values back so we can test inheritance if the form was changed
+    // and then changed back.
+    $edit = array(
+      'feeds[FeedsQueryPathParser][querypath][context]' => 'td.views-field-title',
+      'feeds[FeedsQueryPathParser][querypath][sources][querypathparser:0]' => 'a',
+      'feeds[FeedsQueryPathParser][querypath][sources][querypathparser:1]' => 'a',
+      'feeds[FeedsQueryPathParser][querypath][attrs][querypathparser:1]' => 'href',
+    );
+    $this->drupalPost('node/'. $nid .'/edit', $edit, 'Save');
+    $this->drupalGet('node/'. $nid .'/edit');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-context"][1]/@value', 'td.views-field-title');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser0"][1]/@value', 'a');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser1"][1]/@value', 'a');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-attrs-querypathparser1"][1]/@value', 'href');
+    // Change importer defaults.
+    $edit = array(
+      'querypath[context]' => 'keeya',
+      'querypath[sources][querypathparser:0]' => 'booya',
+      'querypath[sources][querypathparser:1]' => 'boyz',
+      'querypath[attrs][querypathparser:1]' => 'wuzzup',
+    );
+    $this->drupalPost('admin/structure/feeds/edit/querypath/settings/FeedsQueryPathParser', $edit, 'Save');
+    $this->assertText('Your changes have been saved.');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-context"][1]/@value', 'keeya');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-sources-querypathparser0"][1]/@value', 'booya');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-sources-querypathparser1"][1]/@value', 'boyz');
+    $this->assertFieldByXPath('//input[@id="edit-querypath-attrs-querypathparser1"][1]/@value', 'wuzzup');
+
+    // Make sure the changes propigated.
+    $this->drupalGet('node/'. $nid .'/edit');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-context"][1]/@value', 'keeya');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser0"][1]/@value', 'booya');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-sources-querypathparser1"][1]/@value', 'boyz');
+    $this->assertFieldByXPath('//input[@id="edit-feeds-feedsquerypathparser-querypath-attrs-querypathparser1"][1]/@value', 'wuzzup');
+  }
+}

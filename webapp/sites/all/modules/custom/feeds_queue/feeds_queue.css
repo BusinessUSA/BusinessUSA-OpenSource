@@ -1,0 +1,10 @@
+body.page-node-add-feeds-queue-exec #edit-field-feedqueue-params-und-0-format-help, 
+body.page-node-add-feeds-queue-exec #edit-field-feedqueue-params-und-0-format-guidelines {
+    display: none;
+}
+
+body.page-node-add-feeds-queue-exec #edit-field-feedqueue-params-und-0-format,
+body.page-node-add-feeds-queue-exec #form-item-field-feedqueue-params-und-0-format {
+    margin: 0px;
+    padding: 0px;
+}

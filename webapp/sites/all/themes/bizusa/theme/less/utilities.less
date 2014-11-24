@@ -1,0 +1,103 @@
+//
+// Utility classes
+// --------------------------------------------------
+
+
+// Rows
+// -------------------------
+
+.no-margin{
+	margin: 0;
+}
+
+.row-flush{
+  margin: 0;
+  float: left;
+}
+
+.with-padding{
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+// Panels
+// -------------------------
+.panel{
+	&.add-margin{
+    	margin: 20px 13px 20px 20px;
+	}
+	&.add-bg-light-gray{
+	    border-color: #eff2f5;
+	    .panel-heading{
+	    	background-color: #eff2f5;
+	    	border-color: #eff2f5;
+	    }
+	}
+	&.add-bg-dark-gray{
+	    border-color: #e2e2e2;
+	    .panel-heading{
+	    	background-color: #e2e2e2;
+	    	border-color: #e2e2e2;
+	    }
+	}
+	&.add-bg-white-with-blue{
+	    border:none;
+	    background-color: #839bb3;
+	    .panel-heading{
+	    	background-color: #fff;
+	    	border:none;
+	    	padding: 20px 25px;
+	    	.panel-title{
+	    		text-transform: uppercase;
+	    		font-size: 12px;
+	    	}
+	    }
+	    .panel-body{
+	    	padding: 15px 25px;
+	    }
+	}
+	&.add-italic-heading .panel-heading .panel-title{
+	    font-family: @font-family-sans-serif-italic;
+	    font-size: 18px;
+	    color: #484848;
+	    padding: 5px 0;
+	}
+	&.add-large-padding{
+		.panel-heading{
+			padding: 20px 30px;
+			.panel-title{
+				font-size: 18px;
+			} 
+		}
+		.panel-body{
+			padding: 20px 30px;
+		}
+	}
+	&.has-views, &.has-results{
+		.views-row, .panel-result{
+			padding-bottom: 15px;
+		}
+	}
+
+	&.has-results{
+		.panel-body{
+			line-height: 17px;
+		}
+	}
+}
+
+// When a panel is white and blue and has views make row links white
+.panel.add-bg-white-with-blue.has-views{
+	.views-row{
+		a{
+	    	color:#fff;
+	    	font-family: @font-family-sans-serif;
+	    }
+	}
+}
+
+// List Group
+// -------------------------
+.no-border .list-group-item{
+    border: none;
+}

@@ -1,0 +1,804 @@
+<?php
+// $Id$
+
+/**
+ * Displays the primary shell screen for the user.
+ *
+ * @return array
+ */
+function shell_display_form($form_state1, $form_state2, $display = NULL) {
+
+  $form = array();
+
+  drupal_add_css(drupal_get_path("module", "shell") . "/style/shell.css");
+  drupal_add_js(drupal_get_path("module", "shell") . "/js/shell.js");
+  drupal_add_js(drupal_get_path("module", "shell") . "/js/shell_load.js");
+
+  $history = shell_handle_command("welcome");
+  $m = 1;
+    
+  if ($display != "popup") {
+    $form["markup" . $m++] = array( 
+      
+      "#markup" => "<div id='shell-popup-link'>
+                  " . l("Load new Shell in a popup", "#", array("attributes" => array("onClick"=>"javascript: return shellPopupShellWindow();"))) . "
+                   </div>",
+    );    
+  }
+  else {
+    // This IS in a popup window, so load special javascript.
+    drupal_add_js(drupal_get_path("module", "shell") . "/js/shell_popup.js");    
+  }
+  
+  $form["markup" . $m++] = array(
+    "#markup" => "<div id='shell-screen-screen'>
+                  <div id='shell-screen-history'>$history &nbsp;</div>",
+  );  
+  
+  $form["send"] = array(
+    "#type" => "button",
+    "#value" => "Send",
+    "#id" => "shell-send",
+    "#attributes" => array("onClick" => "shellSendCommand(\"\"); return false;"),
+  );
+  
+  
+  $form["command"] = array(
+    "#type" => "textfield",
+    "#maxlength" => 999,
+    "#id" => "shell-input-field",
+    "#attributes" => array("autocomplete" => "off"),
+  );
+    
+  $form["markup" . $m++] = array(
+    "#markup" => "</div>",
+  );
+  
+  return $form;
+  
+}
+
+
+/**
+ * Accessed by our javascript through ajax.  This will take a command from the user and
+ * send it back to their screen.
+ *
+ */
+function shell_ajax_send_command() {
+  global $user;
+  
+  // Let's confirm that the shell_token given to us is valid
+  // (to prevent CSRF attacks).
+  $test_token = trim($_POST["form_token"]);
+  if (!drupal_valid_token($test_token, "shell_display_form")) {
+    $json = array("text" => "Error - security token does not match expected value.", "input_field" => "", "shell_cwd" => "");
+    return drupal_json_output($json);
+  }
+    
+  $command = trim($_POST["command"]);
+  // Because some servers cannot accept commands like "cd .." or "wget" in
+  // the POST, we have encoded the command in javascript.  We will now decode
+  // it so we may use it.
+  $command = base64_decode(urldecode($command));
+  $GLOBALS["shell_cwd"] = base64_decode(urldecode(($_POST["shell_cwd"])));
+   
+  
+  $pressed_tab = trim($_POST["pressed_tab"]);
+  
+  if ($pressed_tab == "yes") {
+    // Since the user pressed tab, we don't actually want to run
+    // any command.  Rather, we want to modify what's in the input field.
+    $result = shell_handle_tab_press($command);
+    $input_field = $result["input_field"];
+    $text = $result["text"];
+    $json = array("text" => $text, "input_field" => $input_field, "shell_cwd" => $GLOBALS["shell_cwd"]);
+  }
+  else {
+    $response = shell_handle_command($command);
+    $json = array("text" => $response, "input_field" => "", "shell_cwd" => $GLOBALS["shell_cwd"]);
+  }
+
+  // Send it back to the browser
+  drupal_json_output($json);
+}
+
+
+
+/**
+ * The user has pressed tab in the current directory, so we are going
+ * to try to auto-complete the rest of the filename on the user's behalf.
+ *
+ * @param String $cmd
+ * @return String
+ */
+function shell_handle_tab_press($cmd) {
+  global $user;
+
+  $rtn = array("input_field" => "", "text" => "", "shell_cwd" => "");
+
+  $text = "";
+  // Take out excess spaces...
+  $cmd = str_replace("  ", " ", trim($cmd));
+  $cmd = str_replace("  ", " ", $cmd);
+
+  $temp = explode(" ", $cmd);
+
+  $the_last = trim($temp[count($temp) - 1]);
+  $original_the_last = $the_last;
+
+  $dir = $GLOBALS["shell_cwd"];
+  if (trim($dir) == "" || !file_exists($dir)) {
+    // Couldn't find the cwd, so let's go with the "original" one.
+    $dir = getcwd();
+  }
+
+  // Here is where it gets interesting.  If the user specified a path
+  // (we detect a "/" in $the_last, then this is what our $dir should
+  // be, and $the_last should be the ending part of that.
+  // For example, if I typed:
+  //  cd /www/public_html/mysi [TAB]
+  //  then  $dir should = "/www/public_html"
+  //  and  $the_last should = "mysi".
+  if (strstr($the_last, "/")) {
+    //$text .= "<div>here $the_last</div>";
+    $temp = explode("/", $the_last);
+    $the_last = $temp[count($temp) - 1];
+    $new_dir = "";
+    for ($c = 0; $c < count($temp) - 1; $c++) {
+      $new_dir .= $temp[$c] . "/";
+    }
+    if (drupal_substr($original_the_last, 0, 1) != "/") {
+      // Does not begin with a slash, so the directory or file is relative to
+      // our current one.
+      $dir = "$dir/$new_dir";
+    }
+    else {
+      // it DOES begin with a slash!  So, it is relative to the
+      // base, so let's just use it what they typed.
+      $dir = $new_dir;
+    }
+  }
+
+  // issue an "ls" command to get a list of files in this directory.
+  $files = shell_get_ls_of_directory($dir);
+  // Okay, now, based on what the user has partially typed, try to
+  // find which filename matches the most.
+  $part_length = drupal_strlen($the_last);
+  $matches = array();
+  foreach ($files as $c => $filename) {
+    if (drupal_substr($filename, 0, $part_length) == $the_last) {
+      $matches[] = array(
+      "full" => $filename,
+      "last_part" => drupal_substr($filename, $part_length, drupal_strlen($filename)),
+      );
+    }
+  }
+
+  if (count($matches) == 1) {
+    // We found a match!
+    $rtn["input_field"] = $cmd . $matches[0]["last_part"];
+  }
+  else {
+    // Also fill into the inputfield the parts that match of
+    // the multiple selections.
+    if (drupal_strlen($the_last) > 0) {
+      $start_chars = shell_get_starting_characters($matches);
+      $rtn["input_field"] = $cmd . drupal_substr($start_chars, drupal_strlen($the_last));
+    }
+    
+    // List the possible matches for the user.
+    foreach ($matches as $c => $value) {
+      $text .= " <span class='shell-filename'>" . check_plain($value["full"]) . "</span>";
+    }
+  }
+
+  if ($text != "") {
+    $rtn["text"] .= "<div class='shell-list-from-tab'>$text</div>";
+    $rtn["text"] .= "<div class='shell-directory-listing'>" . t("!un%!cwd&gt;", array("!un" => $user->name, "!cwd" => $GLOBALS["shell_cwd"])) ."</div>";
+  }
+
+  return $rtn;
+}
+
+
+/**
+ * This is used when the user presses the tab key.  We want to find the
+ * letters in common between all the matches and return that back.
+ *
+ * @param array $matches
+ * @return String
+ */
+function shell_get_starting_characters($matches) {
+  $rtn = "";
+  $longest_in_common = array();
+  
+  $test = str_split($matches[0]["full"]);
+  for ($t = 1; $t < count($matches); $t++) {
+    $other_test = str_split($matches[$t]["full"]);
+    $longest = 0;
+    for ($x = 0; $x < count($test); $x++) {
+      if ($test[$x] == $other_test[$x]) {
+        $longest = $x;
+      }
+      else {
+        break;
+      }
+    }
+    $longest_in_common[] = $longest;
+  }
+
+  // Now, we need the smallest longest in common value!
+  sort($longest_in_common);
+  $shortest = $longest_in_common[0];
+
+  for ($t = 0; $t <= $shortest ; $t++) {
+    $rtn .= $test[$t];
+  }
+
+  return $rtn;
+}
+
+
+/**
+ * Like it says on the tin, this will perform an "ls" command on the
+ * supplied directory, so we can get a list of files.  This is
+ * being used by the handle_tab_press function.
+ *
+ * @param String $dir
+ * @return array
+ */
+function shell_get_ls_of_directory($dir) {
+  $rtn = array();
+  $str = "";
+  $p = proc_open(@"ls $dir",
+  array(1 => array('pipe', 'w'),
+  2 => array('pipe', 'w')), $io);
+
+  // Read output sent to stdout.
+  while (!feof($io[1])) {
+    $str .= htmlspecialchars(fgets($io[1]), ENT_COMPAT, 'UTF-8');
+  }
+  // Read output sent to stderr.
+  while (!feof($io[2])) {
+    $str .= htmlspecialchars(fgets($io[2]), ENT_COMPAT, 'UTF-8');
+  }
+
+  fclose($io[1]);
+  fclose($io[2]);
+  proc_close($p);
+
+  $temp = explode("\n", $str);
+  foreach ($temp as $t) {
+    $t = trim($t);
+    if ($t != "") {
+      // If this file is a directory, add a / to the end.
+      $is_directory = (is_dir("$dir/$t"))? "/" : "";
+      
+      $rtn[] = $t . $is_directory;
+    }
+  }
+
+
+  return $rtn;
+
+}
+
+
+/**
+ * Since there are some commands the shell cannot handle correctly,
+ * we will capture them and send the user special output.  This function
+ * does this.
+ *
+ * @param String $cmd
+ * @return String
+ */
+function shell_handle_special_command($cmd) {
+  // This function will display special information for certain
+  // commands which normally cannot be handled through Shell.
+  $rtn = "";
+  $cwd = "";
+  if (isset($GLOBALS["shell_cwd"])) {
+    $cwd = $GLOBALS["shell_cwd"];
+  }
+  // Take out excess spaces...
+  $cmd = str_replace("  ", " ", trim($cmd));
+  $cmd = str_replace("  ", " ", $cmd);
+
+  $temp = explode(" ", $cmd);
+  
+  $the_rest = "";
+  
+  for ($t = 0; $t < count($temp); $t++) {
+    if ($t == 0) continue; // skip the first one.
+    $the_rest .= $temp[$t] . " ";
+  }
+  $the_rest = trim($the_rest);
+  
+  //$the_rest = trim(implode(" ", array($temp[1], $temp[2], $temp[3], $temp[4])));
+
+  switch (drupal_strtolower($temp[0])) {
+    case "welcome":
+      $rtn = t("Welcome to Shell.  Some commands are interpreted by
+              this emulated shell
+              differently than you might expect.
+              To see a list of commands (and for other
+              general help) type <b><u>shelp</u></b>.") . "<br /><br /><br />";      
+      break;
+      
+    case "shelp":
+      $rtn .= "=============================<br />
+                Shell Help<br />
+               =============================<br />
+               <b>man <i>command</i></b>  ... " . t("Will provide a link to off-site man page.") . "<br />
+               <b>edit, vi, vim, emacs</b> ... " . t("Will provide a link to a file editor.") . "<br />
+               <br />
+               " . t("Special information:") . "<br />
+               " . t("Be aware that Shell is just an emulator.  All commands are actually
+               being sent through PHP to the server.  As such, interactivity is
+               very limited.  This is why you cannot use vi or emacs.  Any other
+               commands or programs which require interactivity also will not work.
+               You are also limited to what commands your server will allow
+               the web user to run.");
+      break;
+
+    case "man":
+      $rtn .= "<div class='shell-not-supported'>" . t("This shell emulator cannot correctly view man pages.") . "</div>";
+      $rtn .= t("Please click the following link to load your intended man page in a new window:") . "<br />
+                <a href='http://www.geona.net/search?s=manpages.info&q=$the_rest' target='_blank'>
+                  http://www.geona.net/search?s=manpages.info&q=$the_rest</a>";
+      break;
+
+    case "edit":  // Keep going...
+    case "vi":   // keep going...
+    case "vim":  // keep going...
+    case "emacs":  // Now, let's perform an action...
+    $rtn .= "<div class='shell-not-supported'>" . t("This shell emulator cannot correctly edit files, so you must use
+                a special file editor.") . "</div>";
+    $rtn .= t("Please click the following link to load the file editor in a new window:") . "<br />";
+    $rtn .= l(t("Click to edit !the_rest", array("!the_rest" => $the_rest)), "shell/edit-file", array("query" => array("file" => $the_rest,  "cwd" => $cwd), "attributes" => array("target" => "blank")));
+    break;
+
+    case "less": // keep going.  Less and more will be treated the same.
+    case "more":
+      $rtn .= "<div class='shell-not-supported'>" . t("This shell emulator cannot provide the interactivity of less/more, so you must use
+                a special file viewer.") . "</div>";
+      $rtn .= t("Please click the following link to load the file viewer in a new window:") . "<br />";
+      $rtn .= l(t("Click to view !the_rest", array("!the_rest" => $the_rest)), "shell/view-file", array("query" => array("file" => $the_rest,  "cwd" => $cwd), "attributes" => array("target" => "blank")));      
+      
+      break;
+  }
+
+  return $rtn;
+}
+
+
+/**
+ * Actually handles the command sent by the user by passing it to the server
+ * and capturing the output.  This code is drawn partially from bzrundi,
+ * and the phpterm project found here: http://phpterm.sourceforge.net/
+ *
+ * @param String $cmd
+ * @return String
+ */
+function shell_handle_command($cmd) {
+  global $user;
+  $rtn = "";
+
+  // We must keep track of the directory we want to be in, versus which
+  // one drupal expects us to be in.  So, we will always remember to keep
+  // up with our "original" cwd.
+  $original_cwd = getcwd();
+  $cwd = "";
+  if (isset($GLOBALS["shell_cwd"])) {
+    $cwd = $GLOBALS["shell_cwd"];
+  }
+  if (trim($cwd) == "" || !file_exists($cwd)) {
+    // Couldn't find the cwd, so let's go with the "original" one.
+    $cwd = $original_cwd;
+  }
+    
+  $cmd = trim($cmd);
+  // Since we cannot handle certain commands, we should make sure
+  // the user isn't trying to use those commands here.
+  /////////  Special commands (which we can't handle) ///////////
+  $special_cmd = array("welcome", "shelp", "man", "edit", "vi", "vim", "emacs", "less", "more");
+  $temp = explode(" ", drupal_strtolower($cmd));
+  if (in_array($temp[0], $special_cmd)) {
+    $rtn = shell_handle_special_command($cmd);
+  }
+  else {
+    // Process the command normally
+    $aliases = array('la' => 'ls -la', 'll' => 'ls -lvhF', 'dir' => 'ls');
+
+    if (ereg('^[[:blank:]]*cd[[:blank:]]*$', @$cmd)) {
+      $cwd = getcwd(); //dirname(__FILE__);
+    }
+    elseif (ereg('^[[:blank:]]*cd[[:blank:]]+([^;]+)$', @$cmd, $regs)) {
+      // The current command is 'cd', which we have to handle as an internal shell command.
+      // absolute/relative path ?"
+      ($regs[1][0] == '/') ? $new_dir = $regs[1] : $new_dir = $cwd . '/' . $regs[1];
+
+      // cosmetics
+      while (strpos($new_dir, '/./') !== FALSE) {
+        $new_dir = str_replace('/./', '/', $new_dir);
+      }
+      while (strpos($new_dir, '//') !== FALSE) {
+        $new_dir = str_replace('//', '/', $new_dir);
+      }
+      while (preg_match('|/\.\.(?!\.)|', $new_dir)) {
+        $new_dir = preg_replace('|/?[^/]+/\.\.(?!\.)|', '', $new_dir);
+      }
+
+      if (empty($new_dir)) {
+        $new_dir = "/";
+      }
+
+      (@chdir($new_dir)) ? $cwd = $new_dir : $rtn .= "could not change to: $new_dir\n";
+    }
+    else {
+      // The command is not a 'cd' command, so we execute it after
+      //changing the directory and save the output.
+      chdir($cwd);
+
+      // Alias expansion.
+      $length = strcspn(@$cmd, " \t");
+      $token = drupal_substr(@$cmd, 0, $length);
+      if (isset($aliases[$token])) {
+        $cmd = $aliases[$token] . drupal_substr($cmd, $length);
+      }
+
+      $p = proc_open(@$cmd, array(1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $io);
+
+      // Read output sent to stdout.
+      while (!feof($io[1])) {
+        $rtn .= htmlspecialchars(fgets($io[1]), ENT_COMPAT, 'UTF-8');
+      }
+      // Read output sent to stderr.
+      while (!feof($io[2])) {
+        $rtn .= htmlspecialchars(fgets($io[2]), ENT_COMPAT, 'UTF-8');
+      }
+
+      fclose($io[1]);
+      fclose($io[2]);
+      proc_close($p);
+
+    }
+    $rtn  = "<pre class='shell'>$rtn</pre>";
+  }
+
+  $rtn .= "<div class='shell-directory-listing'>" . t("!un%!cwd&gt;", array("!un" => $user->name, "!cwd" => $cwd)) ."</div>";
+  $GLOBALS["shell_cwd"] = $cwd;
+  chdir($original_cwd);  // go back to the original so we don't break anything.
+
+  return $rtn;
+}
+
+
+
+/**
+ * Used by the shell to replace the less and more commands.
+ *
+ * @return String
+ */
+function shell_view_file() {
+  drupal_add_css(drupal_get_path("module", "shell") . "/style/shell.css");
+
+  $rtn = "";
+
+  $filename = $_REQUEST["file"];
+  $cwd = $_REQUEST["cwd"];
+
+  $fileperms = "(new file)";
+  if (file_exists("$cwd/$filename")) {
+    $fileperms = shell_get_file_permissions("$cwd/$filename");
+  }
+
+  $rtn .= "<div>Viewing $cwd/$filename</div>
+              <div><b>Permissions:</b> $fileperms</div>";
+
+  if (file_exists("$cwd/$filename")) {
+    if (!$contents = file_get_contents("$cwd/$filename")) {
+      $rtn .= t("Cannot view file!  There is possibly a permission issue.");
+    }
+    else {
+      $rtn .= "<pre class='shell-view-file'>$contents</pre>";
+    }
+  }
+
+
+  return $rtn;
+}
+
+
+
+
+/**
+ * This form lets the user edit a file on their system.  It is a very basic form.
+ *
+ *@return array
+ */
+function shell_edit_file_form($form, &$form_state) {
+  // This form will let a user edit a file from the system.
+  
+
+  $filename = $_REQUEST["file"];
+  $cwd = $_REQUEST["cwd"];
+  $contents = "";
+  
+  $fileperms = "(new file)";
+  if (file_exists("$cwd/$filename")) {
+    $fileperms = shell_get_file_permissions("$cwd/$filename");
+  }
+
+  $form["mark1"] = array(
+  "#markup" => "<div>Editing $cwd/$filename</div>
+              <div><b>Permissions:</b> $fileperms</div>",
+  );
+
+  // TODO:  Check here to make sure we have the propper permissions.
+
+  $form["filename"] = array(
+  "#type" => "hidden",
+  "#value" => $filename,
+  );
+
+  $form["cwd"] = array(
+  "#type" => "hidden",
+  "#value" => $cwd,
+  );
+
+  if (file_exists("$cwd/$filename")) {
+
+    if (!$contents = file_get_contents("$cwd/$filename")) {
+      $form["mark2"] = array(
+      "#markup" => t("Could not load file!  Either the web user does not
+                    have the correct permissions for this file, or
+                    it does not exist."),
+      );
+    }
+  }
+  else {
+    // File does not already exist, so we will be creating it (or trying to)
+    $form["mark2"] = array(
+    "#markup" => t("(Creating a new file)."),
+    );
+
+  }
+
+
+
+  $form["file_contents"] = array(
+  "#type" => "textarea",
+  "#rows" => 20,
+  "#title" => t("File Contents"),
+  "#default_value" => $contents,
+  );
+
+  $form["submit"] = array(
+  "#type" => "submit",
+  "#value" => "Submit",
+  );
+
+  
+  return $form;
+}
+
+/**
+ * Handy function from php.net which will give you the file permissions
+ * for a particular file.  It will look like it does in linux.
+ * Ex: -rw-r--r--
+ *
+ * @param String $file
+ * @return String
+ */
+function shell_get_file_permissions($file) {
+  $perms = fileperms($file);
+
+  if (($perms & 0xC000) == 0xC000) {
+    // Socket
+    $info = 's';
+  }
+  elseif (($perms & 0xA000) == 0xA000) {
+    // Symbolic Link
+    $info = 'l';
+  }
+  elseif (($perms & 0x8000) == 0x8000) {
+    // Regular
+    $info = '-';
+  }
+  elseif (($perms & 0x6000) == 0x6000) {
+    // Block special
+    $info = 'b';
+  }
+  elseif (($perms & 0x4000) == 0x4000) {
+    // Directory
+    $info = 'd';
+  }
+  elseif (($perms & 0x2000) == 0x2000) {
+    // Character special
+    $info = 'c';
+  }
+  elseif (($perms & 0x1000) == 0x1000) {
+    // FIFO pipe
+    $info = 'p';
+  }
+  else {
+    // Unknown
+    $info = 'u';
+  }
+
+  // Owner
+  $info .= (($perms & 0x0100) ? 'r' : '-');
+  $info .= (($perms & 0x0080) ? 'w' : '-');
+  $info .= (($perms & 0x0040) ?
+  (($perms & 0x0800) ? 's' : 'x' ) :
+  (($perms & 0x0800) ? 'S' : '-'));
+
+  // Group
+  $info .= (($perms & 0x0020) ? 'r' : '-');
+  $info .= (($perms & 0x0010) ? 'w' : '-');
+  $info .= (($perms & 0x0008) ?
+  (($perms & 0x0400) ? 's' : 'x' ) :
+  (($perms & 0x0400) ? 'S' : '-'));
+
+  // World
+  $info .= (($perms & 0x0004) ? 'r' : '-');
+  $info .= (($perms & 0x0002) ? 'w' : '-');
+  $info .= (($perms & 0x0001) ?
+  (($perms & 0x0200) ? 't' : 'x' ) :
+  (($perms & 0x0200) ? 'T' : '-'));
+
+  return $info;
+}
+
+
+
+/**
+ * Submit handler for the edit_file_form.  Will save the user's changes
+ * to the file (if possible).
+ *
+ * @param Array $form
+ * @param Array $form_state
+ */
+function shell_edit_file_form_submit($form, &$form_state) {
+
+  $cwd = $form_state["values"]["cwd"];
+  $filename = $form_state["values"]["filename"];
+  $file_contents = $form_state["values"]["file_contents"];
+
+  // Redirect back to the edit page after submission.
+  $form_state["redirect"] = array("shell/edit-file", array("query" => array("file" => $filename, "cwd" => $cwd)));
+  
+  if (!file_put_contents("$cwd/$filename", $file_contents)) {
+    drupal_set_message(t("File could not be saved.  Perhaps the web user
+                  does not have the correct permissions to edit this file?"), "error");
+  }
+  else {
+    drupal_set_message(t("File has been updated."));
+  }
+}
+
+/**
+ * Implementation of hook_menu
+ *
+ */
+function shell_menu() {
+  $items = array();
+
+  $items["shell"] = array(
+    "title" => t("Shell"),
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("shell_display_form"),
+    'access arguments' => array("execute shell commands"),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  // Create a special path if loadig Shell in a popup.  This will
+  // let us more easily custom-theme the page later.
+  $items["shell-popup"] = array(
+    "title" => t("Shell (Popup)"),
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("shell_display_form", "popup"),
+    'access arguments' => array("execute shell commands"),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items["shell/ajax-send-command"] = array(
+    "title" => "",
+    "page callback" => "shell_ajax_send_command",
+    'access arguments' => array("execute shell commands"),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items["shell/edit-file"] = array(
+    "title" => t("Edit File"),
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("shell_edit_file_form"),
+    'access arguments' => array("execute shell commands"),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items["shell/view-file"] = array(
+    "title" => t("View File"),
+    "page callback" => "shell_view_file",
+    'access arguments' => array("execute shell commands"),
+    'type' => MENU_CALLBACK,
+  );
+
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm.
+ *
+ */
+function shell_permission() {
+  return array('execute shell commands' => array(
+    "title" => t("Execute shell commands"),
+    "description" => "Lets users access the Shell module and send commands
+                      to your web server. <b>Very dangerous!</b> Users with
+                      this permission will have total access to your server,
+                      and can delete files.",
+  ));
+}
+
+/**
+ * Theme registry alter hook
+ * 
+ * Register this modules path as a search location for tpl files.  We are doing this
+ * so we can have a custom template file for the popup version of Shell (we we will
+ * remove logo and all other header information.  Of course, you can overwrite this
+ * by copying the popup template file into your theme directory and making
+ * changes.
+ *
+ */
+/*  D6 version of this function...
+function shell_theme_registry_alter(&$theme_registry) {
+  dpm($theme_registry);
+  if (is_array($theme_registry['page'])) {
+    // store a reference to the first theme path entry (normally this should be 'modules/system')
+    $first_path = array_shift($theme_registry['page']['theme paths']);
+    
+    // get the path to our module's page template files
+    $template_path = drupal_get_path('module', 'shell');
+    
+    // now change the array to have the first entry first, then our template path, and then any other theme paths
+    array_unshift($theme_registry['page']['theme paths'], $first_path, $template_path);
+  }
+
+}
+*/
+
+
+/**
+ * Implements hook_theme_registry_alter()
+ * 
+ * Register this modules path as a search location for tpl files.  We are doing this
+ * so we can have a custom template file for the popup version of Shell (we we will
+ * remove logo and all other header information.  Of course, you can overwrite this
+ * by copying the popup template file into your theme directory and making
+ * changes.
+ * 
+ * Got from http://www.metachunk.com/blog/adding-module-path-drupal-7-theme-registry
+**/
+function shell_theme_registry_alter(&$theme_registry) {
+  $mod_path = drupal_get_path('module', 'shell');
+  $theme_registry_copy = $theme_registry;       // munge on a copy
+  _theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine', 'pow', $mod_path);
+  $theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
+  $hooks = array('node');
+  foreach ($hooks as $h) {
+    shell_insert_after_first_element($theme_registry[$h]['theme paths'], $mod_path);
+  }
+}
+
+/**
+ * Helper function for re-ordering arrays (needed by theme_registry_alter)
+*/
+function shell_insert_after_first_element(&$a, $element) {
+  if(is_array($a)) {
+    $first_element = array_shift($a);
+    array_unshift($a, $first_element, $element);
+  }
+}

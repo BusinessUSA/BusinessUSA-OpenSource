@@ -1,0 +1,1743 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+
+@import (reference) "../../../themes/bizusa/theme/less/theme.less";
+
+//
+// Wizard Utilities
+//---------------------------------------------------
+
+.no-margin{
+    margin:0 !important;
+}
+
+.no-bullets{
+    padding-left: 0 !important; 
+    list-style: none;
+}
+
+.center-block{
+    .center-block();
+    text-align: center;
+}
+
+// Hide popover arrow
+.popover .arrow{
+  display: none !important;
+}
+
+
+// Mostly used for splash page extentions
+// disaster-assistance, healthcare and rural exporting
+.panel.add-bg-white-with-blue{
+    ul{
+        padding-left: 15px;
+        li{
+            padding-bottom: 10px;
+            line-height: 18px;
+            a{
+                color: #fff;
+                font-family: @font-family-sans-serif;
+            }
+        }
+    }
+}
+
+// Sidebar Blocks Heading
+.panel-wizard-block{
+    border: none;
+    box-shadow: none !important;
+    border: none !important;
+    .panel-heading{
+      padding-top: 20px;
+      padding-bottom: 20px;
+      background-color: #e2e2e2 !important;
+      .panel-title{
+          text-transform: uppercase;
+          font-size: 13px;
+          color: #515151;
+      }
+    }
+}
+
+// Sidebar Block Body Content
+.panel-collapse{
+    ul{
+        list-style: none;
+        padding-left: 0;
+        li{
+            padding-bottom: 15px;
+            a{
+                font-size: 13px;
+            }
+        }
+        // No padding for dropdowns li
+        &.dropdown-menu li{
+            padding-bottom: 0; 
+        }
+    }
+
+    .panel-body{
+      border-top: none !important;
+      //Views Style inside block
+      .view-content{
+        .views-row{
+          padding-bottom: 15px;
+          
+          // Titles
+          .views-field.views-field-title{
+            font-family: @font-family-sans-serif-bold;
+          }
+        }
+      }
+
+    }
+
+}
+
+
+// View more/less button
+.btn{
+    .more{
+        padding-right: 18px;
+        background: url("/sites/all/themes/bizusa/images/icons/viewall.png") no-repeat 100% 0px transparent;
+        display: inline-block;
+    }
+    .less{
+        padding-right: 18px;
+        background: url("/sites/all/themes/bizusa/images/icons/viewless.png") no-repeat 100% 0px transparent;
+        display: none;
+    }
+}
+
+.expanded{ .btn{ .more{ display: none; } .less{ display: inline-block; } } }
+
+
+
+//
+// Wizard General Styles
+//---------------------------------------------------
+
+body > .wrapper .region.region-content {
+    background-color: transparent !important;  
+}
+
+// Hide page title area
+#page-title-area{
+  display: none;
+}
+
+// Hide header for splash page
+.current-slide-is-0{
+  .wizardHeader{
+    display: none;
+  }
+}
+
+// Hide class 
+.wizard-hide-my-label > label{
+  display: none !important;
+}
+
+
+//
+// Splash Page
+//---------------------------------------------------
+
+.slide-id-0{
+  .questions{
+    padding: 60px 0;
+    background-color: @brand-primary-blue;
+    color: #fff;
+
+    // Title Container
+    .titleWrap{
+      .make-row();
+      .splash-icon-image{
+        .make-xs-column(3);
+        .make-xs-column-offset(4.5);
+        .make-sm-column(1);
+        .make-sm-column-offset(3);
+        img{
+          width: 41px;
+          margin: 0 auto;
+          display: block;
+          //image-rendering:optimizeQuality;
+          //border:1px solid @brand-primary-blue;
+        }
+      }
+      .splash-title{
+        .make-xs-column(12);
+        .make-sm-column(5);
+        text-align: center;
+        @media (min-width: @screen-sm-min) {
+            padding-left: 0;
+            text-align: left;
+        }
+        label{
+          font-size: 40px;
+          line-height: 40px;
+          letter-spacing: -1px;
+          font-family: @font-family-sans-serif-bold;
+          padding-left: 20px;
+          padding-right: 20px;
+          @media (min-width: @screen-sm-min) {
+              padding-left: 0;
+              padding-right: 0;
+          }
+        }
+      }
+    }
+    
+    // Welcome message
+    .splash-welcome{
+      .make-row();
+      .question-label-for-wiztag-splash-welcome-message{
+        .make-xs-column(10);
+        .make-xs-column-offset(1);
+        .make-sm-column(8);
+        .make-sm-column-offset(2);
+        text-align: center;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 24px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+    }
+    
+    // Get Started button
+    .splash-button{
+      .make-row();
+      .question-controle-widget-type-nextbutton{
+        .make-xs-column(8);
+        .make-xs-column-offset(2);
+        .make-sm-column(3);
+        .make-sm-column-offset(4.5);
+        .make-md-column(2);
+        .make-md-column-offset(5);
+        input{
+          .btn(); 
+          .btn-secondary();
+          //.btn-lg();
+          .btn-block();
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
+      }
+    }
+    
+    // Splash footer
+    .splash-footer{
+      .make-row();
+      .question-label-for-wiztag-splash-footer-message{
+        .make-xs-column(10);
+        .make-xs-column-offset(1);
+        .make-sm-column(8);
+        .make-sm-column-offset(2);
+        text-align: center;
+        font-weight: normal;
+        margin-top: 40px;
+        a{
+          font-family: @font-family-sans-serif-bold-italic;
+          color:#fff;
+        }
+      }
+    }
+
+  }
+  
+  // Hide continue button on splash page
+  .wizard-continue{
+    display: none;
+  }
+}
+
+//
+// Splash Page with sidebars
+// used for healthcare and disaster assistance wizards
+//---------------------------------------------------
+
+.wizard-has-outside-sidebar-true{
+  .slide-id-0{
+    .questions{
+      // Get Started button
+      // Because we have sidebars we need to adjust the width of the button
+      .splash-button{
+        .question-controle-widget-type-nextbutton{
+          .make-sm-column(3);
+          .make-sm-column-offset(4.5);
+          .make-md-column(3);
+          .make-md-column-offset(4.5);
+        }
+      }
+    }
+  }
+}
+
+
+//
+// Center Title in Splash Page
+// TODO: Create a mixin to center title
+// --------------------------------------------------
+
+// Start a Business Wizard
+.wizard-uniqueid-startabusiness .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-md-min) { margin-left: 280px; }
+}
+
+// Access Financing Wizard
+.wizard-uniqueid-accessfinancing .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-accessfinancing .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 170px; }
+  @media (min-width: @screen-md-min) { margin-left: 270px; }
+}
+
+// Begin Exporting Wizard
+.wizard-uniqueid-beginexporting .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-md-min) { margin-left: 280px; }
+}
+
+// Expand Exporting Wizard
+.wizard-uniqueid-internationalfinance .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-internationalfinance .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 165px; }
+  @media (min-width: @screen-md-min) { margin-left: 270px; }
+}
+
+// Veterans Wizard
+.wizard-uniqueid-veterans .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 52%; }
+}
+.wizard-uniqueid-veterans .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 155px; }
+  @media (min-width: @screen-md-min) { margin-left: 250px; }
+}
+
+// Invest in USA Wizard
+.wizard-uniqueid-selectusa .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-selectusa .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 175px; }
+  @media (min-width: @screen-md-min) { margin-left: 265px; }
+}
+
+// Taxes and Credits Wizard
+.wizard-uniqueid-taxes .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-taxes .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 175px; }
+  @media (min-width: @screen-md-min) { margin-left: 265px; }
+}
+
+// Hiring Employees Wizard
+.wizard-uniqueid-jobcenter .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 46%; }
+}
+.wizard-uniqueid-jobcenter .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 180px; }
+  @media (min-width: @screen-md-min) { margin-left: 265px; }
+}
+
+// Find Regulations Wizard
+.wizard-uniqueid-regulationswiz .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-regulationswiz .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 185px; }
+  @media (min-width: @screen-md-min) { margin-left: 270px; }
+}
+
+// Find Opportunities for Green Businesses Wizard
+.wizard-uniqueid-greenops .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 48%; }
+}
+.wizard-uniqueid-greenops .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 170px; }
+  @media (min-width: @screen-md-min) { margin-left: 235px; }
+}
+
+// Patent & Trademark Wizard
+.wizard-uniqueid-patentandtrademark .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 52%; }
+}
+.wizard-uniqueid-patentandtrademark .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 150px; }
+  @media (min-width: @screen-md-min) { margin-left: 207px; }
+}
+
+// Find Opportunities Wizard
+.wizard-uniqueid-findopportunities .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 50%; }
+}
+.wizard-uniqueid-findopportunities .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 155px; }
+  @media (min-width: @screen-md-min) { margin-left: 250px; }
+}
+
+// Rural Exporting Wizard
+.wizard-uniqueid-rural_exporting .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { 
+    width: 70%;
+    label{
+      font-size: 30px !important; 
+      line-height: 30px !important;
+    }
+  }
+  @media (min-width: @screen-md-min) { width: 80%; padding-top: 5px; }
+}
+.wizard-uniqueid-rural_exporting .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 10%; }
+  @media (min-width: @screen-md-min) { margin-left: 5%; }
+}
+
+// Health Care Wizard
+.wizard-uniqueid-healthcare .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 75%; }
+  @media (min-width: @screen-md-min) { width: 60%; }
+}
+.wizard-uniqueid-healthcare .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 8%; width: 12%; }
+  @media (min-width: @screen-md-min) { margin-left: 15%; width: 10%; }
+}
+
+// Seek Disaster Assistance Wizard
+.wizard-uniqueid-disaster-assistance .slide-id-0 .questions .titleWrap .splash-title{
+  @media (min-width: @screen-sm-min) { width: 60%; }
+  @media (min-width: @screen-md-min) { width: 68%; }
+}
+.wizard-uniqueid-disaster-assistance .slide-id-0 .questions .titleWrap .splash-icon-image{
+  @media (min-width: @screen-sm-min) { margin-left: 20%; width: 13%; }
+  @media (min-width: @screen-md-min) { margin-left: 12%; width: 10%; }
+}
+
+
+//
+// Questions Section
+//---------------------------------------------------
+
+.slide:not(.slide-id-0){
+  background-position: 0 -1000%;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  min-height: 400px;
+  @media (min-width: @screen-sm-min) { 
+    background-position: 27px 50px;
+  }
+  @media (min-width: @screen-md-min) { 
+    background-position: 80px 50px;
+  }
+  .make-row();
+  margin: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .questions{
+    .make-sm-column(7);
+    .make-sm-column-offset(5);
+    @media (min-width: @screen-sm-min) { 
+      padding-top: 20px;
+    }
+  }
+  
+  label{
+    font-weight: normal;
+    vertical-align: top;
+    margin-top: 3px;
+    margin-bottom: 0px;
+    max-width: 80%;
+  }
+
+  .question-container{
+    padding-bottom: 5px;
+  }
+
+  .widget-type-label{
+    font-family: @font-family-sans-serif-bold;
+    font-size: 16px;
+  }
+
+  .widget-type-radio-group{
+    .question-label{
+      .widget-type-label();
+      margin-bottom: 5px;
+    }
+    .question-controle-widget-type-radiogroup{
+      label{
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .question-controle-widget-type-textbox,
+  .question-controle-widget-type-selectbox{
+    @media (min-width: @screen-sm-min) { 
+      width: 40%;
+    }
+    input[type="text"]{
+      .form-control();
+    }
+    // Add some margin to dropkick select
+    .dk-select{
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .prettycheckbox a{
+    border:1px solid #F8F8F8;
+  }
+
+  .wizard-continue{
+    .btn();
+    .btn-brand();
+    margin-top: 20px;
+    margin-left: 15px;
+    @media (min-width: @screen-sm-min) { margin-left: 43%; margin-bottom: 20px; }
+
+  }
+}
+
+// For wizards that have a sidebar, scale background
+.wizard-has-outside-sidebar-true{
+  .slide {
+    background-size: 30%;
+    @media (min-width: @screen-md-min) { 
+      background-position: 45px 50px;
+    }
+  }
+}
+
+//
+// Question Section Overwrites 
+//---------------------------------------------------
+
+// Start a Business
+
+.wizard-uniqueid-startabusiness{
+  // Zip input width
+  #wiztag-enteredzip{
+    width: 70px;
+  }
+}
+
+
+// Access Financing
+.wizard-uniqueid-accessfinancing{
+  #wiztag-zip_location{
+    width: 70px;
+  }
+}
+
+// Find Regulations
+.wizard-uniqueid-regulationswiz{
+  .question-controle-widget-type-selectbox{
+      width: 80% !important;
+  }
+}
+
+// Healthcare
+.wizard-uniqueid-healthcare{
+  .slide-id-1{
+    .question-controle-widget-type-selectbox{
+      width: 70%;
+    }
+  }
+}
+
+
+// Hiring Employees
+.wizard-uniqueid-jobcenter{
+  .question-controle-widget-type-textbox{
+    width: 90% !important;
+    #wiztag-user_zip{
+      width: 70px;
+    }
+  }
+}
+body.page-jobcenter-wizard{
+  .occupationlookup-result{
+    margin-top: 10px;
+    .occupationlookup-result-title{
+      font-family: @font-family-sans-serif-bold;
+      color: @brand-primary-blue;
+    }
+  }
+}
+
+// Invest in USA
+.wizard-uniqueid-selectusa{
+  .slide-id-5{
+    .questions{
+
+      // Contact form
+      .make-sm-column(12);
+      .make-sm-column-offset(0);
+
+      // labels
+      label{
+        font-weight: bold;
+      }
+
+      //Introduction text label
+      .question-label.question-label-for-wiztag-label_d{
+        font-family: @font-family-sans-serif;
+        max-width: 100%;
+        font-weight: normal;
+      }
+
+      // Text Area
+      #wiztag-contact_msg{
+        width: 40%;
+      }
+
+      // Send button
+      #wiztag-contact_send_labelbtn{
+        .btn();
+        .btn-brand();
+      }
+
+    }
+  }
+}
+
+// Veterans
+
+.wizard-uniqueid-veterans{
+  #wiztag-zip_location{
+    width: 70px;
+  }
+}
+
+
+//
+// Results
+//---------------------------------------------------
+
+// Layout
+.slide.uses-ajax{
+  background-color: transparent;
+  padding-top: 0;
+  margin-top: 10px;
+  
+  .wizard-result-count-0 {
+    display: none;
+  }
+  
+  // With a sidebar
+  .wizard-results-wrapper.has-sidebar-true{
+    .make-row();
+    margin:0;
+    .wizard-result-sections-container{
+      .make-sm-column(8.5);
+      padding-top: 20px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+    .wizard-sidebars-container{
+      .make-sm-column(3.5);
+      padding: 0;
+      @media (min-width: @screen-sm-min) {
+        padding-left: 20px; 
+        padding-right: 0;
+      }
+    }
+  }
+
+  // Without sidebar
+  .wizard-results-wrapper.has-sidebar-false{
+    .make-row();
+    margin:0;
+    .wizard-result-sections-container{
+      .make-sm-column(12);
+      padding-top: 20px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+  }
+
+  .wizard-continue,
+  .questions{
+    display:none !important;
+  }
+
+}
+
+
+
+// Note and welcome message
+// TODO: Make welcome message and nore the same markup
+.results-welcome-top-message{
+  background-color: #fcf6de;
+  margin-bottom: 10px;
+  padding: 10px;
+  .btn-close {
+    background: url("/sites/all/themes/bizusa/images/sbir-images/controls.png") no-repeat scroll 0 -5px rgba(0, 0, 0, 0);
+    float: right;
+    height: 20px;
+    left: 15px;
+    position: relative;
+    top: -15px;
+    width: 20px;
+  }
+  a{
+    font-family: @font-family-sans-serif-bold-italic;
+  }
+}
+
+.note-container{
+  .clearfix();
+  #note{
+    margin: 0px 0px 10px 0px;
+    background-color: #FCF6DE;
+    padding: 20px;
+    position: relative;
+    .btn-close {
+      background: url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+      width: 21px;
+      height: 24px;
+      position: absolute;
+      right: -5px !important;
+      top: -10px !important;
+      cursor: pointer !important;
+    }a{
+      font-family: @font-family-sans-serif-bold-italic;
+    }
+  }
+
+}
+
+
+// Wizart Results Header
+.wizard-results-header-container{
+  .clearfix();
+  margin-bottom: 30px;
+  .wizard-results-header-resultcount{
+    float: left;
+    margin-right: 10px;
+    a,span{
+      font-family: @font-family-sans-serif-bold-italic;
+    }
+    &.wizard-results-header-resultcount-count-0 {
+      display: none;
+    }
+  }
+}
+
+
+
+// Wizard results entries
+.wizard-result-section{
+  .make-row();
+
+  // Hide if results is less than five
+  &.wizard-result-countlessthan5-true .wizard-result-section-title .top5 {
+    display: none;
+  }
+
+  .wizard-result-section-icon-container{
+    .make-sm-column(2);
+    .clearfix();
+    margin-bottom: 3px;
+    .wizard-result-section-icon{
+      float: left;
+      @media (min-width: @screen-sm-min) {
+        float: none;
+        .center-block();
+      }
+    }
+    .wizard-result-section-icontitle{
+      float: left;
+      margin-top: 5px;
+      margin-left: 5px;
+      font-family: @font-family-sans-serif-bold-italic;
+      @media (min-width: @screen-sm-min) {
+        font-family: @font-family-sans-serif;
+        margin-top: 0;
+        margin-left: 0;
+        float: none;
+        .center-block();
+      }
+      line-height: 14px;
+    }
+  }
+  .wizard-result-section-title{
+    .make-sm-column(10);
+    color: #5c5c5c;
+    font-size: 30px;
+    line-height: 30px;
+    text-transform: capitalize;
+    margin-top: 0;
+  }
+
+  .wizard-result-section-subtitle{
+    .make-sm-column(10);
+    .make-sm-column-offset(2);
+  }
+
+
+
+  .yawizard-pagedresults-mastercontainer{
+    .make-sm-column(10);
+    .make-sm-column-offset(2);
+
+    // Title
+    .wizard-result-title{
+      a{
+        font-size: 17px;
+        font-family: @font-family-sans-serif-bold-italic;
+        text-transform: uppercase;
+      }
+    }
+
+    //tags
+    .wizard-result-tags-container{
+      margin-top: 10px;
+      .clearfix();
+      .wizard-result-tag{
+        background-color: #eff2f5;
+        float: left;
+        font-family: @font-family-sans-serif-bold;
+        font-size: 12px;
+        margin: 3px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+      }
+    }
+
+    // Hide
+    .wizard-result-source-container{
+      display: none !important;
+    }
+
+  }
+
+  //back to top
+  .wizard-backtotop-anchor{
+    .pull-right();
+    padding-right: 15px;
+    padding-bottom: 20px;
+    font-family: @font-family-sans-serif-bold-italic;
+  }
+
+}
+
+// Hide pager when there is only one page
+.yawizard-pagedresults-page.yawizard-pagedresults-pagecount-1 .pager {
+  display: none;
+}
+
+// Wizard results Share
+.wizard-sidebars-container,
+.ajax-container{
+  
+  //Share widget and export to excell
+  .share-export-email-container{
+
+    .clearfix();
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding:15px;
+    display:none;
+    @media (min-width: @screen-sm-min) {
+      display:block;
+    }
+    > div{
+      float:right;
+      clear:none;
+    }
+    .exportexcelWidget {
+      float: left;
+      width: 30px;
+      height: 23px;
+      position: relative;
+      z-index: 9;
+      .exportexcelWidget-toggler {
+        background: url("/sites/all/themes/bizusa/images/icons/excel.png") no-repeat scroll left top rgba(0,0,0,0);
+        width: 26px;
+        height: 26px;
+        float: left;
+      }
+      #exportexcelWidget-popup {
+        position: absolute;
+        top: 35px;
+        right: -8px;
+        display: block;
+        height: 66px;
+        width: 225px;
+        padding-top: 15px;
+        background: transparent url("/sites/all/themes/bizusa/images/shareTipTop.png") no-repeat 188px 6px;
+        .exportexcelWidget-popup-body {
+          background-color: #ffffff;
+          width: 220px;
+          float: left;
+          box-shadow: 0px 0px 10px 1px #F1F1F1;
+          a.exportexcel-group {
+            display: block;
+            float: left;
+            width:100%;
+            padding:20px 0px 20px 0px;
+            text-indent: 50px;
+            float: left;
+          }
+          a.exportexcel-group.exportexcel-download {
+            background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+            border-bottom: 1px solid #E9E9E9;
+          }
+          a.exportexcel-group.exportexcel-email {
+            background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+          }
+        }
+      }
+    }
+
+  }
+
+}
+
+// Results return from ya-wizard 
+.yawizard-pagedresults-mastercontainer{
+
+  @media (min-width: @screen-sm-min) {
+    float: left;
+  }
+  .yawizard-pagedresults-result{
+    padding-bottom:25px;
+    .readmore {
+      text-transform: capitalize;
+      color: #f75b49;
+    }
+  }
+
+}
+
+
+
+
+//
+// Wizard Results Overwrites
+//---------------------------------------------------
+
+// Start a business
+
+
+.wizard-uniqueid-startabusiness{
+  .slide.uses-ajax{
+    margin-top: 0;
+    .ajax-container{
+      .make-row();
+      margin:0;
+      padding-bottom: 20px;
+      background-color: #fff;
+
+      // Share and excell
+      .share-export-email-container{
+        .make-sm-column(3);
+        .make-sm-column-push(9);
+        margin-top: 20px;
+      }
+
+      // Welcome message
+      .startbiz-result-global-message{
+        .make-sm-column(9);
+        .make-sm-column-pull(3);
+        padding-top: 20px;
+      }
+
+      // Conduct Market Research 
+      #conductmarketresearch .build-business-plan-container{
+        margin:0 !important;
+      }
+
+      //Sections shared styles
+
+      .wizard-collapsible-section-container{
+        .make-sm-column(12);
+        margin-bottom: 10px;
+        
+        // Header
+
+        // Arrows
+        &.collapsed{
+          .wizard-collapse-arrow{
+            display: none;
+          }
+        }
+        &.uncollapsed{
+          .wizard-expand-arrow{
+            display: none;
+          }
+        }
+        
+        .wizard-collapsible-section-header{
+          background-color: #e9e9e9;
+          cursor: pointer;
+          border: 1px solid #e9e9e9;
+          border-bottom: none;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          .clearfix();
+
+          //Number
+          .wizard-collapsible-section-number-marker{
+            background: transparent url(/sites/all/themes/bizusa/images/icons/circle-teal.png) no-repeat center;
+            height: 40px;
+            width: 40px;
+            color: #204669;
+            border:none;
+            float:left;
+            margin-left: 20px;
+            margin-right: 10px;
+          }
+
+          // Title
+          .wizard-collapsible-section-title-allllayouts{
+            color: @brand-primary-blue;
+            font-size: 18px;
+            font-family: @font-family-sans-serif-bold-italic;
+            float: left;
+            line-height: 20px;
+            width: 50%;
+
+            @media (min-width: @screen-sm-min) {
+              line-height: 40px;
+              width: 80%;
+            }
+            
+          }
+
+          // Arrows
+          .wizard-collapseexpand-arrow{
+            float: right;
+            margin-right: 20px;
+            margin-top: 10px;
+          } 
+
+        }
+
+        // Content
+        .wizard-collapsible-section-contents{
+          border: 1px solid #e9e9e9;
+          border-top: none;
+          padding: 15px;
+          @media (min-width: @screen-sm-min) {
+            padding: 40px;
+          }
+          
+          // Title
+          .result-title{
+            font: 19px/20px @font-family-sans-serif-bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+          }
+
+          // Articles Related to Business Data and Statistics
+          // Business Licenses and Permits 
+          // Articles Recommended for You
+          #conductmarketresearcharticles,
+          #businesslicensesandpermitsarticles,
+          #articlesrecommendedforyoutopratedarticles,
+          #articlesrecommendedforyoubasedonanswersarticles{
+            border: 1px solid #eff2f5;
+            margin-bottom: 20px;
+            .sbarticles-header{
+              background-color: #eff2f5;
+              font-family: @font-family-sans-serif-bold-italic;
+              font-size: 19px;
+              line-height: 20px;
+              padding: 25px;
+              text-transform: capitalize;
+            }
+            .sbarticles-content{
+              .clearfix();
+              .start-a-business-article-result{
+                .wizard-result-title{
+                  padding: 20px 15px 0 15px;
+                  text-transform: uppercase;
+                }
+                .wizard-result-snippet{
+                  padding: 0 15px;
+                }
+              }
+
+            }
+          }
+          
+          // Business Licenses and Permits 
+          .business-licenses-and-permits-container{
+            
+            // Title
+            .sbwiz-lap-branchtitle{
+              font: 19px/22px @font-family-sans-serif-bold;
+              margin-top: 10px;
+              text-transform: uppercase;
+            }
+
+            // Subtitle
+            .sbwiz-lap-title{
+              font: 15px/20px @font-family-sans-serif-bold;
+            }
+            
+
+            // Welcome message 
+            .business-licenses-and-permits-welcometext{
+              border-bottom: 1px solid #d0d0d0;
+              font: 16px/22px @font-family-sans-serif;
+              padding-bottom: 20px;
+            }
+
+            // Description
+            .sbwiz-lap-desc{
+              font-size: 15px;
+            }
+
+            // Lists
+            .sbwiz-lap-links ul {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+            }
+
+            .sbwiz-lap-rootsection{
+              border-bottom: 1px solid #d0d0d0;
+              padding-bottom: 20px;
+            }
+
+          }
+
+
+          // Build Your Business Plan 
+          .build-business-plan-container{
+            .make-row();
+            
+            // Content area
+            .build-business-plan-content{
+              .make-md-column(8);
+              margin-bottom: 20px;
+            }
+            
+            // Sidebar
+            #buildyourbusinessplanarticles{
+              .make-md-column(4);
+              .start-a-business-article-result{
+                a{
+                  .btn();
+                  .btn-viewall();
+                  .btn-block();
+                  @media (min-width: @screen-sm-min) {
+                    width: 30%;
+                    margin-right: 3%;
+                    float: left;
+                    font-size: 10px;
+                  }
+                  @media (min-width: @screen-md-min) {
+                    width: 100%;
+                    margin-right: 0;
+                    float: none;
+                    font-size: 14px;
+                  }
+                  padding-top: 15px;
+                  padding-bottom: 15px;
+                  text-align: left;
+                  margin-bottom: 6px;
+                }
+              }
+              .getStartedButton{
+                .btn();
+                .btn-brand();
+                .btn-lg();
+                .btn-block();
+                @media (min-width: @screen-sm-min) {
+                    float: left;
+                }
+                @media (min-width: @screen-md-min) {
+                    float: none;
+                }
+              }
+            }
+
+          }
+
+          // Find Business Counselors That Work Within Your Area 
+          .sbdcscore-offices-container-container{
+            .make-row();
+            .sbdcscore-offices-container{
+              .make-sm-column(6);
+              margin-bottom: 10px;
+            }
+            .sbdcscore-offices-container{
+              .make-sm-column(6);
+            }
+            
+            // Title
+            .sbdc-view-defacto-title,{
+              text-transform: uppercase;
+              display: block;
+              background-color: #EFF2F5;
+              padding: 23px;
+              font-family: @font-family-sans-serif-bold-italic;
+              font-size: 15px;
+
+            }
+
+            // Help text
+            .sbdcscore-helptext{
+              font-family: @font-family-sans-serif-italic;
+              border-color: #EFF2F5;
+              border-style: solid;
+              border-width: 0 1px;
+              padding:15px;
+            }
+            
+            // Content
+            .contextual-links-region{
+              border-color: #EFF2F5;
+              border-style: solid;
+              border-width: 0 1px 1px 1px;
+              padding:15px;
+
+              // View all button
+              .sabw-sbdc-viewall{
+                .btn();
+                .btn-brand();
+              }
+
+            }
+
+          }
+
+
+
+
+        }
+
+        // View more/less button
+        .btnviewallarticles{
+          float: right;
+          color: @brand-primary-blue;
+          font-family: @font-family-sans-serif-bold;
+          background-color: #EFF2F5;
+          padding: 10px 30px 10px 15px;
+          border:none;
+          margin:20px;
+
+          &.expanded{ background: url("/sites/all/themes/bizusa/images/icons/viewless.png") no-repeat 90% 50% #EFF2F5; }
+          &.collapsed{ background: url("/sites/all/themes/bizusa/images/icons/viewall.png") no-repeat 90% 50% #EFF2F5; }
+        }
+
+        // Back to top
+        .btn-back-to-top{
+          display:none;
+          @media (min-width: @screen-sm-min) {
+            display:block;
+            background: url("/sites/all/themes/bizusa/images/icons/back-to-top.png") no-repeat scroll left top rgba(0,0,0,0);
+            position: absolute;
+            bottom: 0px;
+            height:28px;
+            width:34px;
+            left: 48%;
+            text-indent: -99999px;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+
+
+
+
+// Begin Exporting
+
+.wizard-uniqueid-beginexporting {
+
+  // Hide Header
+  .wizard-results-header-container{ 
+    display: none;
+  }
+
+  // Hide Federal Section
+  .wizard-result-section-federal{
+    display: none;
+  }
+
+  // Hide Top 5
+  .top5{
+    display: none;
+  }
+
+  // Hide icon column
+  .wizard-result-section-icon-container{
+    display: none;
+  }
+  
+  // Expand Title
+  .wizard-result-section-title{
+    .make-sm-column(12);
+  }
+
+  // Expand subtitle
+  .wizard-result-section-subtitle{
+    .make-sm-column(12);
+    .make-sm-column-offset(0);
+    margin-bottom: 20px;
+  }
+
+  // Expand content
+  .yawizard-pagedresults-mastercontainer{
+    .make-sm-column(12);
+    .make-sm-column-offset(0);
+
+    .wizard-result-section-result{
+      .make-row();
+      .wizard-result-icon-container{
+        .make-sm-column(1.5);
+        font-family: @font-family-sans-serif-bold-italic;
+        img{
+          float: left;
+          margin-right: 5px;
+        }
+        @media (min-width: @screen-sm-min) {
+          font-family: @font-family-sans-serif;
+          .center-block();
+          img{
+            float: none;
+            margin-right: 0;
+          }
+        }
+      }
+      .wizard-result-titlesnippettags{
+        .make-sm-column(10.5);
+        @media (min-width: @screen-sm-min) {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+
+
+}
+
+// Veterans
+
+.wizard-uniqueid-veterans {
+  
+  // Clearfix to main results container
+  .wizard-result-sections-container{
+    .clearfix();
+  }
+
+  // Hide Header
+  .wizard-results-header-container{ 
+    .wizard-results-header-resultcounts-container{
+      display: none;
+    }
+  }
+
+  // Hide verification of veteran status
+  .wizard-result-section-verification{
+    //display: none;
+  }
+
+  // Hide epanding your business
+  .wizard-result-section-expanding{
+    //display: none;
+  }
+
+  // Wizards in results - Start a Busines
+  .wizard-results-welcomemsg-container{
+    .wizard-results-welcomemsg{
+      &.wizard-results-welcomemsg-wizardstartabiz{
+        background-color: #e9e9e9;
+        padding: 15px;
+        .wizard-startabiz{
+          .make-row();
+          .wizard-startabiz-icon{
+            .make-sm-column(1);
+          }
+          .wizard-startabiz-right{
+            .make-sm-column(11);
+            .wizard-startabiz-title{
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Expand content
+  .yawizard-pagedresults-mastercontainer{
+    .make-sm-column(12);
+    .make-sm-column-offset(0);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .pager{
+      display: none;
+    }
+  }
+
+  // Hide back to top
+  .wizard-backtotop-anchor{
+    display: none !important;
+  }
+
+  // Results Section
+
+  .wizard-result-section {
+    border: 1px solid #e9e9e9;
+    margin: 15px 0;
+
+    .wizard-result-section-title {
+      background-color: #e9e9e9;
+      cursor: pointer;
+      margin-bottom: 0;
+      padding: 15px 15px;
+      width: 100%;
+      .clearfix();
+
+      .wizard-result-section-number {
+        background: url("/sites/all/themes/bizusa/images/icons/circle-teal.png") no-repeat scroll center center transparent;
+        color: @brand-primary-blue;
+        display: block;
+        float: left;
+        height: 40px;
+        text-align: center;
+        width: 40px;
+        span{
+          font-size: 13px;
+        }
+        margin-top: 10px;
+        @media (min-width: @screen-sm-min) {
+          margin-top: 0; 
+        }
+      }
+
+      .actual-title {
+        color: @brand-primary-blue;
+        font-family: @font-family-sans-serif-bold-italic;
+        font-size: 20px;
+        line-height: 20px;
+        margin: 10px;
+        float: left;
+        width: 50%;
+        @media (min-width: @screen-sm-min) {
+          float: none;
+          width: 100%;
+        }
+      }
+
+      &.expanded{
+        .wizard-result-section-slidingindicator{
+          float: right;
+          .slidingindicator-expanded{
+            display: none;
+          }
+        }
+      }
+
+      &.collapsed{
+        .wizard-result-section-slidingindicator{
+          float: right;
+          .slidingindicator-collapsed{
+            display: none;
+          }
+        }
+      }
+
+      
+
+
+    }
+
+  }
+
+}
+
+// Taxes and Credits
+
+.wizard-uniqueid-taxes{
+
+  // Hide Recommended Videos based on your answers 
+  .wizard-result-section-training_materials{
+    display: none;
+  }
+
+}
+
+// Find Opportunites
+
+.wizard-uniqueid-findopportunities{
+
+  // View all button
+  .more-fbo-open-link{
+    .clearfix();
+    .make-xs-column(12);
+    padding-right: 15px;
+    #ancmorefbo_and{
+      .btn();
+      .btn-primary();
+      float: right;
+    }
+  }
+
+}
+
+
+// Patent Trademark Office
+.wizard-uniqueid-patentandtrademark{
+  .patent-trade-office-result{
+    .clearfix();
+    .wizard-result-section-icon{
+      .make-xs-column(1);
+      padding:0;
+      .wizard-result-icon-label,
+      img{
+        .center-block();
+        font-size: 12px;
+        font-family: @font-family-sans-serif-bold;
+      }
+    }
+    .wizard-result-title{
+      .make-xs-column(11);
+    }
+    .wizard-result-snippet{
+      .make-xs-column(11);
+      .make-xs-column-offset(1);
+    }
+  }
+}
+
+
+
+//
+// Old wizards styles
+//---------------------------------------------------
+
+.result-is-404-link{
+  display:none;
+}
+
+/* loading */
+.ajax-container.ajax-loading {
+  display:block;
+  float:left;
+  background-color: #F8F8F8;
+  padding: 2%;
+  margin:2%;
+  width: 100%;
+}
+
+
+/* mobile styles */
+.mobile-slide-seeker {
+  //float: left;
+  clear: both;
+  width: 100%;
+  border-top: 1px solid #eff2f5;
+  background-color: #6885a2;
+  a {
+    font-family: 'latoblack_italic', sans-serif;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding-left: 20%;
+    line-height: 55px;
+    color: #fff;
+    background: transparent url(/sites/all/themes/bizusa/images/wizMobileDown.png) no-repeat 92% center;
+  }
+  a:hover{
+    color:#fff;
+    text-decoration: none;
+  }
+}
+
+.untouched.mobile-slide-seeker {
+  background: #6885a2 url(/sites/all/themes/bizusa/images/wizMobileUntouched.png) no-repeat 8% center;
+}
+.touched.mobile-slide-seeker {
+  background: #6885a2 url(/sites/all/themes/bizusa/images/wizMobileTouched.png) no-repeat 8% center;
+}
+.slide-current.touched.mobile-slide-seeker {
+  background: #6885a2 url(/sites/all/themes/bizusa/images/wizMobileCurrent.png) no-repeat 8% center;
+}
+.slide-current.mobile-slide-seeker a {
+  background: transparent url(/sites/all/themes/bizusa/images/wizMobileUp.png) no-repeat 92% center;
+}
+
+/* wizard header  and navigation area */
+.wizardHeader{
+  display:none;
+  @media (min-width: @screen-md-min) {
+    display:block;
+  }
+  background-color: @brand-primary-blue;
+  color: #fff;
+  //float:left;
+  .clearfix();
+  width:100%;
+  h1{
+    float: left;
+    font-size: 18px;
+    margin: 0px 0px 0px 20px;
+    line-height: 70px;
+    padding-left: 46px;
+    a{color:#fff;}
+  }
+  .mCSB_horizontal > .mCSB_container {
+    margin-bottom: 8px;
+  }
+  .tabs {
+    float: right;
+    margin-right: 20px;
+    a{color:#fff;}
+    a.wizard-back,
+    a.wizard-next {
+      float: left;
+      display: block;
+      height: 44px;
+      width: 44px;
+      margin-top: 13px;
+      text-indent: -99999px;
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+    }
+    a.wizard-back:hover,
+    a.wizard-next:hover {
+      opacity: 1;
+      filter: alpha(opacity=100);
+    }
+    a.wizard-back {
+      background: transparent url('/sites/all/themes/bizusa/images/wizButtonBack.png') no-repeat left top;
+    }
+    a.wizard-next {
+      background: transparent url('/sites/all/themes/bizusa/images/wizButtonNext.png') no-repeat left top;
+    }
+    .slide-selector-container {
+      float: left;
+    }
+    ul.slide-selector {
+      list-style-type: none;
+      list-style: none;
+      float: left;
+      margin: 0px;
+      padding: 0px;
+      li {
+        float: left;
+        list-style: none;
+        color: #6885A2;
+        a {
+          font-family: 'latoitalic', sans-serif;
+          font-size: 12px;
+          line-height: 12px;
+          display: block;
+          text-align: center;
+          height: 67px;
+          padding: 40px 20px 0px 20px;
+        }
+      }
+      .next-visible-slide-is-untouched.slide-current.touched.slide-first-visible.slide-last-visible {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrentFirst.png') no-repeat center 18px;
+      }
+      .touched.next-visible-slide-is-touched.slide-first-visible {
+        background: transparent url('/sites/all/themes/bizusa/images/wizTouchedStart.png') no-repeat center 18px;
+      }
+      .slide-current.touched.slide-first-visible,
+      .next-visible-slide-is-untouched.slide-current.touched.slide-first-visible {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrentStart.png') no-repeat center 18px;
+      }
+      .slide-current.slide-first-visible.next-visible-slide-is-touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrentTouchedFirst.png') no-repeat center 18px;
+      }
+      .untouched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizUntouched.png') no-repeat center 18px;
+      }
+      .untouched.slide-last-visible {
+        background: transparent url('/sites/all/themes/bizusa/images/wizLastUntouched.png') no-repeat center 18px;
+      }
+      .slide-first-visible {
+        background: transparent url('/sites/all/themes/bizusa/images/wizTouchedStart.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-untouched.slide-last-visible.slide-current.touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrentLast.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-untouched.slide-last-visible.touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizTouchedLast.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-untouched.touched.slide-current,
+      .next-visible-slide-is-untouched.slide-current.touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrent.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizTouched.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-touched.slide-current {
+        background: transparent url('/sites/all/themes/bizusa/images/wizCurrentTouched.png') no-repeat center 18px;
+      }
+      .next-visible-slide-is-untouched.touched {
+        background: transparent url('/sites/all/themes/bizusa/images/wizTouchedNextUntouched.png') no-repeat center 18px;
+      }
+    }
+  }
+}
+body.page-start-a-business.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-start-a-business.png") no-repeat 0px 50%;
+}
+body.page-access-financing.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-access-financing.png") no-repeat 0px 50%;
+}
+body.page-find-opportunities.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-find-opportunities.png") no-repeat 0px 50%;
+}
+body.page-healthcare.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-healthcare.png") no-repeat 0px 50%;
+}
+body.page-veterans.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-veterans.png") no-repeat 0px 50%;
+}
+body.page-taxes-and-credits.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-taxes.png") no-repeat 0px 50%;
+}
+body.page-jobcenter-wizard.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-jobs.png") no-repeat 0px 50%;
+}
+body.page-select-usa.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-select-usa.png") no-repeat 0px 50%;
+}
+body.page-disaster-assistance.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-disaster-assistance.png") no-repeat 0px 50%;
+}
+body.page-find-green-opportunities.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-green-opportunities.png") no-repeat 0px 50%;
+}
+body.page-browseregulations.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-browse-regulations.png") no-repeat 0px 50%;
+}
+body.page-begin-exporting.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-begin-exporting.png") no-repeat 0px 50%;
+}
+body.page-expand-exporting.page-contains-wizard .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wiz-expand-exporting.png") no-repeat 0px 50%;
+}
+body.page-patent-trademark-office .wizardHeader h1 {
+  background: transparent url("/sites/all/themes/bizusa/images/wizard-images/PTO-icon.png") no-repeat 0px 50%;
+}
+
+/* general slides - non-front/result slides */
+.never-show-ever-important{display:none !important;}
+
+
+
+
+
+
+

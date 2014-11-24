@@ -1,0 +1,118 @@
+/****************************
+***   QUICK FACTS PAGE   ****
+****************************/
+body.no-sidebars.page-quick-facts .wrapper #contentArea .region.region-content {
+  background: none;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters {
+  padding-right: 0px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-submit-quick-facts {
+  height: 40px;
+  width: 65px;
+  padding: 0px 10px;
+  margin: 0px;
+  border: none;
+  float: left;
+  background-color: #f75b49;
+  color: #fff;
+  font-family: 'latoblack', sans-serif;
+  cursor: pointer;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-field-publishrange-value-wrapper {
+  background: #FFFFFF;
+  padding: 0;
+  width: 100%;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-field-publishrange-value-wrapper label {
+  display: none;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-field-publishrange-value-wrapper button {
+  width: 100%;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 13px;
+  text-transform: uppercase;
+  color: #5C5C5C;
+  border: none;
+  background: url('/sites/all/themes/bizusa/images/icons/block-collapsed.png') no-repeat 97% #e2e2e2;
+  padding: 20px;
+  text-align: left;
+  margin: 0px;
+  font-weight: normal;
+  font-family: "latoblack", sans-serif;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-field-publishrange-value-wrapper .views-operator {
+  display: none;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .views-exposed-widgets #edit-field-publishrange-value-wrapper .views-widget {
+  padding: 15px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item {
+  margin-right: 2px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select {
+  width: 85px;
+  height: 33px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select .dk-selected {
+  border: none;
+  padding-right: 0px;
+  width: 85px;
+  height: 33px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select .dk-selected:before,
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select .dk-selected:after {
+  content: none;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select .dk-select-options {
+  border: 1px solid #6784a3;
+  width: 85px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-filters .views-exposed-form .container-inline-date .form-item .dk-select .dk-select-options li {
+  font-size: 12px;
+  line-height: 25px;
+  text-transform: none;
+  background-color: #6784a3;
+  font-family: "latoregular", sans-serif;
+  border-bottom: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  width: 85px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content {
+  padding-left: 0px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row {
+  background: #FFFFFF;
+  margin-bottom: 5px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row .views-field {
+  padding: 15px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row .views-field .field-content {
+  margin-top: 0px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row .views-field .field-content a {
+  text-decoration: none;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row > div:nth-child(2) {
+  padding-left: 15px;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row:hover {
+  background: #6885a2;
+  color: #FFFFFF;
+}
+body.no-sidebars.page-quick-facts .view-quick-facts .view-content .views-row:hover .views-field .field-content a {
+  color: #FFFFFF;
+}
+@media (max-width: 1025px) {
+  body.no-sidebars.page-quick-facts .wrapper #contentArea .region.region-content {
+    width: 100%;
+    padding: 0;
+  }
+  body.no-sidebars.page-quick-facts .wrapper #contentArea .region.region-content .view-quick-facts .view-content,
+  body.no-sidebars.page-quick-facts .wrapper #contentArea .region.region-content .view-quick-facts .view-filters {
+    padding: 0;
+    margin: 0;
+  }
+}

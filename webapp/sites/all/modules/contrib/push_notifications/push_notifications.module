@@ -1,0 +1,1012 @@
+<?php
+
+/**
+ * @file
+ * Push Notifications functionality.
+ */
+
+/**
+ * Constants Definition.
+ */
+//
+// Device Types.
+//
+define('PUSH_NOTIFICATIONS_TYPE_ID_IOS', variable_get('push_notifications_type_id_ios', 0));
+define('PUSH_NOTIFICATIONS_TYPE_ID_ANDROID', variable_get('push_notifications_type_id_anroid', 1));
+
+//
+// Apple Variables
+//
+// Apple Server
+define('PUSH_NOTIFICATIONS_APNS_HOST', variable_get('push_notifications_apns_host', 'gateway.push.apple.com'));
+// Apple Server port.
+define('PUSH_NOTIFICATIONS_APNS_PORT', 2195);
+// Apple Feedback Server, initially set to development server.
+define('PUSH_NOTIFICATIONS_APNS_FEEDBACK_HOST', variable_get('push_notifications_apns_feedback_host', 'feedback.push.apple.com'));
+// Apple Feedback Server port.
+define('PUSH_NOTIFICATIONS_APNS_FEEDBACK_PORT', 2196);
+// Random suffix for certificate string.
+define('PUSH_NOTIFICATIONS_APNS_CERTIFICATE_RANDOM', variable_get('push_notifications_apns_certificate_random', ''));
+// Name of certificate, initially set to development certificate.
+define('PUSH_NOTIFICATIONS_APNS_CERTIFICATE', variable_get('push_notifications_apns_certificate', 'apns-production' . PUSH_NOTIFICATIONS_APNS_CERTIFICATE_RANDOM . '.pem'));
+// Size limit for individual payload, in bytes.
+define('PUSH_NOTIFICATIONS_APNS_PAYLOAD_SIZE_LIMIT', 255);
+// Payload sound
+define('PUSH_NOTIFICATIONS_APNS_NOTIFICATION_SOUND', variable_get('push_notifications_apns_notification_sound', 'default'));
+// Boolean value to indicate wether Apple's feedback service should be called
+// on cron to remove unused tokens from our database.
+define('PUSH_NOTIFICATIONS_APNS_QUERY_FEEDBACK_SERVICE', variable_get('push_notifications_apns_query_feedback_service', 1));
+// Maximum of messages to send per stream context.
+define('PUSH_NOTIFICATIONS_APNS_STREAM_CONTEXT_LIMIT', variable_get('push_notifications_apns_stream_context_limit', 1));
+
+
+//
+// Google Variables
+//
+// Google Push Notification Types
+// 0 => Cloud 2 Device Messaging
+// 1 => Google Cloud Messaging
+define('PUSH_NOTIFICATIONS_GOOGLE_TYPE_C2DM', 0);
+define('PUSH_NOTIFICATIONS_GOOGLE_TYPE_GCM', 1);
+define('PUSH_NOTIFICATIONS_GOOGLE_TYPE', variable_get('push_notifications_google_type', PUSH_NOTIFICATIONS_GOOGLE_TYPE_GCM));
+
+//
+// C2DM Variables
+//
+// C2DM Credentials.
+define('PUSH_NOTIFICATIONS_C2DM_USERNAME', variable_get('push_notifications_c2dm_username', ''));
+define('PUSH_NOTIFICATIONS_C2DM_PASSWORD', variable_get('push_notifications_c2dm_password', ''));
+define('PUSH_NOTIFICATIONS_C2DM_CLIENT_LOGIN_ACTION_URL', variable_get('push_notifications_c2dm_client_login_action_url', 'https://www.google.com/accounts/ClientLogin'));
+// C2DM Server Post URL
+define('PUSH_NOTIFICATIONS_C2DM_SERVER_POST_URL', variable_get('push_notifications_c2dm_server_post_url', 'https://android.apis.google.com/c2dm/send'));
+
+//
+// GCM Variables
+//
+// GCM API KEY Credentials.
+define('PUSH_NOTIFICATIONS_GCM_API_KEY', variable_get('push_notifications_gcm_api_key', ''));
+// GCM Server Post URL
+define('PUSH_NOTIFICATIONS_GCM_SERVER_POST_URL', variable_get('push_notifications_gcm_server_post_url', 'https://android.googleapis.com/gcm/send'));
+
+
+/**
+ * Implements of hook_menu().
+ */
+function push_notifications_menu() {
+  $items = array();
+
+  $items['admin/config/services/push_notifications'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'Push Notifications',
+    'access arguments' => array('send push notifications'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('push_notifications_admin_overview_form'),
+    'description' => 'Push Notifications Settings.',
+    'file' => 'push_notifications.admin.inc',
+    'file path' => drupal_get_path('module', 'push_notifications') . '/includes',
+  );
+
+  $items['admin/config/services/push_notifications/overview'] = array(
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'title' => 'Overview',
+    'weight' => -50,
+    'access arguments' => array('send push notifications'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('push_notifications_admin_overview_form'),
+    'description' => 'Push Notifications Settings.',
+    'file' => 'push_notifications.admin.inc',
+    'file path' => drupal_get_path('module', 'push_notifications') . '/includes',
+  );
+
+  $items['admin/config/services/push_notifications/configure'] = array(
+    'type' => MENU_LOCAL_TASK,
+    'title' => 'Configuration',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('push_notifications_admin_form'),
+    'description' => 'Push Notifications Settings.',
+    'file' => 'push_notifications.admin.inc',
+    'file path' => drupal_get_path('module', 'push_notifications') . '/includes',
+  );
+
+  $items['admin/config/services/push_notifications/message'] = array(
+    'type' => MENU_LOCAL_TASK,
+    'title' => 'Send Push',
+    'access arguments' => array('send push notifications'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('push_notifications_mass_push_form'),
+    'description' => 'Send a Push Notification',
+    'file' => 'push_notifications.admin.inc',
+    'file path' => drupal_get_path('module', 'push_notifications') . '/includes',
+  );
+
+  return $items;
+}
+
+
+
+/**
+ * Implements of hook_cron().
+ */
+function push_notifications_cron() {
+  if (PUSH_NOTIFICATIONS_APNS_QUERY_FEEDBACK_SERVICE) {
+    push_notifications_apns_feedback_service();
+  }
+}
+
+
+
+/**
+ * Implements hook_permission().
+ */
+function push_notifications_permission() {
+  return array(
+    'register device token' => array(
+      'title' => t('Register Device Token'),
+      'description' => t('Allows users to register a device token.'),
+    ),
+    'remove device token' => array(
+      'title' => t('Remove Device Token'),
+      'description' => t('Allows users to remove a device token.'),
+    ),
+    'send push notifications' => array(
+      'title' => t('Send push notifications'),
+      'description' => t('Allow users to send a push notification to devices'),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_services_resources().
+ */
+function push_notifications_services_resources() {
+  return array(
+    'push_notifications' => array(
+      'create' => array(
+        'help' => 'Registers a device token. For type, pass \'ios\' for iOS devices and \'android\' for Android devices.',
+        'callback' => '_push_notifications_service_create_device_token',
+        'file' => array(
+          'type' => 'inc',
+          'module' => 'push_notifications',
+          'name' => 'includes/push_notifications.service'
+        ),
+        'access arguments' => array('register device token'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'token',
+            'type' => 'string',
+            'description' => 'Device Token',
+            'optional' => FALSE,
+            'source' => 'data',
+          ),
+          array(
+            'name' => 'type',
+            'type' => 'string',
+            'description' => 'Device Type',
+            'optional' => FALSE,
+            'source' => 'data',
+          ),
+          array(
+            'name' => 'language',
+            'type' => 'string',
+            'description' => 'Language',
+            'optional' => TRUE,
+            'source' => 'data',
+          ),
+        ),
+      ),
+      'delete' => array(
+        'help' => 'Removes a registered a device token. Only needs the token.',
+        'callback' => '_push_notifications_service_delete_device_token',
+        'file' => array(
+          'type' => 'inc',
+          'module' => 'push_notifications',
+          'name' => 'includes/push_notifications.service'
+        ),
+        'access arguments' => array('remove device token'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'token',
+            'type' => 'string',
+            'description' => 'Device Token',
+            'optional' => FALSE,
+            'source' => array('path' => '0'),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_privatemsg_message_insert.
+ */
+function push_notifications_privatemsg_message_insert($message) {
+  if (variable_get('push_notifications_privatemsg_integration', 0)) {
+    // Compose the payload. If the body is empty, just use the subject line.
+    // Otherwise, combine subject and body.
+    $payload = (empty($message->body)) ? $message->subject : $message->subject . ' ' . $message->body;
+    $payload = 'From ' . $message->author->name . ': ' . $payload;
+
+    // Compose an array of recipients.
+    $recipients = array();
+    foreach ($message->recipients as $recipient) {
+      $recipients[] = $recipient->uid;
+    }
+
+    push_notifications_send_message($recipients, $payload);
+  }
+}
+
+
+
+/**
+ * Determine if this user has already stored a token
+ * in the database. The same device token can be
+ * registered for multiple users, because multiple
+ * users can login from the same device.
+ *
+ * @param $token
+ *   Device Token.
+ * @param $uid
+ *   User ID.
+ * @param $exclude
+ *   Set this to true to find (at least one) other user(s) who have this
+ *   token stored. Optional, defaults to false.
+ *
+ * @return
+ *   User ID of token, if found.
+ */
+function push_notifications_find_token($token = '', $uid = '', $exclude = FALSE) {
+  if ($token == '') {
+    return FALSE;
+  }
+
+  $query = db_select('push_notifications_tokens', 'pnt');
+  $query->fields('pnt', array('token'));
+  $query->condition('pnt.token', $token);
+  if ($exclude) {
+    $query->condition('pnt.uid', $uid, '!=');
+    $query->range(0, 1);
+  }
+  else {
+    $query->condition('pnt.uid', $uid);
+  }
+
+  $result = $query->execute();
+  return $result->fetchField();
+}
+
+
+
+/**
+ * Store a token in the database.
+ * Removes all spaces in the token.
+ *
+ * @param $token
+ *   Device token.
+ * @param $type_id
+ *   Device type id.
+ * @param $uid
+ *   User ID.
+ * @param $language
+ *   Language that this token is registered for, optional.
+ *
+ * @return
+ *   Failure to write a record will return FALSE, Otherwise SAVED_NEW.
+ */
+function push_notifications_store_token($token = '', $type_id = '', $uid = '', $language = '') {
+   // Let modules modify the token before it is saved to the database.
+  foreach(module_implements('push_notifications_store_token') as $module) {
+    $function = $module . '_push_notifications_store_token';
+    $function($token, $type_id, $uid);
+  }
+
+  if (!is_string($token) || !is_numeric($type_id) || !is_numeric($uid)) {
+    return FALSE;
+  }
+
+  // Default language to site default.
+  if ($language == '') {
+    $default_language = language_default();
+    $language = $default_language->language;
+  }
+
+  // Write record.
+  $table = 'push_notifications_tokens';
+  $record = new stdClass();
+  $record->token = $token;
+  $record->uid = $uid;
+  $record->type = $type_id;
+  $record->language = $language;
+  $record->timestamp = time();
+  return drupal_write_record($table, $record);
+}
+
+
+
+/**
+ * Open an APNS connection.
+ * Should be closed by calling fclose($connection) after usage.
+ */
+function push_notifications_open_apns() {
+  // Determine the absolute path of the certificate.
+  // @see http://stackoverflow.com/questions/809682
+  $apns_cert = _push_notifications_get_apns_certificate();
+
+  // Create a stream context.
+  $stream_context = stream_context_create();
+  // Set options on the stream context.
+  stream_context_set_option($stream_context, 'ssl', 'local_cert', $apns_cert);
+
+  //If the user has a passphrase stored, we use it.
+  $passphrase = variable_get('push_notifications_apns_passphrase', '');
+  if(strlen($passphrase)) {
+    stream_context_set_option($stream_context, 'ssl', 'passphrase', $passphrase);
+  }
+
+
+  // Open an Internet socket connection.
+  $apns = stream_socket_client('ssl://' . PUSH_NOTIFICATIONS_APNS_HOST . ':' . PUSH_NOTIFICATIONS_APNS_PORT, $error, $error_string, 2, STREAM_CLIENT_CONNECT, $stream_context);
+  if (!$apns) {
+    watchdog('push_notifications', 'Connection to Apple Notification Server failed.', NULL, WATCHDOG_ERROR);
+    return FALSE;
+  }
+  else {
+    return $apns;
+  }
+}
+
+
+
+/**
+ * Check size of a push notification payload.
+ * Payload can't exceed PUSH_NOTIFICATIONS_APNS_PAYLOAD_SIZE_LIMIT.
+ *
+ * @param $payload
+ *   Message.
+ *
+ * @return
+ *   Returns true if message is below the limit, false otherwise.
+ */
+function push_notifications_check_payload_size($payload = '') {
+  if ($payload == '') {
+    return FALSE;
+  }
+
+  // JSON-encode the payload.
+  $payload = json_encode($payload);
+
+  // Verify that the payload doesn't exceed limit.
+  $payload_size = mb_strlen($payload, '8bit');
+  $size_valid = ($payload_size > PUSH_NOTIFICATIONS_APNS_PAYLOAD_SIZE_LIMIT) ? FALSE : TRUE;
+  return $size_valid;
+}
+
+
+
+/**
+ * Send out push notifications, switch automatically between delivery method.
+ *
+ * @param $recipients
+ *   Array of user ids.
+ * @param $message
+ *   Payload to send.
+ */
+function push_notifications_send_message($recipients, $message) {
+  if (!is_array($recipients) || !is_string($message)) {
+    return FALSE;
+  }
+
+  // Let modules modify the message before it is sent.
+  foreach(module_implements('push_notifications_send_message') as $module) {
+    $function = $module . '_push_notifications_send_message';
+    $function($message);
+  }
+
+  // Shorten the message to 255 characters / 8 bit.
+  $message = truncate_utf8($message, PUSH_NOTIFICATIONS_APNS_PAYLOAD_SIZE_LIMIT, TRUE, TRUE);
+
+  // Convert the payload into the correct format for delivery.
+  $payload = array('alert' => $message);
+
+  // Determine if any of the recipients have one or multiple tokens stored.
+  $tokens = array();
+  foreach ($recipients as $uid) {
+    $user_tokens = push_notification_get_user_tokens($uid);
+    if (!empty($user_tokens)) {
+      $tokens = array_merge($tokens, $user_tokens);
+    }
+  }
+
+  // Stop right here if none of these users have any tokens.
+  if (empty($tokens)) {
+    return FALSE;
+  }
+
+  // Group tokens into types.
+  $tokens_ios = array();
+  $tokens_android = array();
+  foreach ($tokens as $token) {
+    switch ($token['type']) {
+      case PUSH_NOTIFICATIONS_TYPE_ID_IOS:
+      $tokens_ios[] = $token['token'];
+      break;
+
+      case PUSH_NOTIFICATIONS_TYPE_ID_ANDROID:
+      $tokens_android[] = $token['token'];
+      break;
+    }
+  }
+
+  // Send payload to iOS recipients.
+  if (!empty($tokens_ios)) {
+    // Convert the payload into the correct format for APNS.
+    $payload_apns = array('aps' => $payload);
+    $result = push_notifications_apns_send_message($tokens_ios, $payload_apns);
+  }
+  // Send payload to Android recipients if configured correctly.
+  if (!empty($tokens_android) && ((PUSH_NOTIFICATIONS_C2DM_USERNAME && PUSH_NOTIFICATIONS_C2DM_PASSWORD) || PUSH_NOTIFICATIONS_GCM_API_KEY)) {
+    // Determine which method to use for Google push notifications.
+    switch (PUSH_NOTIFICATIONS_GOOGLE_TYPE) {
+      case PUSH_NOTIFICATIONS_GOOGLE_TYPE_C2DM:
+      $result = push_notifications_c2dm_send_message($tokens_android, $payload);
+      break;
+
+      case PUSH_NOTIFICATIONS_GOOGLE_TYPE_GCM:
+      $result = push_notifications_gcm_send_message($tokens_android, $payload);
+      break;
+    }
+  }
+}
+
+
+
+/**
+ * Send out push notifications through APNS.
+ *
+ * @param $tokens
+ *   Array of iOS tokens
+ * @param $payload
+ *   Payload to send. Minimum requirement
+ *   is a nested array in this format:
+ *   $payload = array(
+ *     'aps' => array(
+ *       'alert' => 'Push Notification Test',
+ *     );
+ *   );
+ *
+ * @return
+ *   Array with the following keys:
+ *   - count_attempted (# of attempted messages sent)
+ *   - count_success   (# of successful sends)
+ *   - success         (# boolean)
+ *   - message         (Prepared result message)
+ */
+function push_notifications_apns_send_message($tokens, $payload) {
+  if (!is_array($tokens) || empty($payload) || (is_array($tokens) && empty($tokens))) {
+    return FALSE;
+  }
+
+  $payload_apns = array();
+
+  // Allow for inclusion of custom payloads.
+  foreach ($payload as $key => $value) {
+    if ($key != 'aps') {
+      $payload_apns[$key] = $value;
+    }
+  }
+
+  // Add the default 'aps' key for the payload.
+  $payload_apns['aps'] = $payload['aps'];
+
+  // Set the default sound if no sound was set.
+  if (!isset($payload_apns['aps']['sound'])) {
+    $payload_apns['aps']['sound'] = PUSH_NOTIFICATIONS_APNS_NOTIFICATION_SOUND;
+  }
+
+  // JSON-encode the payload.
+  $payload_apns = json_encode($payload_apns);
+
+  $result = array(
+    'count_attempted' => 0,
+    'count_success' => 0,
+    'success' => 0,
+    'message' => '',
+  );
+
+  // Send a push notification to every recipient.
+  $stream_counter = 0;
+  foreach ($tokens as $token) {
+    // Open an apns connection, if necessary.
+    if ($stream_counter == 0) {
+      $apns = push_notifications_open_apns();
+      if (!$apns) {
+        $result['message'] = t('APNS connection could not be established. Check to make sure you are using a valid certificate file.');
+        return $result;
+      }
+    }
+    $stream_counter++;
+
+    $result['count_attempted']++;
+    $apns_message = chr(0) . chr(0) . chr(32) . pack('H*', $token) . chr(0) . chr(strlen($payload_apns)) . $payload_apns;
+    // Write the payload to the currently active streaming connection.
+    $success = fwrite($apns, $apns_message);
+    if ($success) {
+      $result['count_success']++;
+    }
+    elseif ($success == 0 || $success == FALSE || $success < strlen($apns_message)) {
+      $error_message = array(
+        'message' => t('APNS message could not be sent.'),
+        'token' => 'Token: ' . $token,
+        'data' => 'fwrite returned: ' . $success,
+      );
+      watchdog('push_notifications', implode($error_message, '<br />'));
+    }
+
+    // Reset the stream counter if no more messages should
+    // be sent with the current stream context.
+    // This results in the generation of a new stream context
+    // at the beginning of this loop.
+    if ($stream_counter >= PUSH_NOTIFICATIONS_APNS_STREAM_CONTEXT_LIMIT) {
+      $stream_counter = 0;
+    }
+  }
+
+  // Close the apns connection.
+  fclose($apns);
+
+  $result['message'] = t('Successfully sent !count_success iOS push messages (attempted to send !count messages).', array('!count_success' => $result['count_success'], '!count' => $result['count_attempted']));
+  $result['success'] = TRUE;
+  return $result;
+}
+
+
+/**
+ * Determine the auth string from C2DM server.
+ */
+function push_notifications_c2dm_token() {
+  $data = array(
+    'Email'         => PUSH_NOTIFICATIONS_C2DM_USERNAME,
+    'Passwd'        => PUSH_NOTIFICATIONS_C2DM_PASSWORD,
+    'accountType'   => 'HOSTED_OR_GOOGLE',
+    'source'        => 'Company-AppName-Version',
+    'service'       => 'ac2dm',
+  );
+
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, PUSH_NOTIFICATIONS_C2DM_CLIENT_LOGIN_ACTION_URL);
+  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($curl, CURLOPT_POST, TRUE);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+  $response = curl_exec($curl);
+  curl_close($curl);
+
+  // Get the auth token.
+  preg_match("/Auth=([a-z0-9_\-]+)/i", $response, $matches);
+  $auth_token = $matches[1];
+
+  if (!$auth_token) {
+    watchdog('push_notifications', 'Google C2DM Server did not provide an authentication token.', NULL, WATCHDOG_ERROR);
+  }
+  else {
+    return $auth_token;
+  }
+}
+
+
+
+
+/**
+ * Send out push notifications through C2DM.
+ *
+ * @param $tokens
+ *   Array of iOS tokens
+ * @param $payload
+ *   Payload to send.
+ *
+ * @return
+ *   Array with the following keys:
+ *   - count_attempted (# of attempted messages sent)
+ *   - count_success   (# of successful sends)
+ *   - success         (# boolean)
+ *   - message         (Prepared result message)
+ */
+function push_notifications_c2dm_send_message($tokens, $payload) {
+  if (!is_array($tokens) || empty($payload) || (is_array($tokens) && empty($tokens))) {
+    return FALSE;
+  }
+
+  // Determine an updated authentication token.
+  // Google is very vague about how often this token changes,
+  // so we'll just get a new token every time.
+  $auth_token = push_notifications_c2dm_token();
+  if (!$auth_token) {
+    $result['message'] = t('Google C2DM Server did not provide an authentication token. Check your C2DM credentials.');
+    return $result;
+  }
+
+  // Define an array of result values.
+  $result = array(
+    'count_attempted' => 0,
+    'count_success' => 0,
+    'success' => 0,
+    'message' => '',
+  );
+
+  // Define the header.
+  $headers = array();
+  $headers[] = 'Authorization: GoogleLogin auth=' . $auth_token;
+
+  // Send a push notification to every recipient.
+  foreach ($tokens as $token) {
+    $result['count_attempted']++;
+
+    // Convert the payload into the correct format for C2DM payloads.
+    // Prefill an array with values from other modules first.
+    $data = array();
+    foreach ($payload as $key => $value) {
+      if ($key != 'alert') {
+        $data['data.' . $key] = $value;
+      }
+    }
+    // Fill the default values required for each payload.
+    $data['registration_id'] = $token;
+    $data['collapse_key'] = time();
+    $data['data.message'] = $payload['alert'];
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, PUSH_NOTIFICATIONS_C2DM_SERVER_POST_URL);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_POST, TRUE);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    $response = curl_exec($curl);
+    $info = curl_getinfo($curl);
+    curl_close($curl);
+
+    // If Google's server returns a reply, but that reply includes an error, log the error message.
+    if ($info['http_code'] == 200 && (isset($response) && preg_match('/Error/', $response))) {
+      watchdog('push_notifications', "Google's Server returned an error: " . $response, NULL, WATCHDOG_ERROR);
+
+      // If the device token is invalid or not registered (anymore because the user
+      // has uninstalled the application), remove this device token.
+      if (preg_match('/InvalidRegistration/', $response) || preg_match('/NotRegistered/', $response)) {
+        push_notifications_purge_token($token);
+        watchdog('daddyhunt_apns', 'C2DM token not valid anymore. Removing token ' . $token);
+      }
+    }
+
+    // Success if the http response status is 200 and the response
+    // data does not containt the word "Error".
+    if ($info['http_code'] == 200 && (isset($response) && !preg_match('/Error/', $response))) {
+      $result['count_success']++;
+    }
+  }
+
+  $result['message'] = t('Successfully sent !count_success Android push messages (attempted to send !count messages).', array('!count_success' => $result['count_success'], '!count' => $result['count_attempted']));
+  $result['success'] = TRUE;
+  return $result;
+}
+
+/**
+ * Send out push notifications through GCM.
+ *
+ * @link http://developer.android.com/guide/google/gcm/index.html
+ *
+ * @param $tokens
+ *   Array of gcm tokens
+ * @param $payload
+ *   Payload to send.
+ *
+ * @return
+ *   Array with the following keys:
+ *   - count_attempted (# of attempted messages sent)
+ *   - count_success   (# of successful sends)
+ *   - success         (# boolean)
+ *   - message         (Prepared result message)
+ */
+function push_notifications_gcm_send_message($tokens, $payload) {
+  if (!is_array($tokens) || empty($payload) || (is_array($tokens) && empty($tokens))) {
+    return FALSE;
+  }
+
+  // Define an array of result values.
+  $result = array(
+    'count_attempted' => 0,
+    'count_success' => 0,
+    'success' => 0,
+    'message' => '',
+  );
+
+  // Define the header.
+  $headers = array();
+  $headers[] = 'Content-Type:application/json';
+  $headers[] = 'Authorization:key=' . PUSH_NOTIFICATIONS_GCM_API_KEY;
+
+
+  // Check of many token bundles can be build.
+  $token_bundles = ceil(count($tokens) / 1000);
+  $result['count_attempted'] = count($tokens);
+
+  // Send a push notification to every recipient.
+  for ($i = 0; $i < $token_bundles; $i++) {
+    // Create a token bundle.
+    $bundle_tokens = array_slice($tokens, $i * 1000, 1000, FALSE);
+
+    // Convert the payload into the correct format for C2DM payloads.
+    // Prefill an array with values from other modules first.
+    $data = array();
+    foreach ($payload as $key => $value) {
+      if ($key != 'alert') {
+        $data['data'][$key] = $value;
+      }
+    }
+    // Fill the default values required for each payload.
+    $data['registration_ids'] = $bundle_tokens;
+    $data['collapse_key'] = (string) time();
+    $data['data']['message'] = $payload['alert'];
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, PUSH_NOTIFICATIONS_GCM_SERVER_POST_URL);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_POST, TRUE);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    $response_raw = curl_exec($curl);
+    $info = curl_getinfo($curl);
+    curl_close($curl);
+
+    $response = FALSE;
+    if (isset($response_raw)) {
+      $response = json_decode($response_raw);
+    }
+
+    // If Google's server returns a reply, but that reply includes an error,
+    // log the error message.
+    if ($info['http_code'] == 200 && (!empty($response->failure))) {
+      watchdog('push_notifications', "Google's Server returned an error: " . $response_raw, NULL, WATCHDOG_ERROR);
+
+      // Analyze the failure.
+      foreach ($response->results as $token_index => $message_result) {
+        if (!empty($message_result->error)) {
+          // If the device token is invalid or not registered (anymore because the user
+          // has uninstalled the application), remove this device token.
+          if ($message_result->error == 'NotRegistered' || $message_result->error == 'InvalidRegistration') {
+            push_notifications_purge_token($bundle_tokens[$token_index]);
+            watchdog('push_notifications', 'GCM token not valid anymore. Removing token ' . $bundle_tokens[$token_index]);
+          }
+        }
+      }
+    }
+
+    // Count the successful sent push notifications if there are any.
+    if ($info['http_code'] == 200 && !empty($response->success)) {
+      $result['count_success'] += $response->success;
+    }
+  }
+
+  $result['message'] = t('Successfully sent !count_success Android push messages (attempted to send !count messages).', array('!count_success' => $result['count_success'], '!count' => $result['count_attempted']));
+  $result['success'] = TRUE;
+  return $result;
+}
+
+
+/**
+ * Determine all recipients from a specific device type.
+ *
+ * @param $type_id
+ *   Device Type ID.
+ * @param $language
+ *   Language code, optional.
+ * @param $raw
+ *   Boolean, set true to retrieve the raw query results.
+ *
+ * @return
+ *   Array of results, null if no entries.
+ */
+function push_notifications_get_tokens($type_id = '', $language = FALSE, $raw = FALSE) {
+  // Make sure this type_id is supported.
+  $valid_type_ids = array(PUSH_NOTIFICATIONS_TYPE_ID_IOS, PUSH_NOTIFICATIONS_TYPE_ID_ANDROID);
+  if (!in_array($type_id, $valid_type_ids)) {
+    return FALSE;
+  }
+
+  // Select all tokens for this type id.
+  $query = db_select('push_notifications_tokens', 'pnt');
+  $query->fields('pnt', array('token'));
+  $query->condition('pnt.type', $type_id);
+  // If language code is passed, limit the results by language.
+  if ($language) {
+    $query->condition('pnt.language', $language);
+  }
+  $result = $query->execute();
+
+  // Return raw result, if needed.
+  if ($raw) {
+    return $result;
+  }
+  // Otherwise, create an array of tokens.
+  else {
+    $tokens = array();
+    foreach ($result as $record) {
+      $tokens[] = $record->token;
+    }
+    return $tokens;
+  }
+}
+
+
+
+/**
+ * Determine all tokens for a specfic user.
+ *
+ * @param @uid
+ *   User ID.
+ *
+ * @return
+ *   Nested array of tokens, with user id, push notification type
+ *   and token.
+ */
+function push_notification_get_user_tokens($uid = '') {
+  if ($uid == '' || !is_numeric($uid)) {
+    return FALSE;
+  }
+
+  // Select all tokens for this user.
+  $query = db_select('push_notifications_tokens', 'pnt');
+  $query->fields('pnt', array('token', 'uid', 'type'));
+  $query->condition('pnt.uid', $uid);
+  $result = $query->execute();
+
+  $tokens = array();
+  foreach ($result as $record) {
+    $tokens[$record->token] = array(
+      'token' => $record->token,
+      'uid' => $record->uid,
+      'type' => $record->type,
+    );
+  }
+
+  return $tokens;
+}
+
+
+
+/**
+ * Determine any languages used in the push
+ * notifications table.
+ */
+function push_notifications_used_languages() {
+  $query = db_select('push_notifications_tokens', 'pnt');
+  $query->fields('pnt', array('language'));
+  $query->distinct();
+  $result = $query->execute();
+
+  // Convert the records into an array with
+  // full language code available.
+  include_once DRUPAL_ROOT . '/includes/iso.inc';
+  $languages = _locale_get_predefined_list();
+
+  $used_languages = array();
+  foreach ($result as $record) {
+    $used_languages[$record->language] = $languages[$record->language][0];
+  }
+
+  if (!empty($used_languages)) {
+    // Sort the languages alphabetically.
+    $used_langauges = asort($used_languages);
+    // Add an "All" option.
+    array_unshift($used_languages, 'All Recipients');
+  }
+
+  return $used_languages;
+}
+
+
+
+/**
+ * Delete a token.
+ *
+ * @param $token
+ */
+function push_notifications_purge_token($token = '') {
+  if ($token == '' || !is_string($token)) {
+    return FALSE;
+  }
+
+  $query = db_delete('push_notifications_tokens');
+  $query->condition('token', $token);
+  return $query->execute();
+}
+
+
+
+/**
+ * Connect to Apple's feedback server to remove unused device tokens.
+ * Connection modeled after daddyhunt_apns_send_notifications function.
+ *
+ * @see http://stackoverflow.com/questions/4774681/php-script-for-apple-push-notification-feedback-service-gets-timeout-every-time
+ * @see http://stackoverflow.com/questions/1278834/php-technique-to-query-the-apns-feedback-server/2298882#2298882
+ */
+function push_notifications_apns_feedback_service() {
+  // Create a Stream context and open an Internet socket connection.
+  $stream_context = stream_context_create();
+  $apns_cert = _push_notifications_get_apns_certificate();
+  stream_context_set_option($stream_context, 'ssl', 'local_cert', $apns_cert);
+  $apns = stream_socket_client('ssl://' . PUSH_NOTIFICATIONS_APNS_FEEDBACK_HOST . ':' . PUSH_NOTIFICATIONS_APNS_FEEDBACK_PORT, $error, $error_string, 2, STREAM_CLIENT_CONNECT, $stream_context);
+  if (!$apns) {
+    return;
+  }
+
+  // Gather expired tokens in an array
+  $tokens = array();
+    while (!feof($apns)) {
+    $data = fread($apns, 38);
+    if (strlen($data)) {
+      $tokens[] = unpack("N1timestamp/n1length/H*devtoken", $data);
+    }
+  }
+
+  // Close connection.
+  fclose($apns);
+
+  if (empty($tokens)) {
+    watchdog('push_notifications', 'Apple\'s feedback service returned no tokens to be removed.');
+    return;
+  }
+
+  // Remove all tokens that are not valid anymore.
+  $counter = 0;
+  foreach ($tokens as $token) {
+    push_notifications_purge_token($token['devtoken']);
+    $counter++;
+  }
+
+  // Give some feedback after the process finished.
+  watchdog('push_notifications', '!count were removed after pulling the Apple feedback service.', array('!count' => $counter));
+
+}
+
+/**
+ * Get the full path to the APNS certificate.
+ *
+ * @return string
+ *   The path to the certificate file on the server.
+ */
+function _push_notifications_get_apns_certificate() {
+  $path = variable_get('push_notifications_apns_certificate_folder', '');
+
+  if (empty($path)) {
+    $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'certificates' . DIRECTORY_SEPARATOR;
+  }
+
+  $path .= PUSH_NOTIFICATIONS_APNS_CERTIFICATE;
+
+  if (!file_exists($path)) {
+    watchdog('push_notifications', 'Cannot find apns certificate file at @path', array('@path' => $path), WATCHDOG_WARNING, l(t('settings'), 'admin/config/services/push_notifications/configure'));
+  }
+
+  return $path;
+}
+
+
+
+/**
+* Generate and set the random file ending for APNS certificates.
+*/
+function _push_notifications_set_random_certificate_string() {
+  // Generate a random 10-digit string.
+  $random_string = substr(md5(microtime()), 0, 10);
+  variable_set('push_notifications_apns_certificate_random', '-' . $random_string);
+}

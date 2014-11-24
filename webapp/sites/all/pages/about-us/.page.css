@@ -1,0 +1,369 @@
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+}
+.form-horizontal .form-group-sm .form-control {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+}
+.form-horizontal .form-group-lg .form-control {
+  height: 46px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 1px;
+}
+.btn-group-lg > .btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 1px;
+}
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+}
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+}
+.dl-horizontal dd:before,
+.dl-horizontal dd:after,
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-footer:before,
+.modal-footer:after,
+.col-sm-5 ul.logos-group:before,
+.col-sm-5 ul.logos-group:after,
+.col-sm-7 ul.logos-group:before,
+.col-sm-7 ul.logos-group:after {
+  content: " ";
+  display: table;
+}
+.dl-horizontal dd:after,
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-footer:after,
+.col-sm-5 ul.logos-group:after,
+.col-sm-7 ul.logos-group:after {
+  clear: both;
+}
+body > .wrapper .region.region-content #block-system-main {
+  background-color: #fff;
+  padding: 15px 0px;
+}
+@media (min-width: 768px) {
+  body > .wrapper .region.region-content #block-system-main {
+    padding: 25px 15px;
+  }
+}
+@media (min-width: 768px) {
+  .highlight {
+    margin-right: -15px;
+    margin-left: -16px;
+    margin-bottom: 15px;
+    float: left;
+  }
+}
+.highlight p {
+  color: #1e5b71;
+  background-color: #97e8c1;
+  font-size: 25px;
+  padding: 4% 2.5%;
+  text-align: center;
+  margin: 10px 0px;
+}
+@media (min-width: 768px) {
+  .highlight p {
+    font-size: 30px;
+  }
+}
+.col-sm-5,
+.col-sm-7 {
+  background-color: #fff;
+}
+@media (min-width: 768px) {
+  .col-sm-5,
+  .col-sm-7 {
+    background-color: transparent;
+  }
+}
+.col-sm-5 ul.logos-group,
+.col-sm-7 ul.logos-group {
+  padding: 0px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.col-sm-5 ul.logos-group li,
+.col-sm-7 ul.logos-group li {
+  position: relative;
+  float: left;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  list-style-type: none;
+  margin-bottom: 30px;
+}
+.col-sm-5 ul.logos-group li a,
+.col-sm-7 ul.logos-group li a {
+  background: url("/sites/all/themes/bizusa/images/aboutus_logos_v2.jpeg") no-repeat scroll 0px 0px transparent;
+  display: inline-block;
+  height: 48px;
+  width: 53px;
+  text-indent: -9999px;
+}
+.col-sm-5 ul.logos-group li.one a,
+.col-sm-7 ul.logos-group li.one a {
+  background-position: -28px -16px;
+}
+.col-sm-5 ul.logos-group li.one a:hover,
+.col-sm-7 ul.logos-group li.one a:hover {
+  background-position: -28px -649px;
+}
+.col-sm-5 ul.logos-group li.two a,
+.col-sm-7 ul.logos-group li.two a {
+  background-position: -118px -16px;
+}
+.col-sm-5 ul.logos-group li.two a:hover,
+.col-sm-7 ul.logos-group li.two a:hover {
+  background-position: -118px -649px;
+}
+.col-sm-5 ul.logos-group li.three a,
+.col-sm-7 ul.logos-group li.three a {
+  background-position: -204px -16px;
+}
+.col-sm-5 ul.logos-group li.three a:hover,
+.col-sm-7 ul.logos-group li.three a:hover {
+  background-position: -204px -649px;
+}
+.col-sm-5 ul.logos-group li.four a,
+.col-sm-7 ul.logos-group li.four a {
+  background-position: -28px -93px;
+}
+.col-sm-5 ul.logos-group li.four a:hover,
+.col-sm-7 ul.logos-group li.four a:hover {
+  background-position: -28px -726px;
+}
+.col-sm-5 ul.logos-group li.five a,
+.col-sm-7 ul.logos-group li.five a {
+  background-position: -116px -93px;
+}
+.col-sm-5 ul.logos-group li.five a:hover,
+.col-sm-7 ul.logos-group li.five a:hover {
+  background-position: -116px -726px;
+}
+.col-sm-5 ul.logos-group li.six a,
+.col-sm-7 ul.logos-group li.six a {
+  background-position: -204px -93px;
+}
+.col-sm-5 ul.logos-group li.six a:hover,
+.col-sm-7 ul.logos-group li.six a:hover {
+  background-position: -204px -726px;
+}
+.col-sm-5 ul.logos-group li.seven a,
+.col-sm-7 ul.logos-group li.seven a {
+  background-position: -28px -174px;
+}
+.col-sm-5 ul.logos-group li.seven a:hover,
+.col-sm-7 ul.logos-group li.seven a:hover {
+  background-position: -28px -807px;
+}
+.col-sm-5 ul.logos-group li.eight a,
+.col-sm-7 ul.logos-group li.eight a {
+  background-position: -117px -174px;
+}
+.col-sm-5 ul.logos-group li.eight a:hover,
+.col-sm-7 ul.logos-group li.eight a:hover {
+  background-position: -117px -807px;
+}
+.col-sm-5 ul.logos-group li.nine a,
+.col-sm-7 ul.logos-group li.nine a {
+  background-position: -204px -174px;
+}
+.col-sm-5 ul.logos-group li.nine a:hover,
+.col-sm-7 ul.logos-group li.nine a:hover {
+  background-position: -204px -807px;
+}
+.col-sm-5 ul.logos-group li.ten a,
+.col-sm-7 ul.logos-group li.ten a {
+  background-position: -28px -252px;
+}
+.col-sm-5 ul.logos-group li.ten a:hover,
+.col-sm-7 ul.logos-group li.ten a:hover {
+  background-position: -28px -885px;
+}
+.col-sm-5 ul.logos-group li.eleven a,
+.col-sm-7 ul.logos-group li.eleven a {
+  background-position: -116px -252px;
+}
+.col-sm-5 ul.logos-group li.eleven a:hover,
+.col-sm-7 ul.logos-group li.eleven a:hover {
+  background-position: -116px -885px;
+}
+.col-sm-5 ul.logos-group li.twelve a,
+.col-sm-7 ul.logos-group li.twelve a {
+  background-position: -204px -252px;
+}
+.col-sm-5 ul.logos-group li.twelve a:hover,
+.col-sm-7 ul.logos-group li.twelve a:hover {
+  background-position: -204px -885px;
+}
+.col-sm-5 ul.logos-group li.thirteen a,
+.col-sm-7 ul.logos-group li.thirteen a {
+  background-position: -28px -332px;
+}
+.col-sm-5 ul.logos-group li.thirteen a:hover,
+.col-sm-7 ul.logos-group li.thirteen a:hover {
+  background-position: -28px -965px;
+}
+.col-sm-5 ul.logos-group li.fourteen a,
+.col-sm-7 ul.logos-group li.fourteen a {
+  background-position: -118px -332px;
+}
+.col-sm-5 ul.logos-group li.fourteen a:hover,
+.col-sm-7 ul.logos-group li.fourteen a:hover {
+  background-position: -118px -965px;
+}
+.col-sm-5 ul.logos-group li.fifteen a,
+.col-sm-7 ul.logos-group li.fifteen a {
+  background-position: -204px -332px;
+}
+.col-sm-5 ul.logos-group li.fifteen a:hover,
+.col-sm-7 ul.logos-group li.fifteen a:hover {
+  background-position: -204px -965px;
+}
+.col-sm-5 ul.logos-group li.sixteen a,
+.col-sm-7 ul.logos-group li.sixteen a {
+  background-position: -28px -412px;
+}
+.col-sm-5 ul.logos-group li.sixteen a:hover,
+.col-sm-7 ul.logos-group li.sixteen a:hover {
+  background-position: -28px -1045px;
+}
+.col-sm-5 ul.logos-group li.seventeen a,
+.col-sm-7 ul.logos-group li.seventeen a {
+  background-position: -116px -410px;
+}
+.col-sm-5 ul.logos-group li.seventeen a:hover,
+.col-sm-7 ul.logos-group li.seventeen a:hover {
+  background-position: -116px -1043px;
+}
+.col-sm-5 ul.logos-group li.eighteen a,
+.col-sm-7 ul.logos-group li.eighteen a {
+  background-position: -204px -411px;
+}
+.col-sm-5 ul.logos-group li.eighteen a:hover,
+.col-sm-7 ul.logos-group li.eighteen a:hover {
+  background-position: -204px -1044px;
+}
+.col-sm-5 ul.logos-group li.nineteen a,
+.col-sm-7 ul.logos-group li.nineteen a {
+  background-position: -28px -490px;
+}
+.col-sm-5 ul.logos-group li.nineteen a:hover,
+.col-sm-7 ul.logos-group li.nineteen a:hover {
+  background-position: -28px -1123px;
+}
+.col-sm-5 ul.logos-group li.twenty a,
+.col-sm-7 ul.logos-group li.twenty a {
+  background-position: -118px -490px;
+}
+.col-sm-5 ul.logos-group li.twenty a:hover,
+.col-sm-7 ul.logos-group li.twenty a:hover {
+  background-position: -118px -1123px;
+}
+.col-sm-5 ul.logos-group li.twentyone a,
+.col-sm-7 ul.logos-group li.twentyone a {
+  background-position: -204px -490px;
+}
+.col-sm-5 ul.logos-group li.twentyone a:hover,
+.col-sm-7 ul.logos-group li.twentyone a:hover {
+  background-position: -204px -1123px;
+}
+.col-sm-5 ul.logos-group li.twentytwo a,
+.col-sm-7 ul.logos-group li.twentytwo a {
+  background-position: -28px -570px;
+}
+.col-sm-5 ul.logos-group li.twentytwo a:hover,
+.col-sm-7 ul.logos-group li.twentytwo a:hover {
+  background-position: -28px -1203px;
+}
+.col-sm-5 ul.logos-group li.twentythree a,
+.col-sm-7 ul.logos-group li.twentythree a {
+  background-position: -118px -570px;
+}
+.col-sm-5 ul.logos-group li.twentythree a:hover,
+.col-sm-7 ul.logos-group li.twentythree a:hover {
+  background-position: -118px -1203px;
+}
+.col-sm-5 ul.logos-group li.twentyfour a,
+.col-sm-7 ul.logos-group li.twentyfour a {
+  background-position: -204px -570px;
+}
+.col-sm-5 ul.logos-group li.twentyfour a:hover,
+.col-sm-7 ul.logos-group li.twentyfour a:hover {
+  background-position: -204px -1203px;
+}
+.col-sm-5 ul.logos-group li.twentyfive a,
+.col-sm-7 ul.logos-group li.twentyfive a {
+  background: url("/sites/all/themes/bizusa/images/dhs_logo_BW.png") no-repeat scroll 0px 0px transparent;
+}
+.col-sm-5 ul.logos-group li.twentyfive a:hover,
+.col-sm-7 ul.logos-group li.twentyfive a:hover {
+  background: url("/sites/all/themes/bizusa/images/dhs_logo.png") no-repeat scroll 0px 0px transparent;
+}
+.col-sm-5 ul.logos-group.group1 li,
+.col-sm-7 ul.logos-group.group1 li {
+  margin-bottom: 0px;
+}
+@media (min-width: 768px) {
+  .col-sm-5 {
+    padding-right: 0px;
+  }
+}

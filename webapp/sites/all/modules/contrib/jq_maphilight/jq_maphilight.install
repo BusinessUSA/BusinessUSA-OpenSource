@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Contains install and update functions for jQuery Map Hilight.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function jq_maphilight_uninstall() {
+  variable_del('jq_maphilight_fill');
+  variable_del('jq_maphilight_fillcolor');
+  variable_del('jq_maphilight_fillopacity');
+  variable_del('jq_maphilight_stroke');
+  variable_del('jq_maphilight_strokecolor');
+  variable_del('jq_maphilight_strokeopacity');
+  variable_del('jq_maphilight_strokewidth');
+  variable_del('jq_maphilight_fade');
+  variable_del('jq_maphilight_all_maps_enabled');
+  variable_del('jq_maphilight_every_page');
+  variable_del('jq_maphilight_alwayson');
+  variable_del('jq_maphilight_neveron');
+  variable_del('jq_maphilight_groupby');
+  drupal_set_message(t('jQuery Map Hilight module uninstalled.'));
+}

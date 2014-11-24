@@ -1,0 +1,7 @@
+;$Id$
+name = Hooks Reaction
+description = Create and edit reactions to Drupal hooks
+package = REI
+core = 7.x
+stylesheets[all][] = feeds_queue.css
+files[] = hooks_reaction.module

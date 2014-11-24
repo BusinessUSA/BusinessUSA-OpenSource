@@ -1,0 +1,318 @@
+<?php
+
+/**
+ * The main file for qpcache.
+ *
+ * QPCache is a cache structure optimized for storing items with large(-ish) keys
+ * and very large values.
+ *
+ * The underlying table makes use of a combination digest/hashkey key that can
+ * make key lookups very fast.
+ *
+ * A multi-value index uses the CRC32 and MD5 values in combination. Since CRC32 is
+ * very fast for databases to look up (it's a 32-bit integer), this narrows down
+ * potential matches very quickly. But CRC has a large collision space, so we use
+ * MD5 hashes to reduce collision space while still avoiding the need to pull a
+ * potentially large key out of the datastore (we can still store an MD5 hash in
+ * the index).
+ *
+ * The cache is pruned on cron. However, there is no "clear all" button for this cache,
+ * as it is not intended to be used that way. You can use QPCache::clear() to do this
+ * if you must. But normally apps are assumed to take care of their own data.
+ *
+ * @author Matt Butcher <mbutcher@aleph-null.tv>
+ * @file
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function qpcache_help($path, $args) {
+  if ($path == 'admin/help#qpcache') {
+    return t('QPCache is a caching stystem for large text docments with complex keys.
+    This module provides a development API. It has QueryPath bindings as well as general caching bindings.');
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Periodically prune dead entries from the cache.
+ */
+function qpcache_cron() {
+  QPCache::prune();
+}
+
+/**
+ * Check if given key exists.
+ *
+ * @return
+ *   Boolean TRUE if the key exists and is not expired, FALSE otherwise.
+ */
+function qpcache_has($key) {
+  return QPCache::has($key);
+}
+
+/**
+ * Convenience function for preparing a key.
+ *
+ * Keys can be objects or arrays, but in such cases we need to do some
+ * special preparation before using these.
+ */
+function _qpcache_format_key($key) {
+  if (is_resource($key)) {
+    //drupal_set_message('Resource cannot be used as a key.', 'status');
+    watchdog('qpcache', 'Resources cannot be used as keys.', array(), WATCHDOG_ERROR);
+    return;
+  }
+
+  // Complex objects need to be serialized before they can be stored as
+  // keys.
+  if (is_array($key) || is_object($key)) {
+    $key = serialize($key);
+  }
+
+  return $key;
+}
+
+/**
+ * Retrieve an object from the cache.
+ *
+ * Object with both a matching key and an unexpired date will be returned.
+ *
+ * @return
+ *   Returns the object or NULL if no object is retrieved.
+ */
+function qpcache_get($key) {
+  $key = _qpcache_format_key($key);
+
+  if(!isset($key)) {
+    return;
+  }
+
+  return QPCache::get($key);
+}
+
+/**
+ * Set an object in the cache.
+ *
+ * Cache this item. Optionally, you may set the expiration date.
+ *
+ * Cache entries will replace existing records with the same key.
+ *
+ * @param $key
+ *   The cache key. This can be anything but a PHP resource. Typcically, unique strings are used.
+ *   Since the storage engine optimizes the key for performance, there is no need to worry
+ *   about key lengths or hashing or anything like that.
+ * @param $body
+ *   The text content to cache.
+ * @param $expire
+ *   The date on which this expires. Date can be in any format that strtotime() can
+ *   parse (meaning you can do things like '+2 weeks'). If expire is set to 0 (the
+ *   default) then the document will never be expired.
+ */
+function qpcache_set($key, $body, $expire = 0) {
+  $key = _qpcache_format_key($key);
+
+  if(!isset($key)) {
+    return;
+  }
+
+  return QPCache::set($key, $body, $expire);
+}
+
+/**
+ * Remove an item from the cache.
+ *
+ * The item will be removed whether it has been expired or not.
+ *
+ * @param $key
+ *   The key of the item to remove.
+ */
+function qpcache_remove($key) {
+  $key = _qpcache_format_key($key);
+
+  if(!isset($key)) {
+    return;
+  }
+
+  return QPCache::remove($key);
+}
+
+
+/**
+ * Factory for creating a QueryPath object.
+ *
+ * This should be used only when retrieving remote files. Do not use it
+ * on local content or DOM/SimpleXML objects.
+ *
+ * This factory builds the QueryPath using a key. If the key exists in the
+ * database and has not expired, then the document in the database is used.
+ * Otherwise, the source is retrieved and parsed.
+ *
+ * @param $key
+ *   The key to retrieve. Typically this is a URL. It can be any data type
+ *   but a resource (which is unserializable).
+ * @param $ttl
+ *   Time to live. This will be run through strtotime().
+ * @param $query
+ *   CSS query to run on the object. Defaults to NULL.
+ * @param $options
+ *   Array of options to pass to qp(). Defaults to NULL.
+ */
+function qpcache_qp($key, $ttl = '+2 weeks', $query = NULL, $options = array()) {
+  $data = QPCache::get($key);
+  if (empty($data)) {
+    $qp = qp($key, $query, $options);
+    QPCache::set($key, $qp->xml(), strtotime($ttl));
+  }
+  else {
+    try {
+      $xml = $data->xml;
+      $dom = new DOMDocument();
+      $dom->loadXML($xml);
+
+      // TODO: Find out why QP will not load a DB file directly.
+      $qp = qp($dom);
+    }
+    catch (Exception $e) {
+      drupal_set_message('Error: ' . check_plain($e->getMessage()), 'status');
+    }
+  }
+  return $qp;
+}
+
+/**
+ * This is a special-purpose XML cache.
+ *
+ * It performs a different role than the built-in Drupal cache. It caches
+ * XML documents for any given period. It is not cleared with the Drupal
+ * cache. It uses a hashkey for optimal search speed across multiple database
+ * types.
+ *
+ * The qpcache_* functions in this module are not mere wrappers around the
+ * methods here. They add substantial logic on top of the bare caching layer.
+ * Part of the logic is the key encoding logic. The QPCache class assumes that
+ * keys are strings. The qpcache_* functions provide facilities for use objects
+ * and arrays as keys, too.
+ */
+class QPCache {
+
+  /**
+   * Return true if the cache has this key.
+   */
+  public static function has($key) {
+
+    list($crc, $hash) = self::genMultiKey($key);
+    $now = time();
+    $sql = 'SELECT 1 FROM {qpcache_xmlcache} WHERE crckey=:crc AND hashkey=\':hash\' AND (expire = 0 OR expire > :now)';
+
+    return (bool) db_query_range($sql, 0, 1, 
+      array(':crc' => $crc,
+            ':hash' => $hash, 
+            ':now' => $now));
+  }
+
+  /**
+   * Return the value of the given key, if it exists in the database.
+   *
+   * If no value is found, this will return NULL.
+   */
+  public static function get($key) {
+    list($crc, $hash) = self::genMultiKey($key);
+    $now = time();
+
+    // if (is_array($key)) {
+    //       drupal_set_message('Retrieval key is array.', 'status');
+    //     }
+
+    $sql = 'SELECT clearkey, expire, body FROM {qpcache_xmlcache} WHERE crckey=\':crc\' AND hashkey=\':hash\' AND (expire = 0 OR expire > \':now\')';
+    $result = db_query($sql,
+    array(':crc' => $crc,
+            ':hash' => $hash, 
+            ':now' => $now));
+
+    if (empty($result)) {
+      return;
+    }
+    foreach($result as $object) {
+      $object->xml = $object->body;
+      return $object;
+    }
+  }
+
+  /**
+   * Put a value in the cache.
+   *
+   * This will overwrite any existing entry with the same key.
+   *
+   * @param $key
+   *   A string value.
+   * @param $body
+   *   The text value to store.
+   * @param $expire
+   *   An expiration date in UNIX timestamp format.
+   */
+  public static function set($key, $body, $expire = 0) {
+    list($crckey, $hashkey) = self::genMultiKey($key);
+
+    db_delete('qpcache_xmlcache')
+      ->condition('hashkey', $hashkey);
+    db_insert('qpcache_xmlcache')
+      ->fields(array(
+        'crckey' => $crckey, 
+        'hashkey' => $hashkey, 
+        'clearkey' => $key, 
+        'body' => $body, 
+        'expire' => $expire));
+  }
+
+  /**
+   * Remove a single entry from the cache.
+   *
+   * This will remove the item whether it has expired or note.
+   *
+   * @param $key
+   *   The key of the item to be removed.
+   */
+  public static function remove($key) {
+    list($crckey, $hashkey) = self::genMultiKey($key);
+    db_delete('qpcache_xmlcache')
+      ->condition('hashkey', $hashkey);
+  }
+
+  /**
+   * Remove expired keys.
+   */
+  public static function prune() {
+    db_delete('qpcache_xmlcache')
+      ->condition('expire', array(1, time()), 'BETWEEN');
+  }
+
+  /**
+   * Empty the cache.
+   */
+  public static function clear() {
+    db_query('TRUNCATE TABLE {qpcache_xmlcache}');
+  }
+
+  /**
+   * Given the original key, generate a multi-key.
+   *
+   * For performance reasons, we use a composite key for retrieving entries.
+   * This key uses a CRC-32 checksum against the original key plus an MD5 of
+   * the original key. A CRC can be looked up in the database about 30 times faster
+   * than an MD5. However, it has a much broader collision space.
+   * So if indexing is done correctly, we can use the CRC to very quickly narrow,
+   * and then use the MD5 to select the appropriate result from a very small set.
+   *.
+   * @return
+   *   List where position 0 is CRC and 1 is MD5
+   */
+  public static function genMultiKey($key) {
+    return array(
+    crc32($key),
+    md5($key),
+    );
+  }
+}

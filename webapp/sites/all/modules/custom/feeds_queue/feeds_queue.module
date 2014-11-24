@@ -1,0 +1,1138 @@
+<?php
+
+/**
+ * Implements hook_cron().
+ * Hook to periodically trigger FeedQueue-Tasks per settings
+ */
+function feeds_queue_cron () {
+    // If the setting dictate we should execute due FeedQueue-Tasks on Drupal-Cron execution...
+    if ( variable_get('feeds_queue_settings_drupcron', 0) ) {
+        $logDir = 'sites/default/files/feedsqueue-logs/cron-runs/';
+        @mkdir($logDir, 0777, true);
+        $fileHandle = fopen($logDir . 'log_' . time() . '.txt', 'a');
+        fwrite($fileHandle, "\nTRIGGERING BASED ON DRUPAL CRON\n");
+        feeds_queue_exec($fileHandle);
+        fclose($fileHandle);
+    }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function feeds_queue_menu() {
+
+    $items = array();
+  
+    // Menu item for the main Administration UI
+    $items['admin/structure/feeds/queue'] = array(
+        'title' => 'Feed-Importer queuing',
+        'description' => 'View, and configure settings, for Feed-Importers queued for execution in the future.',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('feeds_queue_form'),
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    
+    // Menu item for the main Administration UI (clone)
+    $items['admin/structure/feedqueue'] = array(
+        'title' => 'Feed-Queue',
+        'description' => 'View, and configure settings, for Feed-Importers queued for execution in the future.',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('feeds_queue_form'),
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    
+    // Menu item to update FeedQueue's feeds-list cache
+    $items['admin/structure/feeds/queue/update-feeds-list'] = array(
+        'title' => 'FeedQueues Cache Flush ',
+        'description' => 'Update the allowed-values list for the field_feedqueue_targetfeed field with all Feed-Importers in the system.',
+        'page callback' => 'updateFeedsList',
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    
+    // Menu item to obtain parameters information for a given FeedQueue-Task
+    $items['admin/structure/feeds/queue/get-task-parameters'] = array(
+        'title' => 'Obtain Feed Queue Parameter-Targets ',
+        'description' => 'Menu item to obtain parameters information for a given FeedQueue-Task.',
+        'page callback' => '_getTaskParameters',
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_CALLBACK,
+    );
+    
+    // Menu item to obtain the [changes in] FeedsQueue log
+    $items['admin/structure/feeds/queue/get-feedsqueue-globallog'] = array(
+        'title' => 'Obtain Feed Queue Global Log',
+        'description' => 'Menu item to obtain the [changes in] FeedsQueue log.',
+        'page callback' => 'feeds_queue_get_global_log',
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_CALLBACK,
+    );
+    
+    // Menu item to execute a certain FeedQueue-Task
+    $items['admin/structure/feeds/queue/execute-task'] = array(
+        'title' => 'Execute FeedQueue-Task ',
+        'description' => 'Menu item to execute a certain FeedQueue-Task.',
+        'page callback' => '_feeds_queue_menu_exec',
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_CALLBACK,
+    );
+  
+    return $items;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function feeds_queue_ctools_plugin_directory($owner, $plugin_type){
+  if ($owner == 'feeds_tamper' && $plugin_type == 'plugins') {
+    return 'plugins';
+  }
+}
+
+/**
+ * void updateFeedsList()
+ * Updates the allowed-values list for the field_feedqueue_targetfeed field with all 
+ * Feed-Importers found in the system.
+ */
+function updateFeedsList() {
+
+    // Determine new allowed-values list
+    $newAllowedValuesList = array();
+    $results = db_query("SELECT id FROM feeds_importer ORDER BY id"); // Get a list of all Feed-Importers
+    foreach ( $results as $record ) {
+        $newAllowedValuesList[$record->id] = $record->id;
+    };
+    
+    // Save the new allowed-values list into this field's settings
+    $info = field_info_field('field_feedqueue_targetfeed');
+    $info['settings']['allowed_values'] = $newAllowedValuesList;
+    field_update_field($info);
+    
+    // Return confirmation message
+    $ret = 'Updated the allowed-values list for the field_feedqueue_targetfeed field with all Feed-Importers in the system:<br/><br/>';
+    foreach ( $newAllowedValuesList as $feedImporterMachineName) {
+        $ret .= $feedImporterMachineName . '<br/>';
+    }
+    return $ret;
+}
+
+function feeds_queue_form($form, $form_state) {
+	
+    _feeds_queue_ensureBlockedParamsTabelExists();
+    
+    if ( !empty($_POST['op']) ) {
+        switch ($_POST['op']) {
+        case 'Save Configuration':
+            
+            if ( isset($_REQUEST['drupcron']) ) {
+                variable_set('feeds_queue_settings_drupcron', intval($_REQUEST['drupcron']));
+            } else {
+                variable_set('feeds_queue_settings_drupcron', 0);
+            }
+            
+            if ( isset($_REQUEST['poorcron']) ) {
+                variable_set('feeds_queue_settings_poorcron', intval($_REQUEST['poorcron']));
+            } else {
+                variable_set('feeds_queue_settings_poorcron', 0);
+            }
+            
+            if ( isset($_REQUEST['poorcrontime']) ) {
+                variable_set('feeds_queue_settings_poorcrontime', intval($_REQUEST['poorcrontime']));
+            } else {
+                variable_set('feeds_queue_settings_poorcrontime', 0);
+            }
+            
+            if ( isset($_REQUEST['globalpreexec_do']) ) {
+                variable_set('feeds_queue_settings_globalpreexec_do', intval($_REQUEST['globalpreexec_do']));
+            } else {
+                variable_set('feeds_queue_settings_globalpreexec_do', 0);
+            }
+            
+            if ( isset($_REQUEST['globalpreexec_code']) ) {
+                variable_set('feeds_queue_settings_globalpreexec_code', $_REQUEST['globalpreexec_code']);
+            } else {
+                variable_set('feeds_queue_settings_globalpreexec_code', '');
+            }
+            
+            if ( isset($_REQUEST['globalpostexec_do']) ) {
+                variable_set('feeds_queue_settings_globalpostexec_do', intval($_REQUEST['globalpostexec_do']));
+            } else {
+                variable_set('feeds_queue_settings_globalpostexec_do', 0);
+            }
+            
+            if ( isset($_REQUEST['globalpostexec_code']) ) {
+                variable_set('feeds_queue_settings_globalpostexec_code', $_REQUEST['globalpostexec_code']);
+            } else {
+                variable_set('feeds_queue_settings_globalpostexec_code', '');
+            }
+            
+            break;
+            
+        case 'Delete all FeedsQueue-Tasks':
+            db_query("DELETE FROM node WHERE type = 'feeds_queue_exec'");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_runas");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_execdate");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_targetfeed");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_blockfutureparam");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_reoccurringwait");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_blocklength");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_params");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_preexec");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_postexec");
+            db_query("TRUNCATE TABLE field_data_field_feedqueue_nonrecact");
+            drupal_set_message("All FeedQueue-Tasks have been deleted from the system.", 'status');
+            break;
+            
+        case 'Create new FeedsQueue-Task':
+            drupal_goto(
+                'node/add/feeds-queue-exec', 
+                array(
+                    'query' => array(
+                        'destination' => 'admin/structure/feedqueue'
+                    )
+                )
+            );
+            break;
+            
+        case 'Execute all due FeedsQueue-tasks now':
+            $logDir = 'sites/default/files/feedsqueue-logs/manual-runs/';
+            @mkdir($logDir, 0777, true);
+            $fileHandle = fopen($logDir . 'log_' . time() . '.txt', 'a');
+            feeds_queue_exec($fileHandle);
+            break;
+            
+        case 'Stop all running FeedQueue-Tasks':
+            feeds_queue_set_stopflag(15);
+            break;
+            
+        case 'Kill STOPFLAG':
+            feeds_queue_set_stopflag(false);
+            break;
+            
+        default:
+            if ( strpos($_POST['op'], 'FeedQueue parameters-blocks') !== false ) {
+                $preBlockCount = db_query('SELECT id FROM feeds_queue_blocked_params')->rowCount();
+                db_query('TRUNCATE TABLE feeds_queue_blocked_params');
+                $postBlockCount = db_query('SELECT id FROM feeds_queue_blocked_params')->rowCount();
+                drupal_set_message("The feeds_queue_blocked_params table has now been truncated. Deleted <b>{$preBlockCount}</b> parameter-blocks. There are now <b>{$postBlockCount}</b> blocks defined in this table.", 'status');
+            }
+            break;
+        }
+    }
+    
+    if ( feeds_queue_get_stopflag() ) {
+        
+        $msg = 'NOTICE: All FeedQueue-Tasks that try to run at this time will be halted due to a STOPFLAG declaration. '
+            ."This stopflag will expire on " . date('Y/m/d g:ia', variable_get('feeds_queue_fullstop_until'))
+            . " (or in " . round(( time() - variable_get('feeds_queue_fullstop_until') ) / 60) . " minutes from now). "
+            .'In order for FeedQueue-Tasks to run again, please release the stopflag, or wait for it to expire.';
+        
+        drupal_set_message($msg, 'warning');
+    }
+    
+	$form = array();
+
+    // Feeds-Queue Administrative Actions
+	$form['FeedsQueueActions'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Feeds-Queue Administrative Actions',
+		'#collapsible' => 1,
+		'#collapsed' => 0
+    );
+    $form['FeedsQueueActions']['newtask'] = array(
+        '#value' => 'Create new FeedsQueue-Task',
+        '#type' => 'button',
+    );
+    $form['FeedsQueueActions']['delalltasks'] = array(
+        '#value' => 'Delete all FeedsQueue-Tasks',
+        '#type' => 'button',
+    );
+    $form['FeedsQueueActions']['execnow'] = array(
+        '#type' => 'markup',
+        '#markup' => '
+            <input type="button" value="Execute all due FeedsQueue-tasks now" class="form-submit" onclick="triggerFeedsQueue();"/>
+            <script>
+                function triggerFeedsQueue() {
+                    alert("FeedsQueue is now processing in the background. Refer to the Feeds-Queue Log on the top of the page for further status.");
+                    jQuery.post("/admin/structure/feedqueue", {
+                        "op": "Execute all due FeedsQueue-tasks now"
+                    });
+                }
+            </script>
+        ',
+    );
+    
+    if ( feeds_queue_get_stopflag() === false ) {
+        $form['FeedsQueueActions']['poststopflag'] = array(
+            '#value' => 'Stop all running FeedQueue-Tasks',
+            '#type' => 'button',
+        );
+    } else {
+        $form['FeedsQueueActions']['killstopflag'] = array(
+            '#value' => 'Kill STOPFLAG',
+            '#type' => 'button',
+        );
+    }
+    
+    $form['FeedsQueueActions']['flushblockedparams'] = array(
+        '#value' => 'Delete all ' . db_query('SELECT id FROM feeds_queue_blocked_params')->rowCount() . ' FeedQueue parameters-blocks',
+        '#type' => 'button',
+    );
+    $lastExec = date('Y-m-d', variable_get('feeds_queue_lastexec', 0));
+    if ( $lastExec === date('Y-m-d', 0) ) {
+        $lastExec = '<i>Never</i>';
+    }
+    $form['FeedsQueueActions']['lastexectime'] = array(
+        '#type' => 'markup',
+        '#markup' => "
+            <div>
+                The last time the Feeds-Queue module executed due FeedQueue-Tasks 
+                (<i><small>feeds_queue_exec() was called</small></i>) was on: {$lastExec}
+            </div>
+        ",
+    );
+    
+    // Settings area
+	$form['FeedsQueueSettings'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Feeds-Queue Configuration',
+		'#collapsible' => 1,
+		'#collapsed' => 1
+    );
+    $form['FeedsQueueSettings']['drupcron'] = array(
+        '#title' => 'Execute Feeds-Queue on Drupal Cron',
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('feeds_queue_settings_drupcron', 0),
+        '#description' => 'When checked, items due for execution in the Feeds-Queue will be executed on HOOK_cron()'
+    );
+    $form['FeedsQueueSettings']['poorcron'] = array(
+        '#title' => "Execute Feeds-Queue with a \"Poor Man's\"-Cron implementation",
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('feeds_queue_settings_poorcron', 0),
+        '#description' => 'When checked, items due for execution in the Feeds-Queue will be executed on any user\'s page request every X minutes.'
+    );
+    $form['FeedsQueueSettings']['poorcrontime'] = array(
+        '#title' => '"Poor Man\'s"-Cron shall execute every # minutes',
+        '#type' => 'textfield',
+        '#description' => 'Note: Since this is a "Poor-Man\'s Cron implementation, this really means this PM-Cron task will not trigger any <i>more frequently</i> and the given value.',
+        '#default_value' => variable_get('feeds_queue_settings_poorcrontime', 0),
+        '#states' => array(
+            'invisible' => array(
+                ':input[name="poorcron"]' => array('checked' => FALSE),
+          ),
+        ),
+    );
+    
+    $form['FeedsQueueSettings']['globalpreexec_do'] = array(
+        '#title' => 'When the FeedsQueue module is about to check if there are due FeedQueue-Tasks to run, execute custom code',
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('feeds_queue_settings_globalpreexec_do', 0),
+        '#description' => 'Note: This only hooks the feeds_queue_exec() function, which is called when you click the "Execute all due FeedQueue-Tasks" button, the "run" link next to a FQ-Task below, and on cron (if your settings permit cron-run).'
+    );
+    $form['FeedsQueueSettings']['globalpreexec_code'] = array(
+        '#title' => 'Before the FeedsQueue module checks if there are due FeedQueue-Tasks to run, execute the following PHP code:',
+        '#type' => 'textarea',
+        '#default_value' => variable_get('feeds_queue_settings_globalpreexec_code', ''),
+        '#description' => 'Do <b>not</b> include opening and closing &lt;?php ?&gt; tags',
+        '#states' => array(
+            'invisible' => array(
+                ':input[name="globalpreexec_do"]' => array('checked' => FALSE),
+          ),
+        ),
+    );
+    
+    $form['FeedsQueueSettings']['globalpostexec_do'] = array(
+        '#title' => 'After the FeedsQueue module is done checking if there are due FeedQueue-Tasks to run, and has finished executing FeedQueue-Tasks, execute custom code',
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('feeds_queue_settings_globalpostexec_do', 0),
+        '#description' => 'Note: This only hooks the feeds_queue_exec() function, which is called when you click the "Execute all due FeedQueue-Tasks" button, the "run" link next to a FQ-Task below, and on cron (if your settings permit cron-run).'
+    );
+    $form['FeedsQueueSettings']['globalpostexec_code'] = array(
+        '#title' => 'After the FeedsQueue module is done checking if there are due FeedQueue-Tasks to run, and has executed FeedQueue-Tasks, execute the following PHP code:',
+        '#type' => 'textarea',
+        '#default_value' => variable_get('feeds_queue_settings_globalpostexec_code', ''),
+        '#description' => 'Do <b>not</b> include opening and closing &lt;?php ?&gt; tags',
+        '#states' => array(
+            'invisible' => array(
+                ':input[name="globalpostexec_do"]' => array('checked' => FALSE),
+          ),
+        ),
+    );
+    
+	$form['FeedsQueueSettings']['submitButton'] = array(
+		'#type'  => 'button',
+		'#value' => t('Save Configuration'),
+	);
+    
+    // Logs area
+	$form['FeedsQueueLog'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Feeds-Queue Log',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+        '#description' => '
+            This textarea is showing <i>recent</i> live <a href="/sites/default/files/feedsqueue-logs/global.log" target="_blank">FeedsQueue log</a> updates via ajax:<br/>
+            <textarea id="feedQueueLogTextbox" style="width: 100%; min-height: 100px; border: 1px solid lightgrey;">Please wait as this log gets updated by ajax...</textarea>
+            <div class="feedsqueue-logupdate-status">
+            </div>
+            <script>
+                function updateFeedQueueLog() {
+                    jQuery.get("/admin/structure/feeds/queue/get-feedsqueue-globallog?offset=' . filesize('sites/default/files/feedsqueue-logs/global.log') . '", function (data) {
+                        jQuery("#feedQueueLogTextbox").val(data);
+                        jQuery("#feedQueueLogTextbox").get(0).scrollTop = jQuery("#feedQueueLogTextbox").get(0).scrollHeight;
+                        setTimeout( function () {
+                            updateFeedQueueLog();
+                            jQuery(".feedsqueue-logupdate-status").text( "Log last updated via ajax at " + String( Date() ) );
+                        }, 1000);
+                    });
+                }
+                updateFeedQueueLog();
+            </script>
+        '
+    );
+    
+    // Feeds-Queue due
+    $htmlTable = '
+        <table>
+            <tr>
+                <td>Description</td>
+                <td>Scheduled</td>
+                <td>Last Run</td>
+                <td>Feed Importer</td>
+                <td>Parameter</td>
+                <td>Ops</td>
+            </tr>
+    ';
+    $tasks = _feeds_queue_tasks(true, 50);
+    $taskCount = 0;
+    foreach ( $tasks as $task ) {
+        
+        $taskCount++;
+        
+        // Determine Log-link
+        $logLink = '';
+        $testLogPath = 'sites/default/files/feedsqueue-logs/by-nid/' . $task->nid . '.log';
+        if ( file_exists($testLogPath) ) {
+            $logLink = "[<a target=\"_blank\"href=\"/{$testLogPath}\">View Log</a>]";
+        }
+        
+        // Determine description 
+        $description = ($task->title);
+        
+        // Determine next execution date
+        if ( intval($task->execdate) === 0 ) {
+            $scheduled = 'On next Queue-Execution';
+        } else {
+            $scheduled = date('Y-m-d', $task->execdate);
+        }
+        
+        // Determine the last run date
+        $lastRunDate = _feeds_queue_task_last_run_date($task->nid);
+        
+        // Determine Feed-Importer [machine] name
+        $feedImporter = ($task->targetfeed);
+        
+        // Determine Feed-Importer Parameters (Targets)
+        if ( $task->params_format == 'php_code' ) {
+            $parameter = 'Determined by PHP code, <a target="_blank" href="/admin/structure/feeds/queue/get-task-parameters?nid=' . $task->nid . '">click here</a> to view.';
+        } else {
+            $parameters = explode("\n", $task->params);
+            $parameter = '<a target="_blank" href="/admin/structure/feeds/queue/get-task-parameters?nid=' . $task->nid . '">Click here</a> to view all ' . count($parameters) . ' parameters/targets';
+        }
+        
+        $htmlTable .= "
+            <tr>
+                <td>
+                    <a href=\"/node/{$task->nid}/edit?destination=admin/structure/feedqueue\">
+                        {$description}
+                    </a>
+                </td>
+                <td>{$scheduled}</td>
+                <td>{$lastRunDate}</td>
+                <td>{$feedImporter}</td>
+                <td>{$parameter}</td>
+                <td>
+                    [<a href=\"/admin/structure/feeds/queue/execute-task?nid={$task->nid}\">Run</a>]
+                    {$logLink}
+                </td>
+            </tr>
+        ";
+    }
+    $htmlTable .= '</table>';
+	$form['FeedsQueueTasks'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Feeds due for execution',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+        '#description' => ( $taskCount > 0 ? $htmlTable : '<i>There are no FeedQueue-Tasks due for execution at this time</i>' )
+    );
+    
+    // Feeds-Queue scheduled in the future
+    $htmlTable = '
+        <table>
+            <tr>
+                <td>Description</td>
+                <td>Scheduled</td>
+                <td>Last Run</td>
+                <td>Feed Importer</td>
+                <td>Parameter</td>
+                <td>Ops</td>
+            </tr>
+    ';
+    $tasks = _feeds_queue_tasks('future', 50);
+    $taskCount = 0;
+    foreach ( $tasks as $task ) {
+    
+        $taskCount++;
+        
+        // Determine Log-link
+        $logLink = '';
+        $testLogPath = 'sites/default/files/feedsqueue-logs/by-nid/' . $task->nid . '.log';
+        if ( file_exists($testLogPath) ) {
+            $logLink = "[<a target=\"_blank\"href=\"/{$testLogPath}\">View Log</a>]";
+        }
+        
+        // Determine next execution date
+        if ( intval($task->execdate) === 0 ) {
+            $scheduled = 'On next Queue-Execution';
+        } else {
+            $scheduled = date('Y-m-d', $task->execdate);
+        }
+        
+        // Determine the last run date
+        $lastRunDate = _feeds_queue_task_last_run_date($task->nid);
+        
+        // Determine description 
+        $description = ($task->title);
+        
+        // Determine Feed-Importer [machine] name
+        $feedImporter = ($task->targetfeed);
+        
+        if ( $task->params_format == 'php_code' ) {
+            $parameter = 'Determined by PHP code, <a target="_blank" href="/admin/structure/feeds/queue/get-task-parameters?nid=' . $task->nid . '">click here</a> to view (evaluated) parameter/targets';
+        } else {
+            $parameters = explode("\n", $task->params);
+            $parameter = '<a target="_blank" href="/admin/structure/feeds/queue/get-task-parameters?nid=' . $task->nid . '">click here</a> to view all ' . count($parameters) . ' parameter/targets';
+        }
+        
+        $htmlTable .= "
+            <tr>
+                <td>
+                    <a href=\"/node/{$task->nid}/edit?destination=admin/structure/feedqueue\">
+                        {$description}
+                    </a>
+                </td>
+                <td>{$scheduled}</td>
+                <td>{$lastRunDate}</td>
+                <td>{$feedImporter}</td>
+                <td>{$parameter}</td>
+                <td>
+                    [<a href=\"/admin/structure/feeds/queue/execute-task?nid={$task->nid}\">Run</a>]
+                    {$logLink}
+                </td>
+            </tr>
+        ";
+    }
+    $htmlTable .= '</table>';
+	$form['FeedsQueueFutureTasks'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Feeds scheduled for future execution',
+		'#collapsible' => 1,
+		'#collapsed' => 0,
+        '#description' => ( $taskCount > 0 ? $htmlTable : '<i>There are no FeedQueue-Tasks scheduled for future execution at this time</i>' )
+    );
+    
+	return $form;
+}
+
+/**
+ * void feeds_queue_set_log()
+ * 
+ * Used as to tell feeds_queue_write_log() where to write log files.
+ */
+function feeds_queue_set_log($taskNid, $extraDebugWriteTarget = false) {
+    
+    global $feedQueueTaskId;
+    $feedQueueTaskId = $taskNid;
+    
+    global $feeds_queue_extraDebugWriteTarget;
+    $feeds_queue_extraDebugWriteTarget = $extraDebugWriteTarget;
+    
+    @mkdir('sites/default/files/feedsqueue-logs');
+    @mkdir('sites/default/files/feedsqueue-logs/by-nid');
+    if ( intval($taskNid) !== 0 ) {
+        @mkdir('sites/default/files/feedsqueue-logs/by-nid/' . $taskNid);
+    }
+    @mkdir('sites/default/files/feedsqueue-logs/by-date');
+    touch('sites/default/files/feedsqueue-logs/global.log');
+}
+
+/**
+ * void feeds_queue_write_log()
+ * 
+ * Used as a wrapper to error_log()
+ */
+function feeds_queue_write_log($message) {
+    
+    global $feedQueueTaskId;
+    global $feeds_queue_extraDebugWriteTarget;
+    
+    $message = date('Y-m-d H:i:s') . ' - ' . $message;
+    error_log($message);
+    
+    $message .= "\n";
+    
+    if ( $feeds_queue_extraDebugWriteTarget !== false ) {
+        @fwrite($feeds_queue_extraDebugWriteTarget, $message);
+    }
+    
+    if ( intval($feedQueueTaskId) !== 0 ) {
+        @mkdir('sites/default/files/feedsqueue-logs/by-nid/' . $feedQueueTaskId . '/', 0777, true);
+        file_put_contents(
+            'sites/default/files/feedsqueue-logs/by-nid/' . $feedQueueTaskId . '/' . date('Y-m-d') . '.log',
+            $message,
+            FILE_APPEND
+        );
+    }
+    
+    file_put_contents(
+        'sites/default/files/feedsqueue-logs/by-nid/' . $feedQueueTaskId . '.log',
+        $message,
+        FILE_APPEND
+    );
+    
+    file_put_contents(
+        'sites/default/files/feedsqueue-logs/by-date/' . date('Y-m-d') . '.log',
+        $message,
+        FILE_APPEND
+    );
+    
+    file_put_contents(
+        'sites/default/files/feedsqueue-logs/global.log',
+        $message,
+        FILE_APPEND
+    );
+    
+}
+
+/**
+ * array _feeds_queue_menu_exec()
+ * 
+ * A wrapper function used to call feeds_queue_exec(), this is used as the 
+ * function a menu hook calls.
+ */
+function _feeds_queue_menu_exec() {
+    
+    if ( empty($_GET['nid']) || intval($_GET['nid']) === 0 ) {
+        return 'Error - no nid parameter supplied.';
+    }
+    
+    $logDir = 'sites/default/files/feedsqueue-logs/manual-runs/';
+    $filePath = $logDir . 'log_' . time() . '.txt';
+    @mkdir($logDir, 0777, true);
+    $fileHandle = fopen($filePath, 'a');
+    fwrite($fileHandle, "\nTRIGGERING BASED INDIVIDUAL TASK FORCE_RUN\n");
+    feeds_queue_exec($fileHandle, intval($_GET['nid']));
+    fclose($fileHandle);
+    
+    return '<textarea style="width: 100%; min-height: 300px; border: 1px solid lightgray;">' . file_get_contents($filePath) . '</textarea>';
+}
+
+/**
+ * array feeds_queue_exec(&$debugWriteTarget = false, $taskNodeId = false, $firstCallInRecursion = true)
+ * 
+ * Executes all FeedQueue-Tasks due for execution, unless $taskNodeId is 
+ * supplied (in which case only the given FeedQueue-Task is run).
+ *
+ * Returns an array of node-ids 
+ */
+function feeds_queue_exec(&$debugWriteTarget = false, $taskNodeId = false, $firstCallInRecursion = true) {
+    
+    _feeds_queue_ensureBlockedParamsTabelExists();
+    
+    // Halt immediately if a STOPFLAG has been declared
+    if ( feeds_queue_get_stopflag() ) {
+        feeds_queue_write_log('Aborting! A STOPFLAG has been detected. Aboring from ' . __FUNCTION__ . '() from line ' . __LINE__);
+        return;
+    }
+    
+    // Note that this function has been "last executed" at this time
+    if ( $taskNodeId === false ) {
+        variable_set('feeds_queue_lastexec', time());
+    }
+    
+    // Get the next queued task
+    if ( $taskNodeId !== false ) {
+        $tasks = _feeds_queue_tasks(false, true, 100, $taskNodeId);
+    } else {
+        $tasks = _feeds_queue_tasks(true, true, 100); // The the passed parameters gets FeedQueue-Tasks thare are: published and due to execution
+    }
+    feeds_queue_set_log(null, $debugWriteTarget ); // Prepare the FeedQueue logging system
+    
+    if ( $tasks->rowCount() === 0 ) {
+        if ( $taskNodeId !== false ) {
+            feeds_queue_write_log("There are no more FeedQueue-Tasks to run");
+        }
+        return; // There are no more FeedQueue-Tasks to run, return
+    }
+    $task = $tasks->fetchObject();
+    
+    // Prepare the FeedQueue logging system (for this FeedQueue-Task)
+    feeds_queue_set_log($task->nid, $debugWriteTarget );
+    
+    // Run the global Pre-FeedQueue-execution script if the settings permit it
+    if ( $firstCallInRecursion === true ) {
+        if ( intval(variable_get('feeds_queue_settings_globalpreexec_do', 0)) !== 0  ) {
+            feeds_queue_write_log('Now executing the pre-FeedQueue-execution script, as per the settings under the "Feeds-Queue Configuration".');
+            $phpCode = variable_get('feeds_queue_settings_globalpreexec_code', '');
+            ob_start();
+            $startTime = microtime(true);
+            eval( $phpCode );
+            $endTime = microtime(true);
+            ob_end_clean();
+            $timeTaken = $endTime - $startTime;
+            feeds_queue_write_log("Pre-FeedQueue-execution script finished in {$timeTaken} seconds.");
+        }
+    }
+    
+    // Log which FeedQueue-Task is going to be run
+    feeds_queue_write_log("Now running FeedQueue-Task {$task->nid}: {$task->title}");
+    
+    // Evaluate, and filter out blocked parameters
+    $taskParams = _feeds_queue_determinTaskParams($task);
+    feeds_queue_write_log("FeedQueue-Task {$task->nid} (\"{$task->title}\") has " . count($taskParams) . " parameters after evaluation");
+    $taskParams = _feeds_queue_filterBlockedParams($task, $taskParams);
+    feeds_queue_write_log("FeedQueue-Task {$task->nid} (\"{$task->title}\") has " . count($taskParams) . " parameters after filtering out blocked parameters");
+    
+    // foreach parameter in this Task...
+    $continueParameterExecution = true;
+    foreach ( $taskParams as $thisParam ) {
+        if ( $continueParameterExecution ) {
+            
+            // Halt immediately if a STOPFLAG has been declared
+            if ( feeds_queue_get_stopflag() ) {
+                feeds_queue_write_log('Aborting! A STOPFLAG has been detected. Aboring from ' . __FUNCTION__ . '() from line ' . __LINE__);
+                return;
+            }
+            
+            // Block this parameter from running against this Feed Importer in the future, if requested
+            if ( intval($task->blockfutureparam) === 1 ) {
+                _feeds_queue_blockeParam($task->targetfeed, $thisParam, intval($task->blocklength));
+            }
+        
+            // Execute and get the return value for the "Pre-Execution and Validation" field
+            $preExecResult = eval($task->preexec);
+            if ( ( $preExecResult === false || $preExecResult === 'false' ) && strlen(trim($task->preexec)) > 8 ) {
+                // Then we shall skip running this parameter for this Feed Importer
+                feeds_queue_write_log("FeedQueue-Task {$task->nid} (\"{$task->title}\") is skipping parameter {$thisParam} as per the return of this FeedQueue-Task's pre-exec/vlidation script");
+            } elseif ( $preExecResult === '-STOP-CHAIN-' || $preExecResult === 'STOP-CHAIN' || $preExecResult === '_STOP_CHAIN_' || $preExecResult === 'STOP_CHAIN' ) {
+                // Then we shall skip all of the rest of the parameters for this task
+                $continueParameterExecution = false;
+                feeds_queue_write_log("FeedQueue-Task {$task->nid} (\"{$task->title}\") is skipping parameter {$thisParam} AND KILLING THE PARAMETER CHAIN as per the return of this FeedQueue-Task's pre-exec/vlidation script");
+            } else {
+                _feeds_queue_exec_feedimporter($task->targetfeed, $task->runas, $thisParam);
+            }
+            
+        }
+    }
+    
+    // Unpublish or reschedule this task (now that is has ran)
+    _feeds_queue_UnpublishOrRescheduleTask($task);
+    
+    // Halt immediately if a STOPFLAG has been declared
+    if ( feeds_queue_get_stopflag() ) {
+        feeds_queue_write_log('Aborting! A STOPFLAG has been detected. Aboring from ' . __FUNCTION__ . '() from line ' . __LINE__);
+        return;
+    }
+    
+    // Execute the code in the "Post-Execution" field of this FeedQueue-Task
+    ob_start();
+    eval($task->postexec);
+    ob_end_clean();
+    
+    // Recursion - execute the next FeedQueue-Task
+    feeds_queue_write_log("Completed running FeedQueue-Task {$task->nid}: {$task->title}");
+    if ( $taskNodeId === false ) {
+    
+        feeds_queue_exec($debugWriteTarget, $taskNodeId, false);
+        
+        // Halt immediately if a STOPFLAG has been declared
+        if ( feeds_queue_get_stopflag() ) {
+            return;
+        }
+        
+    }
+    
+    // Run the global Post-FeedQueue-execution script if the settings permit it
+    if ( $firstCallInRecursion === true ) {
+        if ( intval(variable_get('feeds_queue_settings_globalpostexec_do', 0)) !== 0  ) {
+            feeds_queue_write_log('Now executing the post-FeedQueue-execution script, as per the settings under the "Feeds-Queue Configuration".');
+            $phpCode = variable_get('feeds_queue_settings_globalpostexec_code', '');
+            ob_start();
+            $startTime = microtime(true);
+            eval( $phpCode );
+            $endTime = microtime(true);
+            ob_end_clean();
+            $timeTaken = $endTime - $startTime;
+            feeds_queue_write_log("Post-FeedQueue-execution script finished in {$timeTaken} seconds.");
+        }
+    }
+    
+}
+
+/**
+ * bool feeds_queue_get_stopflag()
+ * 
+ * Returns true if all running feed queue tasks should be stopped.
+ */
+function feeds_queue_get_stopflag() {
+    
+    $query = "SELECT value FROM variable WHERE name='feeds_queue_fullstop_until' ";
+    $lastStopFlag = unserialize( db_query($query)->fetchField() );
+    if ( $lastStopFlag === false ) {
+        return false;
+    } else {
+        if ( time() < $lastStopFlag ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+/**
+ * void feeds_queue_stopflag(int minKillLength)
+ */
+function feeds_queue_set_stopflag($minKillLength) {
+    $killUntill = time() + ( intval($minKillLength) * 60 );
+    variable_set('feeds_queue_fullstop_until', $killUntill);
+}
+
+/**
+ * void _feeds_queue_UnpublishOrRescheduleTask(integer $nid)
+ *
+ * Performs the actions of unpublishing or rescheduling a FeedQueue-Task
+ * Obviously this function is meant to be run after a FeedQueue-Task has executed
+ *
+ */
+function _feeds_queue_UnpublishOrRescheduleTask($task) {
+    
+    $nid = $task->nid;
+    
+    // If there is no value in the "Schedule reoccurring execution every X hours" field for this FeedQueue-Task
+    if ( intval($task->reoccurringwait) === 0 ) {
+        
+        // ...then unpublish this FeedQueue-Task
+        db_query("UPDATE node n SET n.status = 0 WHERE n.nid = {$nid}");
+        feeds_queue_write_log("FeedQueue-Task {$task->nid}: {$task->title} has been unpublished since it is not setup as a reoccurring-task.");
+        
+    } else {
+        
+        // ...then reschedule this task
+        $delayHours = intval($task->reoccurringwait);
+        $delaySeconds = $delayHours * 3600;
+        $newTime = time() + $delaySeconds;
+        db_query("UPDATE field_data_field_feedqueue_execdate SET field_feedqueue_execdate_value = {$newTime} WHERE entity_id = {$nid} ");
+        feeds_queue_write_log("FeedQueue-Task {$task->nid}: {$task->title} is reoccurring-task and has been rescheduled to run no earlier than " . date('g:ia M dS, Y', $newTime));
+        
+    }
+    
+    entity_get_controller('node')->resetCache(array($nid)); // Clear the static loading cache.
+    
+}
+
+/**
+ * array _feeds_queue_determinTaskParams($task)
+ *
+ * @param $task object, a task object, or one of the task objects returned from _feeds_queue_get_all_tasks()
+ *
+ * Determines [and returns] the parameters to be executed with the target Feed Importer, for a certain task
+ * This function will execute the Parameters field for this FeedsQueue-Task in PHP, if the 'Text format' is set to 'PHP code'
+ *
+ */
+function _feeds_queue_determinTaskParams($task) {
+    
+    $params = $task->params;
+    
+    // If this is/contains PHP code, evaluate it
+    if ( $task->params_format === 'php_code' ) {
+        ob_start();
+        eval('?' . '>' . $task->params);
+        $params = ob_get_contents();
+        ob_end_clean();
+    }
+    
+    // Split each parameter up (by new line)
+    $params = str_replace(chr(13), chr(10), $params);
+    $params = str_replace(chr(10) . chr(10), chr(10), $params);
+    $params = str_replace(chr(10) . chr(10), chr(10), $params);
+    $params = explode(chr(10), $params);
+    
+    return $params;
+}
+
+/**
+ * string _feeds_queue_task_last_run_date($task)
+ *
+ * Checked the FeedsQueue logs to determin the date of the last time a given FeedQueue-Task has run.
+ */
+function _feeds_queue_task_last_run_date($nid) {
+    
+    $baseDir = 'sites/default/files/feedsqueue-logs/by-nid/';
+    $files = scandir($baseDir . $nid, SCANDIR_SORT_DESCENDING);
+    
+    if ( is_dir($baseDir)  && $files !== false ) {
+        foreach ( $files as $file ) {
+            if ( substr($file, -4) === '.log' ) {
+                return str_replace('.log', '', $file);
+            }
+        }
+    }
+    
+    return 'Unknown';
+}
+
+/**
+ * void _feeds_queue_blockeParam(string $feedImporterMacName, string $param)
+ *
+ * Blocks flags a given parameter to be block from running with the given Feed Importer 
+ *
+ */
+function _feeds_queue_blockeParam($feedImporterMacName, $param, $expireInHours) {
+    
+    $secondsIn1Hour = 3600;
+    
+    $nid = db_insert('feeds_queue_blocked_params')->fields(
+        array(
+            'feed_importer' => $feedImporterMacName,
+            'banned_param' => $param,
+            'expire_time' => ( intval($expireInHours) === 0 ? 0 : time() + ( $expireInHours * $secondsIn1Hour) )
+        )
+    )->execute();
+    
+    feeds_queue_write_log("A FeedQueue parameter block has been declared. FeedImporter:\"{$feedImporterMacName}\" Parameter:\"{$param}\" ");
+}
+
+/**
+ * array _feeds_queue_filterBlockedParams($task, array $params)
+ *
+ * @param $task object, a task object, or one of the task objects returned from _feeds_queue_get_all_tasks()
+ * @param $params array, an array of parameters tht needs to be filtered
+ * 
+ * This function will look at each element in the $params field, and remove any parameters which have been blocked/banned fom usage with the Feed Importer described in $task
+ *
+ */
+function _feeds_queue_filterBlockedParams($task, $params) {
+    
+    foreach ( $params as $key => $param ) {
+        $isBanned = db_query("SELECT id FROM feeds_queue_blocked_params WHERE feed_importer='{$task->targetfeed}' AND banned_param='{$param}' ")->rowCount();
+        if ( $isBanned > 0 ) {
+            unset( $params[$key] );
+        }
+    }
+    
+    return $params;
+}
+
+/**
+ * void array _feeds_queue_ensureBlockedParamsTabelExists()
+ *
+ * Ensures the feeds_queue_blocked_params tabel exists in the MySQL database
+ *
+ */
+function _feeds_queue_ensureBlockedParamsTabelExists() {
+    db_query("
+        CREATE TABLE IF NOT EXISTS feeds_queue_blocked_params (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            feed_importer VARCHAR( 80 ) NOT NULL,
+            banned_param VARCHAR( 750 ) NOT NULL,
+            expire_time INT UNSIGNED NOT NULL,
+            INDEX (  feed_importer,  banned_param )
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1
+    ");
+}
+ 
+/**
+ * array _feeds_queue_exec_feedimporter(string $feedImporterMachineName, string $fetcherType, string $feedImporterParameter)
+ *
+ * Executes a target FeedImporter with a given parameter
+ */
+function _feeds_queue_exec_feedimporter($feedImporterMachineName, $fetcherType, $feedImporterParameter, $initTimeLimit = 900) {
+    
+    feeds_queue_write_log("Now executing Feed Importer {$feedImporterMachineName} with parameter {$feedImporterParameter}");
+    set_time_limit($initTimeLimit);
+    $toReturn = array();
+    
+    // Ensure the requiered module-libraries are loaded
+    module_load_include('module', 'ctools');  
+	module_load_include('module', 'node');
+	module_load_include('module', 'field');
+	module_load_include('module', 'feeds');
+	module_load_include('inc', 'bootstrap');
+
+    // Set the target this FeedImporter should consume data from
+    $feedSource = feeds_source($feedImporterMachineName);
+	$config = $feedSource->getConfig();
+    switch ( strtolower($fetcherType) ) {
+        case 'feedshttpfetcher':
+            $config['FeedsHTTPFetcher']['source'] = $feedImporterParameter;
+            break;
+        case 'feedsfilefetcher':
+            $config['FeedsFileFetcher']['source'] = $feedImporterParameter;
+            break;
+        default:
+           return false;
+    }
+	$feedSource->setConfig($config);
+	$feedSource->save();
+    
+    // The Feeds module may place information in $_SESSION['messages']
+    // So backup and wipe out this variable for the time being
+    $drupalMsgOriginalState = $_SESSION['messages'];
+    $_SESSION['messages'] = null;
+    
+    // Trigger the FeedImporter
+    $toReturn['feed-import-result'] = 'succeeded';
+    $toReturn['feed-import-error-message'] = 'no error';
+    try {
+        $toReturn['feeds_source_function_return'] = feeds_source($feedImporterMachineName, 0)->import();
+    } catch (Exception $e) {
+        $toReturn['feed-import-result'] = 'failed';
+        $toReturn['feed-import-error-message'] = $e->getMessage();
+    }
+    
+    // Capture FeedImporter messages (warnings and errors which were sent through drupal_set_message() by the Feeds module)
+    if ( isset($_SESSION['messages']['status']) ) {
+        $toReturn['verbose-status'] = $_SESSION['messages']['status'];
+    }
+    if ( isset($_SESSION['messages']['warning']) ) {
+        $toReturn['verbose-warning'] = array_slice($_SESSION['messages']['warning'], 0, 10);
+        $toReturn['verbose-warning'][] = '<b>NOTE: This array may be tuncated</b>';
+    }
+    
+    // Restore the Drupal-Message in $_SESSION
+    $_SESSION['messages'] = $drupalMsgOriginalState;
+    
+    // Return
+    return $toReturn;
+}
+
+function feeds_queue_get_global_log() {
+    
+    $offset = -1;
+    if ( !empty($_GET['offset']) && intval($_GET['offset']) !== 0 ) {
+        $offset = intval($_GET['offset']);
+    }
+    
+    @ob_end_clean(); @ob_end_clean(); @ob_end_clean();
+    print file_get_contents('sites/default/files/feedsqueue-logs/global.log', false, null, $offset);
+    exit();
+    
+}
+
+function _getTaskParameters() {
+    
+    if ( empty($_GET['nid']) || intval($_GET['nid']) === 0 ) {
+        return 'Error - no nid parameter given';
+    }
+    
+    $nid = $_GET['nid'];
+    $n = node_load($nid);
+    
+    if ( is_null($n) || $n === false ) {
+        return 'Node not found';
+    }
+    
+    if ( $n->type !== 'feeds_queue_exec' ) {
+        return 'Target node is not a FeedQueue-Task';
+    }
+    
+    if ( empty($n->field_feedqueue_params['und'][0]['value']) ) {
+        return 'This FeedQueue-Task does not have any parameter-targets';
+    }
+    
+    if ( $n->field_feedqueue_params['und'][0]['format'] === 'php_code' ) {
+        
+        $html .= 'The following is the result of evaluating the PHP code that determines the parameter-targets for this FeedQueue-Task:<br/><br/>';
+        $html .= '<hr/><br/><textarea style="border: 1px solid gray; width: 100%; min-height: 250px;">';
+        
+        ob_start();
+        eval( '?' . '>' . $n->field_feedqueue_params['und'][0]['value'] );
+        $html .= ob_get_contents();
+        ob_end_clean();
+        
+        $html .= '</textarea>';
+        
+    } else {
+        
+        $html .= 'The following are the parameter-targets for this FeedQueue-Task:<br/><br/>';
+        $html .= '<hr/><br/><textarea style="border: 1px solid gray; width: 100%; min-height: 250px;">';
+        $html .= $n->field_feedqueue_params['und'][0]['value'];
+        $html .= '</textarea>';
+        
+    }
+    
+    return $html;
+}
+
+/**
+ * object-array _feeds_queue_tasks()
+ * Obtain a list of all FeedQueue[-Task] nodes in the database. 
+ * The return is a result of db_query()
+ */
+function _feeds_queue_tasks($tasksDueForExecution = 0, $onlyPublishedTasks = true, $limit = 100, $onlyNid = false) {
+    
+    $onlyDueSQL = '';
+    if ( intval($tasksDueForExecution) === 1 ) {
+        $onlyDueSQL = ' AND ed.field_feedqueue_execdate_value < ' . time();
+    } elseif ( $tasksDueForExecution === -1 || $tasksDueForExecution === 'future' ) {
+        $onlyDueSQL = ' AND ed.field_feedqueue_execdate_value > ' . time();
+    }
+    
+    $pubTaskSQL = '';
+    if ( $onlyPublishedTasks ) {
+        $pubTaskSQL = ' AND n.status > 0 ';
+    }
+    
+    $nidSql = '';
+    if ( $onlyNid !== false ) {
+        $nidSql = ' AND n.nid = ' . $onlyNid;
+    }
+    
+    $query = "
+        SELECT 
+            n.nid AS 'nid',
+            n.status AS 'ispublished',
+            n.title AS 'title',
+            bfp.field_feedqueue_blockfutureparam_value AS 'blockfutureparam',
+            bl.field_feedqueue_blocklength_value AS 'blocklength',
+            ed.field_feedqueue_execdate_value AS 'execdate',
+            p.field_feedqueue_params_value AS 'params',
+            p.field_feedqueue_params_format AS 'params_format',
+            posex.field_feedqueue_postexec_value AS 'postexec',
+            preex.field_feedqueue_preexec_value AS 'preexec',
+            rw.field_feedqueue_reoccurringwait_value AS 'reoccurringwait',
+            ra.field_feedqueue_runas_value AS 'runas',
+            tf.field_feedqueue_targetfeed_value AS 'targetfeed'
+        FROM node n
+        LEFT JOIN field_data_field_feedqueue_blockfutureparam bfp ON ( bfp.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_blocklength bl ON ( bl.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_execdate ed ON ( ed.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_params p ON ( p.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_postexec posex ON ( posex.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_preexec preex ON ( preex.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_reoccurringwait rw ON ( rw.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_runas ra ON ( ra.entity_id = n.nid )
+        LEFT JOIN field_data_field_feedqueue_targetfeed tf ON ( tf.entity_id = n.nid )
+        WHERE 
+            n.type = 'feeds_queue_exec' 
+            {$pubTaskSQL}
+            {$onlyDueSQL}
+            {$nidSql}
+        ORDER BY ed.field_feedqueue_execdate_value ASC
+        LIMIT {$limit}
+    ";
+    return db_query($query);
+}

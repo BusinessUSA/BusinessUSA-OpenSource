@@ -1,0 +1,51 @@
+#toolBar {
+  overflow: hidden;
+  background-color: #2f2f2f;
+}
+#toolBar .logo-container {
+  float: left;
+}
+#toolBar .logo-container img {
+  padding: 7px 20px;
+}
+#toolBar ul#toolbarButtons {
+  list-style: none;
+  float: right;
+  overflow: hidden;
+}
+#toolBar ul#toolbarButtons li {
+  float: left;
+}
+#toolBar ul#toolbarButtons li a {
+  color: white;
+  margin: 0px 5px;
+  padding: 5px 15px;
+  display: block;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 12px;
+}
+#toolBar ul#toolbarButtons li a.background-color-change {
+  background-color: #444444;
+}
+#toolBar ul#toolbarButtons li a.background-color-change img {
+  padding: 0px 10px;
+}
+#toolBar ul#toolbarButtons li a.fedinfo {
+  color: darkgray;
+  font-size: 20px;
+  padding-top: 10px;
+}
+#toolBar ul#toolbarButtons li a.backbtn,
+#toolBar ul#toolbarButtons li a.closebtn {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 10px;
+}
+#toolBar ul#toolbarButtons li a img {
+  float: left;
+}
+#toolBar ul#toolbarButtons li a .bar-text {
+  float: right;
+  padding-top: 5px;
+}

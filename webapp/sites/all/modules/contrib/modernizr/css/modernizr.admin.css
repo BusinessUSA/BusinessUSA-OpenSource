@@ -1,0 +1,25 @@
+/**
+ * @file
+ *   Administrative CSS for Modernizr module.
+ */
+
+body.page-admin-config-development-modernizr .modernizr-tests {
+  margin-left: 2em;
+}
+
+body.page-admin-config-development-modernizr .modernizr-tests h3 {
+  float: left;
+  clear: left;
+  margin: 0 1em 1em 0;
+}
+
+body.page-admin-config-development-modernizr .modernizr-tests p.desc {
+  float: left;
+  margin: 0;
+}
+
+body.page-admin-config-development-modernizr div.download-modernizr {
+  float: none;
+  clear: both;
+  padding-top: 1em;
+}

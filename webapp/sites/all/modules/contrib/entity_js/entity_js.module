@@ -1,0 +1,277 @@
+<?php
+/**
+ * @file
+ * Drupal callbacks for JS to interface with Entity API.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function entity_js_permission() {
+  $entity_info = entity_get_info();
+  $permissions = array();
+  $perms = array(
+    'create' => 'Create entities using JavaScript',
+    'read' => 'Read entities using JavaScript',
+    'update' => 'Update entities using JavaScript',
+    'delete' => 'Delete entities using JavaScript',
+  );
+  foreach ($entity_info as $entity_type => $entity) {
+    foreach ($perms as $perm => $description) {
+      $permissions["$entity_type entity js $perm"] = array(
+        'title' => t('!entity_label: !description', array('!entity_label' => $entity['label'], '!description' => $description)),
+      );
+    }
+
+    if(!isset($entity['bundles'][$entity_type])) {
+      foreach ($entity['bundles'] as $bundle_type => $bundle) {
+        foreach ($perms as $perm => $description) {
+          $permissions["$entity_type entity js $perm $bundle_type"] = array(
+            'title' => t('!entity_label: !bundle_label: !description', array('!entity_label' => $entity['label'], '!bundle_label' => $bundle['label'], '!description' => $description)),
+          );
+        }
+      }
+    }
+  }
+  $permissions['access efq javascript callbacks'] = array(
+      'title' => t('EntityFieldQuery: Use EFQ in JavaScript'),
+      'description' => t('Allow access to EFQ using JavaScript. Requires "read" access for the requested entity bundle.'),
+  );
+  return $permissions;
+}
+
+/**
+ * Implement hook_menu().
+ */
+function entity_js_menu() {
+  $items['entity_js_create'] = array(
+    'page callback' => 'entity_js_create_entity',
+    'page arguments' => array(1),
+    'access callback' => 'entity_js_access',
+    'access arguments' => array(1, 'create'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entity_js_drupal_render_entity_view'] = array(
+    'page callback' => 'entity_js_drupal_render_entity_view',
+    'page arguments' => array(1,2,3),
+    'access callback' => 'entity_js_access',
+    'access arguments' => array(1, 'read'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entity_js_load_single_json'] = array(
+    'page callback' => 'entity_js_load_single_json',
+    'page arguments' => array(1,2),
+    'access callback' => 'entity_js_access',
+    'access arguments' => array(1, 'read'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entity_js_update'] = array(
+    'page callback' => 'entity_js_update_entity',
+    'page arguments' => array(1,2),
+    'access callback' => 'entity_js_access',
+    'access arguments' => array(1, 'update'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entity_js_delete'] = array(
+    'page callback' => 'entity_js_delete_entity',
+    'page arguments' => array(1,2),
+    'access callback' => 'entity_js_access',
+    'access arguments' => array(1, 'delete'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entity_js_efq_json'] = array(
+    'page callback' => 'entity_js_efq_json',
+    'access arguments' => array('access efq javascript callbacks'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Access callback for Entity JS URL requests.
+ */
+function entity_js_access($entity_type, $action) {
+  return user_access($entity_type . ' entity js ' . $action);
+}
+
+/**
+ * Create Entity success/fail response as JSON.
+ */
+function entity_js_create_entity($entity_type) {
+  if (isset($_POST['values'])) {
+    //Check for bundle level Create access.
+    if (isset($_POST['values']['type'])) {
+      if (!user_access($entity_type . ' entity js create ' . $_POST['values']['type'])) {
+        return drupal_access_denied();
+      }
+    }
+    //Attempt to Create entity using POST values
+    try {
+      $entity = entity_create($entity_type, $_POST['values']);
+      entity_save($entity_type, $entity);
+      $response = 'Success';
+    }
+    catch (Exception $e) {
+      $response = 'Failure: ' . $e->getMessage();
+    }
+  }
+  else {
+    $response = 'No post data';
+  }
+  return drupal_json_output($response);
+}
+
+/**
+ * Update Entity success/fail response as JSON.
+ */
+function entity_js_update_entity($entity_type, $entity_id) {
+  if (isset($_POST['values'])) {
+    if ($entity = entity_load_single($entity_type, $entity_id)) {
+      if (isset($entity->type) && !user_access($entity_type . ' entity js update ' . $entity->type)) {
+        return drupal_access_denied();
+      }
+      try {
+        $entity = (object) entity_js_array_merge_recursive_distinct((array) $entity, $_POST['values']);
+        entity_save($entity_type, $entity);
+        $response = 'Success';
+      }
+      catch (Exception $e) {
+        $response = 'Failure: ' . $e->getMessage();
+      }
+    }
+    else {
+      $response = 'Failure: Entity does not exist';
+    }
+  }
+  else {
+    $response = 'No post data';
+  }
+  return drupal_json_output($response);
+}
+
+/**
+ * Delete an existing entity.
+ */
+function entity_js_delete_entity($entity_type, $entity_id) {
+  if ($entity = entity_load_single($entity_type, $entity_id)) {
+    if (isset($entity->type) && !user_access($entity_type . ' entity js delete ' . $entity->type)) {
+      return drupal_access_denied();
+    }
+    entity_delete($entity_type, $entity_id);
+    $response = 'Success';
+  } else {
+    $response = 'Failure: Entity does not exist.';
+  }
+  return drupal_json_output($response);
+}
+
+/**
+ * Rendered entity function for JavaScript callbacks.
+ */
+function entity_js_drupal_render_entity_view($entity_type, $entity_id, $view_mode = 'default') {
+  if ($entity = entity_load_single($entity_type, $entity_id)) {
+    if (isset($entity->type) && !user_access($entity_type . ' entity js read ' . $entity->type)) {
+      return drupal_access_denied();
+    }
+    print drupal_render(entity_view($entity_type, array($entity), $view_mode));
+  }
+  exit();
+}
+
+/**
+ * Entity as JSON function for JavaScript callbacks.
+ */
+function entity_js_load_single_json($entity_type, $entity_id) {
+  if ($entity = entity_load_single($entity_type, $entity_id)) {
+    if (isset($entity_type) && !user_access($entity_type . ' entity js read ' . $entity->type)) {
+      return drupal_access_denied();
+    }
+    return drupal_json_output($entity);
+  }
+}
+
+/**
+ * EntityFieldQuery returned as JSON for JavaScript callbacks.
+ */
+function entity_js_efq_json() {
+  //Helper function to validate read access for requested entity types.
+  function _entity_js_efq_entity_read_access($results) {
+    $entity_type = key($results);
+    // Return an "empty" result if user has no access to the entity type.
+    if (!entity_js_access($entity_type, 'read')) {
+      return FALSE;
+    }
+
+    $ids = &$results[$entity_type];
+    foreach ($ids as $id => $object) {
+      // Remove the object from the result if the user has no read access to it.
+      if (isset($object->type) && !user_access("$entity_type entity js read " . $object->type)) {
+        unset($ids[$id]);
+      }
+    }
+    return (count($ids) > 0) ? $results : FALSE;
+  }
+
+  //Create a new EntityFieldQuery object.
+  $query = new EntityFieldQuery();
+  foreach ($_POST['efq'] as $method => $arguments) {
+    foreach ($arguments as $v) {
+      call_user_func_array(array($query, $method), $v);
+    }
+  }
+
+  //Having extracted all EFQ conditions, we can now execute the query.
+  $results = $query->execute();
+  $results = _entity_js_efq_entity_read_access($results);
+
+  // Return a nice message when there are no results.
+  if (!$results) {
+    return drupal_json_output('No entities loaded.');
+  }
+
+  //Optionally return 'fully loaded' array of entities.
+  if (isset($_POST['load']) && $_POST['load'] == 'true') {
+    $entities = array();
+    $entity_type = key($results);
+    $ids = array_keys($results[$entity_type]);
+    $entities[$entity_type] = entity_load($entity_type, $ids);
+    return drupal_json_output($entities);
+  }
+  else {
+    //Otherwise, return the default EFQ output.
+    return drupal_json_output($results);
+  }
+}
+
+/**
+ * Helper function to merge recursively an array while preserving the numeric
+ * keys. See http://ru2.php.net/manual/en/function.array-merge-recursive.php#96201.
+ */
+function entity_js_array_merge_recursive_distinct() {
+  $arrays = func_get_args();
+  $base = array_shift($arrays);
+  if (!is_array($base)) {
+    $base = empty($base) ? array() : array($base);
+  }
+  foreach($arrays as $append) {
+    if (!is_array($append)) {
+      $append = array($append);
+    }
+    foreach ($append as $key => $value) {
+      if (!array_key_exists($key, $base) and !is_numeric($key)) {
+        $base[$key] = $append[$key];
+        continue;
+      }
+      if (is_array($value) or is_array($base[$key])) {
+        $base[$key] = !isset($base[$key]) ? $append[$key] : entity_js_array_merge_recursive_distinct($base[$key], $append[$key]);
+      } else if(is_numeric($key)) {
+        if (!in_array($value, $base)) {
+          $base[] = $value;
+        }
+      } else {
+        $base[$key] = $value;
+      }
+    }
+  }
+  return $base;
+}

@@ -1,0 +1,119 @@
+<?php
+/**
+ * @file
+ * Main module file for rei_tweaks
+ */
+
+/**
+ * Implements hook_views_prebuild().
+ *
+ * Finishes a previous incomplete build where
+ * query keyword arguments were being ignored.
+ */
+function rei_tweaks_views_pre_build(&$view) {
+  if ($view->name == 'keyword_search_api') {
+    $query = drupal_get_query_parameters();
+    if (!empty($query['keyword'])) {
+      $view->filter['title']->value = $query['keyword'];
+      $view->filter['field_data_detail_desc_value']->value = $query['keyword'];
+      $view->filter['field_tools_detail_text_value']->value = $query['keyword'];
+      $view->filter['field_article_detail_desc_value']->value = $query['keyword'];
+      $view->filter['field_program_detail_desc_value']->value = $query['keyword'];
+      $view->filter['field_services_detail_desc_value']->value = $query['keyword'];
+      $view->filter['field_event_detail_desc_value']->value = $query['keyword'];
+      $view->filter['field_ss_detailed_text_value']->value = $query['keyword'];
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * This is the point of attack for massaging
+ * views data export data. This fix attempts
+ * to sanitize malformed strings that have been
+ * directly screen scraped.
+ */
+function rei_tweaks_views_pre_render(&$view) {
+  if ($view->name == 'article_api' && $view->current_display == 'article_api_csv') {
+    foreach ($view->result as $result) {
+      if (!empty($result->field_field_article_detail_desc[0]['raw']['value'])) {
+        $result->field_field_article_detail_desc[0]['raw']['value'] = rei_tweaks_sanitize_csv_string($result->field_field_article_detail_desc[0]['raw']['value']);
+      }
+      if (!empty($result->field_field_article_detail_desc[0]['raw']['safe_value'])) {
+        $result->field_field_article_detail_desc[0]['raw']['safe_value'] = rei_tweaks_sanitize_csv_string($result->field_field_article_detail_desc[0]['raw']['safe_value']);
+      }
+      if (!empty($result->field_field_article_detail_desc[0]['rendered']['#markup'])) {
+        $result->field_field_article_detail_desc[0]['rendered']['#markup'] = rei_tweaks_sanitize_csv_string($result->field_field_article_detail_desc[0]['rendered']['#markup']);
+      }
+    }
+  }
+
+  // Rearrange the results to post business sunday events
+  // at the top of the list.
+  /*
+  if ($view->name == 'business_sunday_events' && $view->current_display == 'business_sunday') {
+    $business_sunday_results = array();
+    $other_results = array();
+    foreach ($view->result as $result) {
+      if (!empty($result->field_field_event_type[0]['raw']['value']) && $result->field_field_event_type[0]['raw']['value'] == 'business_sunday') {
+        $business_sunday_results[] = $result;
+      }
+      else {
+        $other_results[] = $result;
+      }
+    }
+    $new_result = array_merge($business_sunday_results, $other_results);
+    $view->result = $new_result;
+  }
+  */
+}
+
+/**
+ * Helper function that will sanitize strings passed
+ * in for use by the views data export module csv
+ * file creation.
+ *
+ * @param string $string
+ *   The string to be sanitized.
+ *
+ * @return string
+ *   Returns the sanitized string.
+ */
+function rei_tweaks_sanitize_csv_string($string) {
+  // Truncate the string to fit the max cell size
+  // in XML. Anything beyond this will splash
+  // overflow into the next row.
+  $string = substr($string, 0, 33500) . '...';
+  $string = str_replace("\"", "'", $string);
+  $string = str_replace("\n", " ", $string);
+  $string = str_replace("\t", " ", $string);
+  // We remove commas just in case the string is
+  // malformed, reducing the possibility of the
+  // csv parser making errors.
+  $string = str_replace(",", " ", $string);
+  return $string;
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Updates the zip code automatically on business sunday events.
+ */
+function rei_tweaks_node_presave($node) {
+  if ($node->type == 'event' && !empty($node->field_event_type[LANGUAGE_NONE][0]['value']) && $node->field_event_type[LANGUAGE_NONE][0]['value'] == 'business_sunday') {
+    $updated_zip = (!empty($node->original->field_event_zip[LANGUAGE_NONE][0]['value']) && !empty($node->field_event_zip[LANGUAGE_NONE][0]['value']));
+    if ($updated_zip && $node->original->field_event_zip[LANGUAGE_NONE][0]['value'] == $node->field_event_zip[LANGUAGE_NONE][0]['value']) {
+      // The zip code has not changed. Leave the coordinates alone.
+      return;
+    }
+    if (!empty($node->field_event_zip[LANGUAGE_NONE][0]['value'])) {
+      // Get the lant/long for the given ZipCode
+      $locationInfo = getLatLongFromZipCode($node->field_event_zip[LANGUAGE_NONE][0]['value']); // Note: This function is stored in ZipCodeGeolocation.php
+      $lat = $locationInfo['lat'];
+      $long = $locationInfo['lng'];
+      $node->field_event_latitude[LANGUAGE_NONE][0]['value'] = $lat;
+      $node->field_event_longitude[LANGUAGE_NONE][0]['value'] = $long;
+    }
+  }
+}

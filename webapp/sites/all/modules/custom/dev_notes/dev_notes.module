@@ -1,0 +1,85 @@
+<?php
+
+function dev_notes_init() {
+
+    drupal_add_js(
+        drupal_get_path('module', 'dev_notes') . '/dev_notes.js',
+        array(
+            'every_page' => true
+        )
+    );
+    
+    drupal_add_css(
+        drupal_get_path('module', 'dev_notes') . '/dev_notes.css',
+        array(
+            'every_page' => true
+        )
+    );
+    
+}
+
+function dev_notes_theme() {
+    $themes = array(
+        'devnote' => array(
+            'variables' => array(
+                'welcomeMsg' => 'Dev Note (This message is only visible on a non-production environment)',
+                'addClass' => '',
+                'message' => '',
+                'showControles' => 'always', /* can be "always", "never" or "hover" */
+                'showOnlyInDevEnv' => true,
+            ),
+        ),
+    );
+    return $themes;
+}
+
+function theme_devnote($variables) {
+    
+    if ( $variables['showOnlyInDevEnv'] && function_exists('version_awareness_environment_isproduction') && intval(version_awareness_environment_isproduction()) === 1 ) {
+        return '';
+    }
+    
+    if ( !empty($_COOKIE['devNotesDoNotShow']) ) {
+        return '';
+    }
+
+    $uid = uniqid();
+    
+    $html = "
+        <div id=\"devnote_{$uid}\" class=\"devnote {$variables['addClass']}\">
+            <div class=\"devnote-welcomemsg\">{$variables['welcomeMsg']}</div>
+            <div class=\"devnote-message\">{$variables['message']}</div>
+            <div class=\"devnote-controles devnote-controles-showmode-{$variables['showControles']}\">
+                [<a href=\"javascript: jQuery('#devnote_{$uid}').remove();\">Hide this DevNote</a>]
+                [<a href=\"javascript: jQuery('.devnote').remove();\">Hide all DevNotes</a>]
+                [<a href=\"javascript: jQuery('.devnote').remove(); _dev_notes_createCookie('devNotesDoNotShow', 'true', 0.04155); alert('Cookie set, DevNotes will be hidden for 1 hour.');\">Never show DevNotes</a>]
+            </div>
+        </div>
+    ";
+    
+    return $html;
+    
+}
+
+/*  @TODO: Make this function configurable through the database
+*/
+function randomDevNote() {
+    
+    $devNotes = array(
+        'Any and all *.page.php files that exist in the sites/all/pages/ directory automatically become pages in Drupal. This system is meant to replace and depricate our usage of Drupal Basic Pages',
+        'Always do an SVN update to your entire repository, from where index.php exists. Do NOT do SVN updates from subdirectories of the web-app root. ',
+        'Dont have Drush installed? No problem, this repository comes with Drush, and it has been altered to work with Windows environment! You can find it in the Drush directory, in the same place of index.php',
+        'Dev-Notes are a great way of supplying in-page documentation. They will not show on the production environment, and can be killed [locally] by Devs (so they dont get in the way of theaming), and will only remain killed by Devs for a max preiod of 1 hour (thus getting your message across)',
+        'In PHP there is a simple function that will identify whether or not the given environment is the production server or not. A boolean value is returned from version_awareness_environment_isproduction(), this returns true only when the environment detects it is Staging or Prod.<br/><br/>This is useful for when we don\'t want to actually trigger certain functionality if/unless it is on Prod (i.e. these DevNotes do not show up on Prod due to this function). <b>Please do not abuse this function</b>, the more this function gets used, the more differences between UAT and Prod will exist, and we don\'t want to run the risk of creating a bug that exists only on Prod due to environment-dependant functionality.',
+    );
+    
+    return theme(
+        'devnote', 
+        array(
+            'welcomeMsg' => 'Tip:',
+            'message' => $devNotes[ rand(0, count($devNotes) - 1) ],
+            'showControles' => 'hover',
+            'showOnlyInDevEnv' => true
+        )
+    );
+}

@@ -1,0 +1,6 @@
+name = "jQuery Code-Scanner / Unit Testing"
+description = "Assists in unit-tests/markup-scan through jQuery, by providing a framework for running developer-made JavaScripts within the browser."
+core = 7.x
+configure = admin/config/jquery_codescanner
+dependencies[] = version_awareness
+files[] = jquery_codescanner.module

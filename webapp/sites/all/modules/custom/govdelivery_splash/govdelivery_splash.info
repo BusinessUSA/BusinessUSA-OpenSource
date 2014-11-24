@@ -1,0 +1,4 @@
+name = GovDelivery Splash
+description = Allows users to register for govdelivery based email services
+core = 7.x
+package = SBA Custom

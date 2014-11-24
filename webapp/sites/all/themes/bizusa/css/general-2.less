@@ -1,0 +1,305 @@
+/****************************************
+***                                   ***
+***   ALL SCREEN RESOLUTIONS STYLES   ***
+***                                   ***
+*****************************************/
+
+/*******************************************************
+***   PART 2 - BROKEN IN PIECES FOR IE LIMITATION   ****
+*******************************************************/
+
+
+/**************************
+***   GENERAL STYLES   ****
+**************************/
+
+/***************************************
+***   CONTENT LANDING PAGES   ****
+****************************************/
+
+body.page-node{
+	#titleWrapper h1 {
+		font-weight: normal;
+	}
+	.region-content{
+		background-color: #fff;
+		font: 14px/22px "latoregular",sans-serif;
+		padding: 3%;
+		float: left;
+        width: 94%;
+		
+		.node-blog{
+			.blog-image{
+				float: left;
+				height: 85px;
+				width: 10%;
+				background: url("/sites/all/themes/bizusa/images/businessusa.png") no-repeat;
+			}
+						
+			.blog-content-container{
+				float: left;
+				padding: 0 2%;
+				width: 85%;
+				.blog-content-title{
+					font-family: 'latoblack', sans-serif;
+					font-size: 19px;
+					margin-bottom: 10px;
+				}
+			}
+		}
+		
+		.node-article,
+		.node-rules-status,
+		.node-export-gov-micro-site-page,
+		.node-wizard-result-reference-for-solr,
+		.node-appointment-office
+		.node-data,
+		.node-state-resource,
+		.node-success-story,
+        .node-quick-facts,
+		.node-tools,
+		.node-federal-register,
+		.node-swim-lane-page,
+		.node-grants,
+		.node-green-sbir-topic,
+		.node-business-news,
+		.node-video,
+		.node-featured-item,
+		.node-whats-new,
+		.node-browseregulations,
+		.node-solicitations
+		{
+			.submitted{
+				display: none;
+			}
+			.field{
+				.field-items{
+                    display: inline-block;
+					.field-item{
+						p{
+							margin-bottom: 15px;
+						}
+					}
+				}
+			}
+			.learnmore_column,
+			.tags_column{
+				margin-top: 20px;
+				float: left;
+				width: 100%;
+				a{
+					font:16px "latoregular", sans-serif;
+				}
+			}
+			.contact.info{
+				border-top: 1px dotted #ccc;
+				margin: 30px 0px;
+				padding-top: 15px;
+				float: left;
+				width: 100%;
+				.contact-information-prefix{
+					float: left;
+					margin-right: 25px;
+
+					h2{
+						font:22px "latoblack", sans-serif;
+						margin-bottom: 3px;
+					}
+				}
+				.contact-information-container{
+					float: left;
+				}
+			}
+			.lblclass, .field-label{
+				margin-right: 15px;
+				font:18px "latoblack_italic", sans-serif;
+				float: left;
+				div &{
+					clear: both;
+					margin: 10px 0px;
+				}
+			}
+          .field-label-above{
+              margin-bottom: 10px;
+          }
+		}
+		input[name=tags]{
+			float: left;
+			border: 1px solid #ccc;
+			width: 280px;
+			font-size: 18px;
+			background-color: #F8F8F8;
+			margin-left: 3px;
+			margin-bottom: 5px;
+			margin-top: 10px;
+		}
+		#recaptcha_widget_div{
+			float: left;
+			clear: both;
+		}
+		input[type=submit]{
+			float: left;
+			clear: both;
+			width: inherit;
+			font:18px "latoblack", sans-serif;
+			padding: 10px 20px;
+			height: inherit;
+			cursor: pointer;
+			margin-left: 3px;
+			margin-top: 5px;
+		}
+		input[type=submit]:hover{
+			background-color: darken(#F75B49, 10%)
+		}
+		#recaptcha_response_field{
+			height: 17px;
+		}
+
+	}
+	.region-sidebar-first,
+	.region-sidebar-second{
+		float: left;
+		margin-top: 15px;
+		background-color: #E9E9E9;
+		width: 49%;
+		h2{
+			font-weight: normal;
+			margin-top: 20px;
+			padding-left: 25px;
+			color: #5C5C5C;
+			text-transform: uppercase;
+			font: 15px "latoblack",sans-serif;
+		}
+		.boxes-box-content{
+			ul{
+				padding: 0px 20px 20px 20px;
+				li{
+					list-style: none;
+					padding:5px;
+					border-bottom:1px solid #ccc;
+					margin-bottom: 7px;
+					a{
+						font: 15px "latoregular", sans-serif;
+						font-weight: normal;
+					}
+					a:hover{
+						color: darken(#6885A2, 10%)
+					}
+					.description{
+						margin: 7px 0px;
+					}
+					&:last-child {
+			         border-bottom: none;
+			        }
+				}
+			}
+		}
+	}
+	.region-sidebar-second{
+		float: right;
+	}
+}
+
+
+/************************************************
+***   TRADE EVENTS - NODE TYPE   ****
+*************************************************/
+body.node-type-trade-event{
+	.wrapper{
+		#titleWrapper{
+			height: inherit;
+			.title{
+				float: left;
+				width: 80%;
+				h1{
+					line-height: 26px;
+					margin-top: 15px;
+					margin-bottom: 15px;
+				}
+			}
+		}
+		.region.region-content{
+			#block-system-main{
+				.node.node-trade-event{
+					background-color: #FFFFFF;
+				    float: left;
+				    padding: 2%;
+				    width: 96%;
+				    .submitted{
+				    	display: none;
+				    }
+				    .field-type-datetime,
+				    .field-type-text-long,
+				    .field-type-text{
+				    	margin: 5px 0px;
+				    	.field-label{
+				    		font-weight: normal;
+				    		text-transform: uppercase;
+				    		font-family: "latoblack",sans-serif;
+				    		margin-right: 5px;
+				    	}
+				    }
+
+				    .field-name-field-tradeevent-desc.field-type-text-long{
+				    	.field-label{
+				    		display: none;
+				    	}
+				    	margin: 10px 0px;
+				    	font-size: 13px;
+				    	line-height: 18px;
+					    font-weight: normal;
+				    }
+				}
+			}
+		}
+	}
+}
+
+
+/************************************************
+***   FACT SHEETS AND ANNOUNCEMENTS - NODE   ****
+***	  RURAL EXPORT INITIATIVES NEWS - NODE 	 ****
+*************************************************/
+body.node-type-fact-sheets-and-announcements,
+body.node-type-rural-export-initiatives-news{
+	.wrapper{
+		#titleWrapper{
+			height: inherit;
+			.title{
+				float: left;
+				width: 80%;
+				h1{
+					line-height: 26px;
+					margin-top: 15px;
+					margin-bottom: 15px;
+				}
+			}
+		}
+	}
+}
+
+/************************************************
+***   PROVISION - NODE   ****
+*************************************************/
+body.node-type-provision{
+	.wrapper{
+		.region-content{
+			background-color: #fff;
+			padding: 3%;
+			width: 94%;
+			line-height: 18px;
+			float: left;
+			.submitted,
+			.field-label{
+				display: none;
+			}
+		}
+	}
+}
+/************************************************
+***   BUSINESSUSA MOBILE APP  ****
+*************************************************/
+body.page-bizusa-app-share{
+	display: none;
+}
+

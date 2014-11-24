@@ -1,0 +1,10 @@
+name = REI Tweaks
+description = Makes small adjustments to various elements on the site aren't large enough for their own module.
+core = 7.x
+package = REI
+version = 7.x-0.1
+project = rei_tweaks.info
+dependencies[] = views
+stylesheets[all][] = rei_tweaks.css
+stylesheets[all][] = rei_tweaks.ie.css
+scripts[] = rei_tweaks.js

@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Implements hook_feeds_presave()
+ */
+function revision_control_feeds_presave(FeedsSource $source, $entity, $item) {
+  //do this if entity type is node
+  if($entity->feeds_item->entity_type == 'node') {
+  	//check if content has been edited since original import
+  	if($entity->created !== $entity->changed) {
+			//load user obj
+			$user = user_load($entity->revision_uid);
+			
+			//get user roles
+			foreach($user->roles as $key => $roles) {
+				if($key !== 2) {
+					$user_roles = $roles;
+				}
+			}
+			
+  	  //check if content edited by any user with 'Editor' role
+  	  if($user_roles === "Editor") {
+  	    // Skip saving this entity.
+      	$entity->feeds_item->skip = TRUE;
+				
+				//output notice or warning messages if skipped
+				drupal_set_message(t('Skipped importing ' . $entity->nid));
+				watchdog('notice', t('Skipped importing ' . $entity->nid));
+  	  } else {
+				//check if entity already exists
+				if(!empty($entity)) {
+					//output notice message if updated
+					drupal_set_message(t('Updated ' . $entity->nid . ' that has been edited ' . count(node_revision_list(node_load($entity->nid))) . ' times.'));
+					watchdog('notice', t('Updated ' . $entity->nid . ' that has been edited ' . count(node_revision_list(node_load($entity->nid))) . ' times.'));
+				}
+			}
+  	} else {
+			//check how many times node has been revised
+			if(count(node_revision_list(node_load($entity->nid))) == 1){
+				//output notice or warning messages if updated
+				drupal_set_message(t('Content never got edited until now ' . $entity->nid));
+				watchdog('notice', t('Content never got edited until now ' . $entity->nid));
+			}
+		}
+  }
+}

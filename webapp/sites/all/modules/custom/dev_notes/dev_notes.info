@@ -1,0 +1,5 @@
+name = Dev Notes
+description = Supplies the theme and functionality for Dev Notes - Notes that are only visible to the administrator
+package = REI
+core = 7.x
+files[] = dev_notes.module

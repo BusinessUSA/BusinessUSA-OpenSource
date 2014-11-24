@@ -1,0 +1,156 @@
+//
+// Page
+// --------------------------------------------------
+
+
+
+// Hide skip to content link
+#skipToContent{
+  .sr-only();
+  .sr-only-focusable();
+}
+
+// Page Title
+#page-title-area{
+  margin:0; 
+  background-color:#fff; 
+  padding: 15px 0px; 
+  margin-bottom:20px;
+}
+
+#page-title{
+  font-family: @font-family-sans-serif-bold;
+  font-size: @font-size-h2;
+  letter-spacing: -1px;
+  color: @btn-primary-bg;
+  line-height: 28px;
+}
+
+// Page title in search results
+.region-title-area{
+  .current-search-item{
+    float: left;
+    &.current-search-item-you-searched-for-term-{
+      color: #505050;
+      font-family: @font-family-sans-serif-italic;
+      font-size: 16px;
+      margin: 4px 4px 0 0;
+    }
+    &.current-search-item-results{
+      background-color: #e8e8e8;
+      color: #282828;
+      font-size: 12px;
+      line-height: 15px;
+      padding: 5px;
+      margin-right: 4px;
+      margin-top: 3px;
+      font-family: @font-family-sans-serif-italic;
+    }
+    &.current-search-item-export-to-excel{
+      margin-top: 2px;
+      float: right;
+    }
+
+  }
+}
+
+body > .wrapper {
+    &:extend(.container);
+    
+    @media (min-width: @screen-sm-min) {
+      margin-top: 70px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @media (min-width: @screen-md-min) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .region.region-content{
+      @media (min-width: @screen-sm-min) {
+          background-color: #fff;
+      }
+    }
+}
+
+.footer.navbar{
+  margin-bottom: 0;
+  text-align: center;
+  p{
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  img{
+    vertical-align: bottom;
+    margin-right: 5px;
+  }
+}
+
+//
+// DEFAULT IDs FOR ONE SIDE BAR
+// --------------------------------------------------
+
+#main-content{
+  .make-sm-column(8;15px);
+  padding: 0;
+  @media (min-width: @screen-sm-min) {
+    padding-right: 7px;
+    padding-left: 0;
+  }
+}
+
+#sidebar-content{
+  .make-sm-column(4;15px);
+  padding: 0;
+  @media (min-width: @screen-sm-min) {
+    padding-right: 0;
+    padding-left: 7px;
+  }
+}
+
+
+//
+// TRADE LEADS - NODE TEMPLATE
+// --------------------------------------------------
+
+body.node-type-trade-lead > .wrapper .region.region-content{
+  background-color: #fff;
+  .tradeleads-maincontent{
+    .make-xs-column(12);
+  }
+}
+
+//
+// MICRO-SITE/INDUSTRY_RESOURCE
+// --------------------------------------------------
+
+body.page-micro-site-industry-resource > .wrapper .region.region-content{
+  background-color: #fff;
+  .tradeleads-maincontent{
+    .make-xs-column(12);
+  }
+}
+
+
+//
+// Drupal core 
+// --------------------------------------------------
+
+.tabs.primary{
+  .nav();
+  .nav-tabs();
+  float: left;
+  width: 100%;
+}
+
+.pager{
+  .pager-first.first,
+  .pager-last.last{
+    display: none;
+  }
+}
+
+

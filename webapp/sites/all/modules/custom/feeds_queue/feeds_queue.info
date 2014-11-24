@@ -1,0 +1,5 @@
+name = Feeds Queuing
+description = A module used to queue Feed-Importers to be executed at a later time with the option of specifying parameters
+package = REI
+core = 7.x
+files[] = feeds_queue.module

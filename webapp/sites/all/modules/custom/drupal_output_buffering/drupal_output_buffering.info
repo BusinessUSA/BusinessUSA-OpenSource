@@ -1,0 +1,6 @@
+;$Id$
+name = Drupal Within Output Buffering
+description = Allows you to manage all pages on the site that shall be captured within an output buffer, and held there untill the PHP thread dies.
+package = REI
+core = 7.x
+files[] = drupal_output_buffering.module

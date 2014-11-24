@@ -1,0 +1,771 @@
+<?php
+/**
+ * For API Reference for GovDelivery Please see here
+ * http://knowledge.govdelivery.com/display/API/Home
+ * There is also a file within this module directory with further information
+ **/
+
+/**
+ * Implements hook_menu().
+ */
+function govdelivery_splash_menu() {
+  $items = array();
+
+  $items['admin/config/govdelivery-settings'] = array(
+    'title'            => 'GovDelivery Settings',
+    'description'      => 'GovDelivery Authentication Settings',
+    'page callback'    => '_govdelivery_splash_settings_page',
+    'access arguments' => array('administer govdelivery settings'),
+    'type'             => MENU_NORMAL_ITEM,
+  );
+  $items['govdelivery-run'] = array(
+    'title'            => 'Deliver Subscribers to GovDelivery API',
+    'description'      => 'Deliver Subscribers to GovDelivery API',
+    'page callback'    => '_govdelivery_splash_update_subscriptions',
+    'access arguments' => array(TRUE),
+    'access callback'  => TRUE,
+    'type'             => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_perm().
+ */
+function govdelivery_splash_permission() {
+  return array(
+    'administer govdelivery settings' => array(
+      'title'       => t('Administer GovDelivery Module Settings'),
+      'description' => t('Change API authentication and module related settings.'),
+    ),
+  );
+}
+
+/*
+ * Implementation of hook_block_info().
+ */
+function govdelivery_splash_block_info() {
+  $block = array();
+  $block['govdelivery_splash_block'] = array(
+    'info'  => t('GovDelivery Splash Block'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $block;
+}
+
+/*
+ * Implementation of hook_block_view().
+ */
+function govdelivery_splash_block_view($delta = '') {
+  $blocks = array();
+  switch ($delta) {
+    case 'govdelivery_splash_block':
+      $content = '<div class="splash-container">';
+      $splash_form = drupal_get_form('govdelivery_splash_form');
+      $content .= drupal_render($splash_form);
+      $content .= '</div>';
+      $blocks['content'] = $content;
+    break;
+  }
+  return $blocks;
+}
+
+function govdelivery_splash_cron() {
+  if (time() >= variable_get('govdelivery_cron_timer', 0)) {
+    if (_govdelivery_splash_check_credentials()) {
+      _govdelivery_splash_update_topic_list();
+      _govdelivery_splash_update_category_list();
+      _govdelivery_splash_update_topics_categories();
+      //_govdelivery_splash_update_subscriptions();
+    }
+    else {
+      drupal_set_message(t('GovDelivery Data can not be processed without proper credentials. Please navigate to !link in order to fix this issue.', array('!link' => l('GovDelivery Module Settings', 'admin/config/govdelivery-settings'))), 'error');
+    }
+    variable_set('govdelivery_cron_timer', time() + variable_get('govdelivery_period', 15));
+  }
+}
+
+/**
+ * Menu Callback for govdelivery_splash_menu()
+ */
+function _govdelivery_splash_settings_page() {
+  $admin_form = drupal_get_form('_govdelivery_splash_admin_settings');
+  $output = drupal_render($admin_form);
+  $output .= '<br/>';
+  $in_result = db_query("SELECT COUNT(*) FROM {govdelivery_subscribers} WHERE flag = 1");
+  $out_result = db_query("SELECT COUNT(*) FROM {govdelivery_subscribers} WHERE flag < 1 AND flag > -4");
+  $unprocessable_result = db_query("SELECT COUNT(*) FROM {govdelivery_subscribers} WHERE flag < -3");
+  $output .= 'There was ' . $in_result->fetchField() . ' records sent to GovDelivery.<br/>';
+  $output .= 'There are ' . $out_result->fetchField() . ' remaining records waiting to be sent.<br/>';
+  $output .= 'There will be ' . $unprocessable_result->fetchField() . ' unprocessable records.<br/>';
+  $refresh_form = drupal_get_form('_govdelivery_splash_refresh_topics_cat_form');
+  $output .= drupal_render($refresh_form);
+  $output .= _govdelivery_splash_admin_get_topics();
+  return $output;
+}
+
+/*
+ * Allows a manual capture of GovDelivery topics and categories
+ */
+function _govdelivery_splash_refresh_topics_cat_form($form, &$form_state) {
+  $form['update']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Update Topics and Categories'),
+  );
+  return $form;
+}
+
+/*
+ * Submit button actions for manual capture of GovDelivery topics and categories
+ */
+function _govdelivery_splash_refresh_topics_cat_form_submit($form, &$form_state) {
+  if (_govdelivery_splash_check_credentials()) {
+    _govdelivery_splash_update_topic_list();
+    _govdelivery_splash_update_category_list();
+    _govdelivery_splash_update_topics_categories();
+  }
+  else {
+    drupal_set_message(t('GovDelivery Data can not be processed without proper credentials. Please navigate to !link in order to fix this issue.', array('!link' => l('GovDelivery Module Settings', 'admin/config/govdelivery-settings'))), 'error');
+  }
+}
+
+/*
+ * Create side by side tables for displaying information currently stored within the database
+ * TODO: Convert this display into drupal tables for better styling control (theme('table', $header, $rows))
+ */
+function _govdelivery_splash_admin_get_topics() {
+  $result_db = db_query('SELECT * FROM {govdelivery_topics}');
+  $string = '<div class="form-item topics" style="width:400px;float:left;"><label style="padding-left:10px;margin-bottom:10px;">Topics</label>';
+  while ($topic = $result_db->fetchObject()) {
+    $topic_name = $topic->topic_name;
+    $string .= '<div><div class="description" style="margin-left:10px;">' . $topic_name . '</div></div>';
+  }
+  $string .= '</div>';
+  $result_db_cat = db_query('SELECT * FROM {govdelivery_categories}');
+  $string .= '<div class="form-item categories" style="width:400px;float:left;margin-left:20px;"><label style="padding-left:10px;margin-left:10px;margin-bottom:10px;">Categories</label>';
+  while ($topic = $result_db_cat->fetchObject()) {
+    $cat_name = $topic->name;
+    $string .= '<div><div class="description" style="margin-left:20px;">' . $cat_name . '</div></div>';
+  }
+  $string .= '</div>';
+  return $string;
+}
+
+/**
+ * Creates the admin page.
+ */
+function _govdelivery_splash_admin_settings($form, &$form_state) {
+  $form['govdelivery_user'] = array(
+    '#title'         => t('GovDelivery Username'),
+    '#type'          => 'textfield',
+    '#default_value' => variable_get('govdelivery_user', ''),
+    '#description'   => 'GovDelivery API Username',
+    '#required'      => TRUE,
+  );
+  $form['govdelivery_password'] = array(
+    '#title'         => t('GovDelivery Password'),
+    '#type'          => 'textfield',
+    '#default_value' => variable_get('govdelivery_password', ''),
+    '#description'   => 'GovDelivery API Password',
+    '#required'      => TRUE,
+  );
+  $form['govdelivery_domain'] = array(
+    '#title'         => t('GovDelivery Domain'),
+    '#type'          => 'textfield',
+    '#default_value' => variable_get('govdelivery_domain', ''),
+    '#description'   => 'GovDelivery API Domain',
+    '#required'      => TRUE,
+  );
+  $form['govdelivery_period'] = array(
+    '#title'         => t('Schedule Period'),
+    '#type'          => 'textfield',
+    '#default_value' => variable_get('govdelivery_period', 15),
+    '#description'   => 'How often is GovDelivery job run in minutes',
+    '#required'      => TRUE,
+  );
+  $form['govdelivery_execution_time_limit'] = array(
+    '#title'         => t('Execution Time Limit'),
+    '#type'          => 'textfield',
+    '#default_value' =>  variable_get('govdelivery_execution_time_limit', 150),
+    '#description'   => 'How much time to allot for task execution in seconds',
+    '#required'      => TRUE,
+  );
+  $form['govdelivery_base_topics'] = array(
+    '#title'         => t('GovDelivery Base Topics'),
+    '#type'          => 'textfield',
+    '#default_value' =>  variable_get('govdelivery_base_topics', 'USBUSUSA_30|USBUSUSA_31'),
+    '#description'   => 'What topics should the user subscribe to automatically upon initial signup',
+    '#required'      => TRUE,
+  );
+
+  $form = system_settings_form($form);
+  return $form;
+}
+
+/**
+ * Creates the form for the GovDelivery Email Capture.
+ */
+function govdelivery_splash_form($form, &$form_state) {
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'govdelivery_splash') . '/govdelivery_splash.css',
+  );
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'govdelivery_splash') . '/govdelivery_splash.js',
+  );
+
+  global $user;
+  $default_email = t('Please enter your email address.');
+  if ($user->uid > 0) {
+    $default_email = $user->mail;
+  }
+  
+  $user_email = '';
+  if (isset($form_state['values']['user_email'])) {
+    $user_email = $form_state['values']['user_email'];
+  }
+  elseif (isset($form_state['storage']['user_email'])) {
+    $user_email = $form_state['storage']['user_email'];
+  }
+
+  // Wrap the whole form in a div to be able to reload it easily.
+  $form['govdelivery'] = array(
+    '#type'          => 'container',
+    '#prefix'        => '<div id="splash-content">',
+    '#suffix'        => '</div>',
+  );
+
+  // Initialize our step counter.
+  if (!isset($form_state['step'])) {
+    $form_state['step'] = 1;
+  }
+  $show_email_error = FALSE;
+  if ($form_state['step'] == 2 && $user_email != '' && !(filter_var($user_email, FILTER_VALIDATE_EMAIL))) {
+    $form_state['step'] = 1; // Reset on Error.
+    $show_email_error = TRUE;
+  }
+  elseif ($form_state['step'] == 2 && $user_email == '') {
+    $form_state['step'] = 1;
+  }
+
+  switch ($form_state['step']) {
+    case 1:
+      $form['govdelivery']['step1'] = array(
+        '#type'          => 'container',
+        '#prefix'        => '<div class="govdeliver-stepone">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step1']['title'] = array(
+        '#markup'        => t('Sign up for email updates from Business USA'),
+        '#prefix'        => '<div id="govdelivery-title">',
+        '#suffix'        => '</div>',
+      );
+      // Add the markup for the arrow image at the top of the box.
+      $form['govdelivery']['step1']['arrow'] = array(
+        '#type'          => 'container',
+        '#attributes'    => array('id' => array('govdelivery-arrow')),
+      );
+      $form['govdelivery']['step1']['user_email'] = array(
+        '#type'          => 'textfield',
+        '#size'          => 15,
+        '#maxlength'     => 128,
+        '#machine_name'  => array(
+          'label' => t('Email'),
+        ),
+        '#default_value' => filter_xss($default_email),
+        '#attributes'    => array(
+          'id'      => array('govdelivery-email'),
+          'onfocus' => "if (this.value == '$default_email') {this.value = '';}",
+          'onblur'  => "if (this.value == '') {this.value = '$default_email';}",
+        ),
+        '#description'   => t('Receive helpful business tips and upcoming events in your area.'),
+      );
+      if ($show_email_error) {
+        $form['govdelivery']['step1']['invalid_email'] = array(
+          '#markup'        => t('Please Enter a Valid Email Address'),
+          '#prefix'        => '<div class="error">',
+          '#suffix'        => '</div>',
+        );
+      }
+      $form['govdelivery']['step1']['submit'] = array(
+        '#type'          => 'submit',
+        // this will NOT work because it overrides the default id for the submit button
+        //'#attributes'    => array('id' => array('govdelivery-submit')),
+        //'#validate'      => array('_govdelivery_splash_validate_email'),
+        '#ajax'          => array(
+          'wrapper'  => 'splash-content',
+          'callback' => 'govdelivery_splash_ajax_callback',
+          'effect'   => 'fade',
+          'progress' => array('type' => 'none'),
+        ),
+        '#value'         => t('Submit'),
+        '#submit'        => array('_govdelivery_splash_form_submit_handler'),
+        '#prefix'        => '<div id="govdelivery-submit">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step1']['cancel'] = array(
+        '#type'          => 'submit',
+        '#value'         => t('No Thanks'),
+        '#submit'        => FALSE,
+        '#attributes'    => array('id' => array('govdelivery-no-thanks')),
+      );
+      $form['govdelivery']['step1']['later'] = array(
+        '#type'          => 'submit',
+        '#value'         => t('Ask Me Later...'),
+        '#submit'        => FALSE,
+        '#attributes'    => array('id' => array('govdelivery-ask-later')),
+      );
+      $form['govdelivery']['step1']['privacy'] = array(
+        '#markup'        => l('Privacy Policy', 'privacy-and-security'),
+        '#prefix'        => '<div id="govdelivery-privacy">',
+        '#suffix'        => '</div>',
+      );
+    break;
+    case 2:
+      $form['govdelivery']['step2'] = array(
+        '#type'          => 'container',
+        '#prefix'        => '<div class="govdeliver-steptwo">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step2']['title'] = array(
+        '#markup'        => t('Thanks for signing up!'),
+        '#prefix'        => '<div id="govdelivery-title-step-two">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step2']['close'] = array(
+        '#type'          => 'container',
+        '#attributes'    => array('id' => array('govdelivery-close-window')),
+      );
+      $form['govdelivery']['step2']['would_like'] = array(
+        '#markup'        => t('You might also be interested in receiving information from your local Business USA office...'),
+        '#prefix'        => '<div id="govdelivery-label-step-two">',
+        '#suffix'        => '</div>',
+      );
+      // load available states
+      // $states = _govdelivery_splash_get_states();
+      // $form['govdelivery']['step2']['states'] = array(
+      //   '#type'          => 'checkboxes',
+      //   '#options'       => $states,
+      //   '#attributes'    => array('class' => array('checkboxes-states')),
+      // );
+      $form['govdelivery']['step2']['states'] = array();
+      // load available topics
+      $topics_categories = _govdelivery_splash_get_topics_and_categories();
+      $users_topics_str = _govdelivery_splash_get_users_topics(check_plain($user_email));
+      // no entry was found for this user insert a base line subscription for their email
+      if ($users_topics_str == '') {
+        // put in a base entry (the user has subscribed at this point to the base topic)
+        _govdelivery_splash_update_topics(check_plain($user_email));
+      }
+      
+      $users_topics = explode(',', $users_topics_str);
+      // remove the base line which the user never sees
+      unset($users_topics[array_search(variable_get('govdelivery_base_topics', 'USBUSUSA_30|USBUSUSA_31'), $users_topics)]);
+      // we need to readd the states associations back into the default values which are stripped upon saving
+      $lookup_result = db_query('SELECT * FROM {govdelivery_categories}');
+      $lookup_table = $lookup_result->fetchAllAssoc('code');
+      foreach($users_topics as $key => $topic) {
+        $category_topic = explode('|', $topic);
+        $category = $category_topic[1]; // grab the category code
+        // look up the category code in the db
+        watchdog('govdelivery_splash', json_encode($lookup_table));
+        if (isset($lookup_table[$category])) {
+          // add the state name in
+          $users_topics[$key] .= ':' . $lookup_table[$category]->name;
+        }
+      }
+      $form['govdelivery']['step2']['subtopics'] = array(
+        '#type'          => 'checkboxes',
+        '#options'       => $topics_categories,
+        '#attributes'    => array('class' => array('checkboxes-subtopics')),
+        '#default_value' => $users_topics,
+      );
+      $form['govdelivery']['step2']['submit'] = array(
+        '#type'          => 'submit',
+        '#value'         => t('Submit'),
+        '#ajax'          => array(
+          'wrapper'  => 'splash-content',
+          'callback' => 'govdelivery_splash_ajax_callback',
+          'effect'   => 'fade',
+          'progress' => array('type' => 'none'),
+        ),
+        '#prefix'        => '<div id="govdelivery-submit">',
+        '#suffix'        => '</div>',
+        '#submit'        => array('_govdelivery_splash_form_submit_handler'),
+      );
+      $form['govdelivery']['step2']['no_thanks_again'] = array(
+        '#type'          => 'submit',
+        '#value'         => t('No Thanks'),
+        '#submit'        => FALSE,
+        '#attributes'    => array('id' => array('govdelivery-no-thanks-again')),
+      );
+      $form['govdelivery']['step2']['select_all_topics'] = array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Select All Topics'),
+        '#default_value' => 1,
+        '#prefix'        => '<div id="govdelivery-select-all">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step2']['user_topic_values'] = array(
+        '#type'          => 'hidden',
+        '#value'         => '1',
+        '#attributes'    => array('id' => array('govdelivery-hidden-form-topics')),
+      );
+      // to be able to send the email along again to step 3 this solves an issue with blank emails
+      $form['govdelivery']['step2']['user_email'] = array(
+        '#type'          => 'hidden',
+        '#value'         => filter_xss($user_email),
+      );
+    break;
+    case 3: // step three of process (completion)
+      $form['govdelivery']['step3'] = array(
+        '#type'          => 'container',
+        '#prefix'        => '<div class="govdeliver-stepthree">',
+        '#suffix'        => '</div>',
+      );
+      $form['govdelivery']['step3']['close'] = array(
+        '#type'          => 'container',
+        '#attributes'    => array('id' => array('govdelivery-close-window')),
+      );
+      $form['govdelivery']['step3']['title'] = array(
+        '#markup'        => t('Thanks for subscribing!'),
+        '#prefix'        => '<div id="govdelivery-title-step-three">',
+        '#suffix'        => '</div>',
+      );
+    break;
+  }
+  return $form;
+}
+
+/*
+function _govdelivery_splash_validate_email($form, &$form_state) {
+  if (isset($form_state['values']['user_email']) && !(filter_var($form_state['values']['user_email'], FILTER_VALIDATE_EMAIL))) {
+    form_set_error('user_email', t('Please Enter a Valid Email Address'));
+  }
+}*/
+
+function govdelivery_splash_ajax_callback($form, &$form_state) {
+  return $form['govdelivery'];
+}
+
+function _govdelivery_splash_form_submit_handler($form, &$form_state) {
+  $form_state['step']++;
+  $form_state['rebuild'] = TRUE;
+  // user has submitted the form for step 3
+  if (isset($form_state['values']['submit']) &&
+    $form_state['values']['op'] == $form_state['values']['submit'] &&
+    $form_state['step'] == 3) {
+    if (isset($form_state['values']['subtopics']) && !empty($form_state['values']['subtopics'])) {
+      $subtopic_choices = array();
+      foreach($form_state['values']['subtopics'] as $topic) {
+        // if the subtopic has been selected
+        if ($topic) {
+          // remove the state portion of the value
+          $topic_split = explode(':', $topic);
+          $subtopic_choices[] = $topic_split[0];
+        }
+      }
+      // save this users data to the db
+      _govdelivery_splash_update_topics(check_plain($form_state['values']['user_email']), $subtopic_choices);
+    }
+  }
+}
+
+function _govdelivery_splash_get_govdelivery_topics() {
+  $result_db = db_query('SELECT * FROM {govdelivery_topics}');
+  $topic_options = array();
+  while ($topic = $result_db->fetchObject()) {
+    $topic_options[$topic->topic_id] = $topic->topic_name;
+  }
+  return $topic_options;
+}
+
+function _govdelivery_splash_topics_filter($var) {
+  if (strstr($var, 'USBUSUSA')) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+// Check if time is exceeding time limit value
+function _govdelivery_splash_check_time($start_time = 0) {
+  if ((time() - $start_time) > variable_get('govdelivery_execution_time_limit', 150)) {
+    watchdog('govdelivery_splash', 'GovDelivery Push Data Operation terminated normally after %time_limit seconds to prevent execution timeouts.', array('%time_limit' => variable_get('govdelivery_execution_time_limit', 150)), WATCHDOG_NOTICE);
+    return FALSE;
+  }
+  else {
+    return TRUE;
+  }
+}
+
+function _govdelivery_splash_update_subscriptions() {
+  if (_govdelivery_splash_check_credentials()) {
+    watchdog('govdelivery_splash', 'Pushing Subscriptions', array(), WATCHDOG_NOTICE);
+    //update subscriptions with flag values between -4 and 0, not inclusive
+    $subscribers = db_query('SELECT * FROM {govdelivery_subscribers} WHERE flag < 1 AND flag > -4 LIMIT 0, 75');
+    $start_time = time();
+    $batch_count = 0;
+    while ($sub = $subscribers->fetchObject()) {
+      if (_govdelivery_splash_check_time($start_time) === FALSE) {
+        watchdog('govdelivery_splash', 'Email Subscriptions Push was able to process %amount records', array('%amount' => $batch_count), WATCHDOG_NOTICE);
+        return;
+      }
+      $sub_email = $sub->email;
+      if (empty($sub_email)) {
+        return;
+      }
+      $sub_topics_cats = explode(',', $sub->topics);
+      $sub_topics_array = array();
+      foreach ($sub_topics_cats as $key => $value) {
+        $value_split = explode('|', $value);
+        $sub_topics_array[] = $value_split[0];
+      }
+      $sub_topics = implode(',', $sub_topics_array);
+      $headers = array('Content-Type' => 'application/XML'); // this might work better if there are issues: 'Content-Type' => 'text/xml; charset=UTF-8'
+      $url = 'https://' . variable_get('govdelivery_user', '') . ':' . variable_get('govdelivery_password', '') . '@' . variable_get('govdelivery_domain', '') . '/api/account/USBUSUSA/subscribers.xml';
+      $xml = "<subscriber><email>$sub_email</email><send-notifications type='boolean'>true</send-notifications><digest-for>0</digest-for></subscriber>";
+      $user_response = drupal_http_request($url, array('headers' => $headers, 'method' => 'POST', 'data' => $xml, 'max_redirects' => 1, 'timeout' => 10));
+
+      $topic_url = 'https://' . variable_get('govdelivery_user', '') . ':' . variable_get('govdelivery_password', '') . '@' . variable_get('govdelivery_domain', '') . '/api/account/USBUSUSA/subscribers/add_subscriptions';
+      $topic_xml = "<subscriber><email>" . $sub_email . "</email><send-notifications type='boolean'>true</send-notifications><topics type='array'>";
+      foreach (explode(',', $sub_topics) as $sub_topic) {
+        $topic_xml .= '<topic><code>' . $sub_topic . '</code></topic>';
+      }
+      $topic_xml .= "</topics></subscriber>";
+      $topic_response = drupal_http_request($topic_url, array('headers' => $headers, 'method' => 'POST', 'data' => $topic_xml, 'max_redirects' => 1, 'timeout' => 10));
+      //on success, set the flags to 1
+      if (($user_response->code == 200 || $user_response->code == 400) && $topic_response->code == 200) {
+        db_query('UPDATE {govdelivery_subscribers SET flag = 1 WHERE email = :email', array(':email' => $sub_email));
+      }
+      else {
+        watchdog('govdelivery_splash', 'SBSCR user response: %user_response, topic response: %topic_response, email address: %email', array('%user_response' => $user_response->code, '%topic_response' => $topic_response->code, '%email' => $sub_email), WATCHDOG_ERROR);
+        db_query('UPDATE {govdelivery_subscribers SET flag = flag-1 WHERE email = :email', array(':email' => $sub_email));
+      }
+      $batch_count++;
+    }
+    watchdog('govdelivery_splash', 'Email Subscriptions Push was able to process %amount records', array('%amount' => $batch_count), WATCHDOG_NOTICE);
+    return;
+  }
+  else {
+    watchdog('govdelivery_splash', 'GovDelivery Subscription Data can not be processed without proper credentials.', array(), WATCHDOG_ERROR);
+  }
+}
+
+/**
+ * This function will add the user as a subscriber and set their topic interests for use during cron sync with govdelivery system
+ **/
+function _govdelivery_splash_update_topics($user_email, $user_topics = array()) {
+  // run topic filter on all array elements
+  $user_topics = array_filter($user_topics, '_govdelivery_splash_topics_filter');
+  // add the auto subscribe topic
+  $user_topics[] = variable_get('govdelivery_base_topics', 'USBUSUSA_30|USBUSUSA_31');
+  $insert_topics = implode(',', array_unique($user_topics));
+  $topics_result = db_query('SELECT topics FROM {govdelivery_subscribers} WHERE email = :email', array(':email' => $user_email));
+  $topics_row = $topics_result->fetchObject();
+
+  // new or existing record
+  if (empty($topics_row->topics)) {
+    db_insert('govdelivery_subscribers')
+      ->fields(array(
+        'email'  => $user_email,
+        'topics' => $insert_topics,
+        'flag'   => 0,
+      ))
+      ->execute();
+  }
+  else {
+    db_query('UPDATE {govdelivery_subscribers} SET topics = :topics, flag = 0 WHERE email = :email', array(':topics' => $insert_topics, ':email' => $user_email));
+  }
+}
+
+//update the list of topics from govdevliery
+function _govdelivery_splash_update_topic_list() {
+  watchdog('govdelivery_splash', 'Updating topic list', array(), WATCHDOG_NOTICE);
+  $url = 'https://' . variable_get('govdelivery_user', '') . ':' . variable_get('govdelivery_password', '') . '@' . variable_get('govdelivery_domain', '') . '/api/account/USBUSUSA/topics';
+  $data = drupal_http_request($url);
+
+  if ($data->code != 200) {
+    watchdog('govdelivery_splash', 'Update topic list request returned: %status', array('%status' => $data->code), WATCHDOG_ERROR);
+    return;
+  }
+  else {
+    watchdog('govdelivery_splash', $data->data);
+    db_query('DELETE FROM {govdelivery_topics} WHERE 1');
+    @$doc = simplexml_load_string($data->data);
+    if ($doc === FALSE) {
+      watchdog('govdelivery_splash', 'Update topic list returned no XML', array(), WATCHDOG_ERROR);
+      return;
+    }
+    foreach ($doc->topic as $doc_topic) {
+      if ($doc_topic->visibility == "Listed") {
+        db_insert('govdelivery_topics')
+          ->fields(array(
+            'topic_id' => $doc_topic->code,
+            'topic_name' => $doc_topic->name,
+          ))
+          ->execute();
+        // $doc_topic->category
+      }
+    }
+  }
+  return;
+}
+
+function _govdelivery_splash_update_category_list() {
+  watchdog('govdelivery_splash', 'Updating category list', array(), WATCHDOG_NOTICE);
+  $url = 'https://' . variable_get('govdelivery_user', '') . ':' . variable_get('govdelivery_password', '') . '@' . variable_get('govdelivery_domain', '') . '/api/account/USBUSUSA/categories';
+  $data = drupal_http_request($url);
+  if ($data->code != 200) {
+    watchdog('govdelivery_splash', 'Update category list request returned: %status', array('%status' => $data->code), WATCHDOG_ERROR);
+    return;
+  }
+  else {
+    db_query('DELETE FROM {govdelivery_categories} WHERE 1');
+    watchdog('govdelivery_splash', $data->data);
+    @$doc = simplexml_load_string($data->data);
+    if ($doc === FALSE) {
+      watchdog('govdelivery_splash', 'Update category list returned no XML', array(), WATCHDOG_ERROR);
+      return;
+    }
+    foreach ($doc->category as $doc_category) {
+      db_insert('govdelivery_categories')
+        ->fields(array(
+          'code' => $doc_category->code,
+          'name' => $doc_category->name,
+        ))
+        ->execute();
+    }
+  }
+  return;
+}
+
+function _govdelivery_splash_update_topics_categories() {
+  watchdog('govdelivery_splash', 'Updating topics categories list', array(), WATCHDOG_NOTICE);
+  $topics = _govdelivery_splash_get_govdelivery_topics();
+  $start_time = time();
+  foreach ($topics as $topic_id => $topic_name) {
+    if (_govdelivery_splash_check_time($start_time) === FALSE) {
+      return;
+    }
+    $url = 'https://' . variable_get('govdelivery_user', '') . ':' . variable_get('govdelivery_password', '') . '@' . variable_get('govdelivery_domain', '') . '/api/account/USBUSUSA/topics/' . $topic_id . '/categories.xml';
+    $data = drupal_http_request($url);
+    if ($data->code != 200) {
+      watchdog('govdelivery_splash', 'Update topics categories request returned: %status', array('%status' => $data->code), WATCHDOG_ERROR);
+      return;
+    }
+    else {
+      @$doc = simplexml_load_string($data->data);
+      if ($doc === FALSE) {
+        watchdog('govdelivery_splash', 'Update topics categories returned no XML', array(), WATCHDOG_ERROR);
+        return;
+      }
+      foreach ($doc->category as $doc_category) {
+        db_query('DELETE FROM {govdelivery_topics_categories} WHERE topic_id = :topic_id AND category_id = :category_id', array(':topic_id' => $topic_id, ':category_id' => $doc_category->{'to-param'}));
+        db_insert('govdelivery_topics_categories')
+          ->fields(array(
+            'topic_id' => $topic_id,
+            'category_id' => $doc_category->{'to-param'},
+          ))
+          ->execute();
+      }
+    }
+  }
+  return;
+}
+
+// function _govdelivery_splash_get_states() {
+//   $state_list = array(
+//     'AL' => "Alabama",
+//     'AK' => "Alaska",
+//     'AZ' => "Arizona",
+//     'AR' => "Arkansas",
+//     'CA' => "California",
+//     'CO' => "Colorado",
+//     'CT' => "Connecticut",
+//     'DE' => "Delaware",
+//     'DC' => "District of Columbia",
+//     'FL' => "Florida",
+//     'GA' => "Georgia",
+//     'HI' => "Hawaii",
+//     'ID' => "Idaho",
+//     'IL' => "Illinois",
+//     'IN' => "Indiana",
+//     'IA' => "Iowa",
+//     'KS' => "Kansas",
+//     'KY' => "Kentucky",
+//     'LA' => "Louisiana",
+//     'ME' => "Maine",
+//     'MD' => "Maryland",
+//     'MA' => "Massachusetts",
+//     'MI' => "Michigan",
+//     'MN' => "Minnesota",
+//     'MS' => "Mississippi",
+//     'MO' => "Missouri",
+//     'MT' => "Montana",
+//     'NE' => "Nebraska",
+//     'NV' => "Nevada",
+//     'NH' => "New Hampshire",
+//     'NJ' => "New Jersey",
+//     'NM' => "New Mexico",
+//     'NY' => "New York",
+//     'NC' => "North Carolina",
+//     'ND' => "North Dakota",
+//     'OH' => "Ohio",
+//     'OK' => "Oklahoma",
+//     'OR' => "Oregon",
+//     'PA' => "Pennsylvania",
+//     'PR' => "Puerto Rico",
+//     'RI' => "Rhode Island",
+//     'SC' => "South Carolina",
+//     'SD' => "South Dakota",
+//     'TN' => "Tennessee",
+//     'TX' => "Texas",
+//     'UT' => "Utah",
+//     'VT' => "Vermont",
+//     'VA' => "Virginia",
+//     'WA' => "Washington",
+//     'WV' => "West Virginia",
+//     'WI' => "Wisconsin",
+//     'WY' => "Wyoming",
+//   // Puerto Rico,
+//   );
+
+//   return $state_list;
+// }
+
+function _govdelivery_splash_check_credentials() {
+  $user = variable_get('govdelivery_user', '');
+  $pass = variable_get('govdelivery_password', '');
+  $domain = variable_get('govdelivery_domain', '');
+  if (!empty($user) && !empty($pass) && !empty($domain)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+function _govdelivery_splash_get_topics_and_categories() {
+  //$state_list = _govdelivery_splash_get_states();
+  $data = array();
+
+  $query = "SELECT t.topic_id, t.topic_name FROM {govdelivery_topics} t ORDER BY t.topic_name ASC";
+  $result = db_query($query);
+  while ($row = $result->fetchObject()) {
+    // if this subtopic is associated to a valid state that we track
+    //if (in_array($row->state, $state_list)) {
+      // get the subtopics ready for form display by making a key value pair
+      // the key is a bit strange to be able to support multiple form aspects found within js code
+      $data[$row->topic_id] /*. '|' . $row->category_id . ':' . $row->state]*/ = $row->topic_name;
+    //}
+  }
+  return $data;
+}
+
+function _govdelivery_splash_get_users_topics($email) {
+  $query = "SELECT topics FROM {govdelivery_subscribers} WHERE email = :email";
+  $result = db_query($query, array(':email' => $email));
+  $row = $result->fetchObject();
+  $topics = $row->topics;
+  return $topics;
+}

@@ -1,0 +1,4648 @@
+/****************************************
+***                                   ***
+***   ALL SCREEN RESOLUTIONS STYLES   ***
+***                                   ***
+*****************************************/
+
+/*******************************************************
+***   PART 4 - BROKEN IN PIECES FOR IE LIMITATION   ****
+*******************************************************/
+
+
+/**************************
+***   GENERAL STYLES   ****
+**************************/
+.businessusalogo {
+  width: 100%;
+  height: 85px;
+  display: block;
+  background: url('/sites/all/themes/bizusa/images/logo.png') no-repeat scroll 10px 20px #EBEBEB;
+  border-bottom: 1px solid #CCC;
+}
+/*******************************************
+***   START A BUSINESS RESULTS STYLES   ****
+********************************************/
+body.page-start-a-business{
+  .uses-ajax{
+    width: 100%;
+    .questions{
+      display: none;
+    }
+    .ajax-inuse{
+      float: left;
+      width: 100%;
+      margin-bottom: 80px;
+      background-color: #ffffff;
+      &.ajax-loading{
+        background-color: #F8F8F8;
+        border: 1px solid #CCCCCC;
+        margin-left: 2%;
+        width: 90%;
+        img{
+          margin: 1%;
+        }
+        div{
+          float: left;
+          font:normal 14px/16px "latoitalic",sans-serif;
+          padding-left: 10px;
+          margin-top: 1%;
+        }
+      }
+      .share-export-email-container{
+        padding: 20px 10px;
+        float: right;
+        width: 20%;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+        .exportexcelWidget{
+          float: left;
+          width: 30px;
+          height: 23px;
+          padding: 16px 10px;
+          position: relative;
+          z-index: 9;
+          .exportexcelWidget-toggler{
+            background: url("/sites/all/themes/bizusa/images/icons/excel.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+            width: 26px;
+            height: 26px;
+            margin-top: 0;
+            float: left;
+          }
+          #exportexcelWidget-popup{
+            position: absolute;
+            top: 49px;
+            right: 0px;
+            display: block;
+            height: 66px;
+            width: 225px;
+            padding-top: 15px;
+            background: transparent url(/sites/all/themes/bizusa/images/shareTipTop.png) no-repeat 188px 6px;
+            .exportexcelWidget-popup-body{
+              background-color: #ffffff;
+              width: 220px;
+              float: left;
+              box-shadow: 0px 0px 10px 1px #F1F1F1;
+              a.exportexcel-group{
+                display: block;
+                height: 27px;
+                float: left;
+                padding: 20px 3% 10px 3%;
+                width: 94%;
+                text-indent: 50px;
+                &.exportexcel-download{
+                  background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+                  border-bottom: 1px solid #E9E9E9;
+                }
+                &.exportexcel-email{
+                  background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+                }
+              }
+            }
+          }
+        }
+        #shareWidget{
+          >a{
+            color: #204669 !important;
+            height: 55px;
+            line-height: 55px;
+            span{
+              background-color: #97E8C1 !important;
+            }
+          }
+          .sharewidget-popup{
+            top: 49px !important;
+          }
+        }
+
+      }
+      .startbiz-result-global-message{
+        font-size: 15px;
+        background-color: #ffffff;
+        padding: 10px;
+        margin-bottom: 15px;
+        float: left;
+        width: 70%;
+        margin: 0 2%;
+      }
+      .wizard-collapsible-section-container{
+        float: left;
+        width: 94%;
+        margin: 5px 3%;
+        background-color: #E9E9E9;
+        border: 1px solid #E9E9E9;
+
+        &.collapsed{
+          .wizard-collapse-arrow{
+            display: none;
+          }
+        }
+        &.uncollapsed{
+          margin-bottom: 50px;
+          .wizard-collapsible-section-header .wizard-collapsible-section-title .wizard-collapsible-section-title-allllayouts{
+            color: #585858;
+          }
+          .wizard-expand-arrow{
+            display: none;
+          }
+        }
+        .wizard-collapsible-section-header{
+          padding: 15px 0;
+          float: left;
+          width: 100%;
+          cursor: pointer;
+          input.wizard-collapsible-section-number-marker{
+            background: transparent url('../images/icons/circle-teal.png') no-repeat center;
+            height: 40px;
+            width: 40px;
+            margin-left: 4%;
+            color: #204669;
+          }
+          .wizard-collapsible-section-title{
+            float: left;
+            width: 60%;
+            .wizard-collapsible-section-title-allllayouts{
+              color: #6885A2;
+              cursor: pointer;
+              font-family: "latoblack_italic",sans-serif;
+              font-size: 18px;
+              font-weight: normal;
+              line-height: 20px;
+              margin: 10px;
+            }
+          }
+          img{
+            cursor: pointer;
+            float: right;
+            margin-right: 4%;
+            margin-top: 15px;
+          }
+        }
+
+        .wizard-collapsible-section-contents{
+          background-color: #ffffff;
+          clear: both;
+          margin: 1% 0 0;
+          padding: 4% 7% 4% 8%;
+          width: 85%;
+          float: left;
+          position: relative;
+
+          .business-licenses-and-permits-container{
+            .business-licenses-and-permits-welcometext,	.build-business-plan-textfirst{
+              font:normal 16px/22px "latoregular",sans-serif;
+              margin-right: 35px;
+              padding-bottom: 20px;
+              border-bottom: 1px solid #D0D0D0;
+            }
+            .sbwiz-lap-branchtitle{
+              font:normal 19px/22px "latoblack",sans-serif;
+              margin-top: 10px;
+              margin-bottom: 0;
+              text-transform: uppercase;
+            }
+            .sbwiz-lap-rootsection{
+              padding-bottom: 20px;
+              margin-right: 35px;
+              border-bottom: 1px solid #D0D0D0;
+              .sbwiz-lap-title{
+                font:normal 15px/20px "latoblack",sans-serif;
+
+              }
+              .sbwiz-lap-container{
+                margin-bottom: 20px;
+                .sbwiz-lap-desc{
+                  font:normal 15px/20px "latoregular",sans-serif;
+                  color: #797979;
+                }
+                .sbwiz-lap-links{
+                  ul{
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    li{
+                      margin: 0;
+                    }
+                  }
+                }
+              }
+            }
+            .sbwiz-lap-rootsection-last{
+              margin-right: 35px;
+              padding-bottom: 25px;
+              .sbwiz-lap-links{
+                ul{
+                  list-style: none;
+
+                }
+              }
+            }
+
+          }
+
+          .build-business-plan-container{
+            .result-container{
+              margin-bottom: 25px;
+            }
+            .build-business-plan-content {
+              width: 64%;
+              float: left;
+              margin-right: 30px;
+              .build-business-plan-learnmoretext{
+                width: 100%;
+                float: left;
+                margin-right: 30px;
+              }
+            }
+            #buildyourbusinessplanarticles{
+              width: 32%;
+              float: left;
+              .start-a-business-article-result {
+                .wizard-result-title{
+                  float: left;
+                  background-color: #eff2f5;
+                  margin-bottom: 5px;
+                  padding: 8% 5%;
+                  width: 90%;
+                  text-transform: uppercase;
+                  font-size: 13px;
+                }
+
+              }
+              .getStartedButton{
+                padding: 8% 5%;
+                width: 90%;
+                float: left;
+                margin-top: 20px;
+                color: #ffffff;
+                text-transform: uppercase;
+                background-color: #6885a2;
+                font-size: 16px;
+                text-align: center;
+              }
+            }
+          }
+
+          .sbdcscore-offices-container-container{
+            margin-bottom: 45px;
+            float: left;
+            width: 100%;
+            .sbdcscore-offices-container{
+              width: 48%;
+              float: left;
+              border: 1px solid #EFF2F5;
+              margin-right: 10px;
+              .sbdc-view-defacto-title{
+                text-transform: uppercase;
+                display: block;
+                margin-bottom: 10px;
+                background-color: #EFF2F5;
+                padding: 23px;
+                font-family: "latoblack_italic", sans-serif;
+                font-size: 15px;
+                min-height: 40px;
+                .officetype-tooltip-desc{
+                   text-transform: none;
+                }
+              }
+              .contextual-links-region{
+                padding: 10px 20px;
+                height: 370px;
+                position: relative;
+                margin-bottom: 15px;
+                .view-content{
+                  .views-row{
+                    margin-bottom: 15px;
+                  }
+                }
+                .view-footer {
+                  text-align: center;
+                  position: absolute;
+                  bottom: 22px;
+                  left: 34%;
+                  margin-top: 29px;
+                  .sabw-sbdc-viewall {
+                    padding: 15px 25px;
+                    text-transform: uppercase;
+                    background-color: #6885a2;
+                    color: #ffffff;
+                  }
+                }
+              }
+            }
+
+          }
+
+          #businesslicensesandpermitsarticles, #conductmarketresearcharticles, #articlesrecommendedforyoutopratedarticles, #articlesrecommendedforyoubasedonanswersarticles{
+            border: 1px solid #EFF2F5;
+            .sbarticles-header{
+              background-color: #EFF2F5;
+              padding: 25px;
+              font-family: "latoblack_italic", sans-serif;
+              font-size: 19px;
+              text-transform: capitalize;
+            }
+            .sbarticles-content{
+              padding: 25px 25px 55px 25px;
+              .start-a-business-article-result{
+                .wizard-result-title{
+                  font:normal 15px/20px "latoblack",sans-serif;
+                  text-transform: uppercase;
+                }
+                .wizard-result-snippet{
+                  margin-bottom: 20px;
+                }
+              }
+
+            }
+            &.hastwosections{
+              width: 48%;
+              float: left;
+              .sbarticles-content{
+                position: relative;
+                min-height: 300px;
+                .btnviewallarticles{
+                  position: absolute;
+                  right: 25px;
+                  bottom: 20px;
+                }
+              }
+
+            }
+          }
+          .articles-recommended-container{
+            margin-bottom: 20px;
+            margin-bottom: 30px;
+            float: left;
+            #articlesrecommendedforyoutopratedarticles{
+              &.hastwosections{
+                margin-right: 25px;
+              }
+            }
+          }
+          .result-title,
+          .sbdc-view-defacto-title{
+            font:normal 19px/20px "latoblack",sans-serif;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+          }
+
+
+          .result-snippet,
+          .build-business-plan-learnmoretext,
+          .sbwiz-lap-firstarea{
+
+          }
+
+
+          .sbdcscore-helptext-score,
+          .sbdcscore-helptext-sbdc,
+          .view-empty{
+            font:normal 13px/20px "latoitalic",sans-serif;
+            margin-bottom: 2%;
+          }
+
+          .sabw-sbdc-viewall{
+            float: right;
+            color: #6885a2;
+            font-family: 'latoblack', sans-serif;
+            background-color: #EFF2F5;
+            margin: 10px;
+            padding: 10px 15px 10px 15px;
+          }
+
+          a:hover{
+            text-decoration: underline;
+          }
+
+
+          a.topLink{
+            font-family: "latoblack_italic",sans-serif;
+            font-weight: normal;
+            display: block;
+            margin-top: 2%;
+          }
+
+          .btnviewallarticles{
+            background: url("/sites/all/themes/bizusa/images/icons/viewall.png") no-repeat scroll 90% 49% rgba(0, 0, 0, 0);
+            float: right;
+            color: #6885a2;
+            font-family: 'latoblack', sans-serif;
+            background-color: #EFF2F5;
+            padding: 10px 30px 10px 15px;
+          }
+          .btn-back-to-top{
+            background: url("/sites/all/themes/bizusa/images/icons/back-to-top.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+            position: absolute;
+            bottom: -4px;
+            left: 45%;
+            text-indent: -99999px;
+            padding: 15px 15px 0 15px;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+/*******************************************
+***   BROWSE REGULATIONS   ****
+********************************************/
+
+body.page-browseregulations{
+  .wizard-result-snippet{
+    span:nth-child(1) {
+      display: block;
+      width: 100%;
+      float: right;
+      text-align: right;
+      font-family: latoblack;
+    }
+  }
+  .wizard-result-section{
+    h3{
+      float: left;
+      width: 556px;
+    }
+  }
+
+}
+
+/**********************************
+****  INVEST IN USA              **
+**********************************/
+body.page-select-usa{
+  .question-controle-widget-type-textbox {
+    width: 100%;
+    .question-controle{
+      width: 60%;
+    }
+  }
+  .question-controle-widget-type-textarea{
+    width: 100%;
+    margin-bottom: 10px;
+    .question-controle{
+      width: 65%;
+      height: 100px;
+    }
+  }
+  .widget-type-textarea .question-label {
+    font: 16px 'latoregular', sans-serif;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  #wiztag-contact_send_labelbtn {
+    width: 150px;
+    margin-bottom: 15px;
+  }
+  .wizard-email-colorbox-msg-area{
+    width: auto;
+    height: 140px;
+    padding: 10px 24px;
+  }
+  .dk_toggle{
+    min-width: 150px;
+  }
+  .wizard-results-wrapper{
+    .wizard-result-section-icon-container{
+      width: 60px;
+      text-align: center;
+      margin: 0 20px 0 0;
+      float: left;
+    }
+    .yawizard-pagedresults-mastercontainer{
+      margin-left:80px;
+    }
+  }
+  #dk_container_wiztag-whereisthislocation, #dk_container_wiztag-pleaseenterthelocation {
+    margin-right: 10px;
+  }
+  #wiztag-hidemeshowonlythetextbox {
+    width: 150px;
+    margin-top: 2px;
+  }
+
+  #colorbox{
+    #cboxWrapper{
+      #cboxContent{
+        // background: url("/sites/all/themes/bizusa/images/logo.png") no-repeat 10px 20px #ebebeb;
+        min-height: initial !important;
+        min-height: auto !important;
+        #cboxLoadedContent{
+          background-color: #ffffff;
+          border-top: 1px solid #ccc;
+          // margin-top: 80px;
+          min-height: initial !important;
+          min-height: auto !important;
+          #email-input{
+              padding: 4px;
+            }
+          .selectusa-contactus-colorbox{
+            padding: 10px;
+            font-family: "latoitalic",sans-serif;
+            font-size: 14px;
+            a{
+              font-weight: normal;
+              font-family: "latoblack_italic",sans-serif;
+            }
+          }
+        }
+        #cboxClose{
+          display: none !important;
+        }
+      }
+    }
+  }
+
+}
+
+/**********************************
+****  TAKE A TOUR                **
+**********************************/
+body.page-tour{
+  .busatour-slideshowarea-slide-container img {
+    width: 79%;
+  }
+}
+
+/****************************************
+****  FIND GREEN OPPORTUNITIES         **
+*****************************************/
+body.page-find-green-opportunities{
+  .question-controle-widget-type-textbox {
+    width: 100%;
+    .question-controle{
+      width: 60%;
+    }
+  }
+
+}
+
+/**************************
+***   JOB CENTER PAGE   ***
+***************************/
+
+body.page-jobcenter-wizard{
+  #block-system-main{
+    .question-controle-widget-type-textbox {
+      width: 100%;
+      #wiztag-user_zip{
+        width: 95px;
+      }
+      .question-controle{
+        width: 60%;
+        &.wiztag-occuinfo_occupation{
+          width: 70%;
+        }
+      }
+    }
+    .wizard-sidebars-container{
+      margin-bottom: 15px;
+      margin-top: 20px;
+      .jobcenteroffice-results-viewmore-inner{
+        a{
+          font-family: "latoblack",sans-serif;
+          color: #fff;
+          font-size: 12px;
+          background-color: #6885a2;
+          padding: 10px;
+          text-transform: uppercase;
+          display: block;
+          float: left;
+          &:hover{
+            text-decoration: none;
+          }
+        }
+      }
+      .jobcenter-mostpopulararticles{
+        float: left;
+      }
+    }
+    .wizard-results-master-container{
+      padding:20px;
+    }
+  }
+
+  #colorbox{
+    width: 415px !important;
+  //  height: 210px !important;
+    overflow: visible !important;
+
+    #cboxWrapper{
+      width: 415px !important;
+     // height: 210px !important;
+      #cboxContent{
+        background: url("/sites/all/themes/bizusa/images/logo.png") no-repeat 10px 20px #ebebeb;
+        width: 415px !important;
+        #cboxLoadedContent{
+          background-color: #ffffff;
+          border-top: 1px solid #ccc;
+          margin-top: 80px;
+          width: 400px !important;
+          .jobcenters-colobox-content{
+            padding: 15px;
+          }
+          .occupationlookup-container-inner {
+            width: 400px;
+            margin: 2%;
+            float: left;
+            .occupationlookup-instructions{
+              margin-bottom: 20px;
+
+            }
+            .occupationlookup-input-container {
+              margin-bottom: 15px;
+              .occupationlookup-form-text-input{
+                width: 200px;
+                margin-right: 10px;
+                border: 1px solid gray;
+              }
+            }
+            .occupationlookup-results-container{
+              .occupationlookup-result {
+                margin-bottom: 10px;
+                .occupationlookup-result-title{
+                  font-family: latoblack;
+                  color: #6885A2;
+                }
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+}
+
+/*******************************************
+***   HEALTHCARE STYLES   ****
+********************************************/
+
+body.page-healthcare{
+  .slide{
+    .questions{
+      position:relative;
+      .wiztag-splashimage{
+        position: absolute;
+        left: 80px;
+      }
+      .wiztag-splash-title-label{
+        margin-left: 52px;
+      }
+    }
+  }
+  .wizard-outside-sidebars-container{
+    float: right;
+    width:100%;
+    margin-top:40px;
+    .wizard-outside-sidebar{
+      margin-bottom:40px;
+      .wizard-sidebarresults{
+        .wizard-health-sidebar-top-section{
+          margin-bottom: 5px;
+          .wizard-health-sidebar-markericon-container{
+            float: left;
+            margin-right: 10px;
+            img{
+              width:20px;
+            }
+          }
+          .wizard-health-sidebar-title{
+            font: 16px 'latoblack', sans-serif;
+          }
+        }
+        .wizard-sidebarresults-results-container{
+          clear: both;
+          ul{
+            list-style: none;
+            padding-left: 0;
+            text-align: left;
+            li{
+              margin-bottom: 10px;
+            }
+          }
+          .viewmore-healthcare{
+            background: #15567B;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            width: 40%;
+            a{
+              color:#fff;
+            }
+          }
+          .wizard-sidebarresults-healthcare-viewmoreblogs{
+            background: #15567B;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            a{
+              color:#fff;
+            }
+          }
+          .hidemoreresults{display: none;}
+          .showmoreresults{display: block;}
+        }
+        .wizard-health-sidebarresults-result-titlelinked{
+          text-align: left;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  #note-healthcare {
+    margin: 10px 15px 0 15px;
+    background-color: #FCF6DE;
+    padding: 20px;
+    position: relative;
+    .btn-close{
+      background:url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+      width: 21px;
+      height: 24px;
+      position: absolute;
+      right: -5px;
+      top: -5px;
+    }
+  }
+  .wizard-result-section-icon-container{
+    width: 60px;
+    text-align: center;
+    margin: 0 20px 0 0;
+    float: left;
+  }
+  .share-export-email-container{
+    width: 30% !important;
+  }
+  .yawizard-pagedresults-mastercontainer{
+    margin-left:80px;
+  }
+}
+
+body.page-hc-content{
+  .region-content{
+    background-color: #fff;
+    padding: 3%;
+    width: 94%;
+  }
+}
+/***************************************************************
+***   FULL TIME EMPLOYEE CALCULATOR PAGE STYLES   **** **** ****
+******************************************** **** **** **** ****/
+body.page-full-time-employee-calculator{
+  .empcalculator-mastercontainer{
+    background-color: #fff;
+    padding: 35px;
+
+    .empcalculator-specialcountingrules-btncontainer img {
+      height: 13px;
+      width: 13px;
+      margin-top: 2px;
+      margin-left: 5px;
+      cursor: pointer;
+      float: none;
+    }
+    .empcalculator-title p {
+      margin: 0;
+    }
+    .empcalculator-input-ui {
+      overflow: hidden;
+      margin-bottom: 20px;
+      background-color: #EBEBEB;
+      padding: 30px;
+
+      .empcalculator-specialcountingrules-btn {
+        background: none !important;
+        border: 0px !important;
+        text-align: left;
+        padding: 0px !important;
+        margin: 0px !important;
+        cursor: pointer;
+        color: #1a6894;
+      }
+    }
+  }
+
+}
+
+/***************************************************************
+***   ACCESS FINANCING PAGE STYLES   **** **** ****
+******************************************** **** **** **** ****/
+body.page-access-financing{
+  #block-system-main{
+    .ajax-container{
+      float: left;
+      background-color: #eff2f5;
+      width: 100%;
+      .note-access-financing-container{
+        background-color: #ffffff;
+        width: 100%;
+        float: left;
+        #note-access-financing {
+          margin: 10px 15px 0 15px;
+          background-color: #FCF6DE;
+          padding: 20px;
+          position: relative;
+          .btn-close{
+            background:url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+            width: 21px;
+            height: 24px;
+            position: absolute;
+            left: 95%;
+            bottom: 35%;
+          }
+        }
+      }
+      .wizard-results-wrapper.has-sidebar-true{
+        float: left;
+        margin-top: 10px;
+        width: 100%;
+        .wizard-results-header-container{
+          width: 100%;
+          margin: 0;
+          .wizard-results-header-resultcounts-container{
+            float: left;
+            width: 94%;
+            background-color: #ffffff;
+            margin-bottom: 0;
+            padding: 15px 3%;
+            .wizard-results-header-resultcount{
+            }
+          }
+
+        }
+
+        .wizard-result-sections-container{
+          background-color: #ffffff;
+          margin-left: 0;
+          width: 72%;
+          .wizard-result-section{
+            padding: 25px 25px 25px 10px;
+            .wizard-result-section-icon-container{
+              width: 60px;
+              text-align: center;
+              margin: 0 10px;
+              float: left;
+            }
+            .wizard-result-section-title{
+              text-transform: capitalize;
+              color: #5C5C5C;
+              font-size: 30px;
+              margin-bottom: 5px;
+            }
+            .yawizard-pagedresults-mastercontainer{
+              .wizard-result-section-result{
+                margin-left: 13%;
+                margin-bottom: 30px;
+                float: left;
+                .wizard-result-title{
+                  text-transform: uppercase;
+                }
+                .wizard-result-snippet{
+                  margin-bottom: 0;
+                }
+                .wizard-result-tags-container {
+                  margin-top: 10px;
+                  float: left;
+                  .wizard-result-tag{
+                    text-transform: uppercase;
+                    font-family: latoblack;
+                    font-size: 12px;
+                    background-color: #eff2f5;
+                    float: left;
+                    margin: 3px;
+                    padding: 5px 10px;
+                  }
+                }
+              }
+              .yawizard-pagedresults-pagers {
+                margin-left: 13%;
+              }
+            }
+          }
+        }
+        .wizard-sidebars-container{
+          width: 25%;
+          padding: 0;
+          background-color: #eff2f5;
+          .share-export-email-container{
+            float: right;
+            width: 100%;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            .exportexcelWidget{
+              float: left;
+              width: 30px;
+              height: 23px;
+              padding: 16px 10px;
+              position: relative;
+              z-index: 9;
+              .exportexcelWidget-toggler{
+                background: url("/sites/all/themes/bizusa/images/icons/excel.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+                width: 26px;
+                height: 26px;
+                margin-top: 0;
+                float: left;
+              }
+              #exportexcelWidget-popup{
+                position: absolute;
+                top: 49px;
+                right: 0px;
+                display: block;
+                height: 66px;
+                width: 225px;
+                padding-top: 15px;
+                background: transparent url(/sites/all/themes/bizusa/images/shareTipTop.png) no-repeat 188px 6px;
+                .exportexcelWidget-popup-body{
+                  background-color: #ffffff;
+                  width: 220px;
+                  float: left;
+                  box-shadow: 0px 0px 10px 1px #F1F1F1;
+                  a.exportexcel-group{
+                    display: block;
+                    height: 27px;
+                    float: left;
+                    padding: 20px 3% 10px 3%;
+                    width: 94%;
+                    text-indent: 50px;
+                    &.exportexcel-download{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+                      border-bottom: 1px solid #E9E9E9;
+                    }
+                    &.exportexcel-email{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+                    }
+                  }
+                }
+              }
+            }
+            #shareWidget{
+              >a{
+                background: #ffffff url(/sites/all/themes/bizusa/images/icons/shareArrow-teal.png) no-repeat 72px center;
+                color: #204669;
+                height: 55px;
+                line-height: 55px;
+                span{
+                  background-color: #97E8C1;
+                }
+              }
+              .sharewidget-popup{
+                top: 49px;
+              }
+            }
+          }
+          .wizard-sidebar{
+            margin-bottom: 10px;
+            width: 100%;
+            float: left;
+            .wizard-health-sidebar-top-section{
+              width: 100%;
+              background-color: #E2E2E2;
+              .wizard-health-sidebar-title{
+                font: 13px 'latoblack', sans-serif;
+                width: 84%;
+                padding: 20px 8%;
+                font-size: 13px;
+                text-transform: uppercase;
+                color: #5C5C5C;
+                margin-left: 0;
+                .sidebarimg {
+                  background: url("/sites/all/themes/bizusa/images/icons/informationicon.png") no-repeat scroll;
+                  width: 15px;
+                  height: 13px;
+                  display: inline-block;
+                  margin-left: 10px;
+                }
+              }
+              #micro-lenders-other-lenders{
+                padding-left: 19px;
+              }
+            }
+            .wizard-sidebarresults-results-container{
+              padding: 15px 3%;
+              background-color: #ffffff;
+              width: 94%;
+              word-break: break-word;
+
+              .view-content{
+                .views-row-odd, .views-row-even{
+                  text-align: left;
+                  float: left;
+                  .views-field-field-vend-phone-number, .views-field-field-vend-fax-number{
+                    .field-content{
+                      display: inline;
+                    }
+                  }
+                }
+              }
+            }
+
+            .wizard-health-sidebar-desc{
+              padding: 20px 3%;
+              background-color: #ffffff;
+              float: left;
+              width: 94%;
+              .yawizard-pagedresults-mastercontainer{
+                .yawizard-pagedresults-results-container{
+                  margin-left: 15px;
+                  .yawizard-pagedresults-result{
+                    margin-bottom: 25px;
+                    .sidebar-article-result{
+                      .wizard-result-title{
+                        text-transform: uppercase;
+                        font-size: 13px;
+                      }
+                      .wizard-result-snippet{
+                        .readmore{
+                          text-transform: capitalize;
+                          color: #f75b49 !important;
+                        }
+                      }
+                    }
+                  }
+                }
+                .yawizard-pagedresults-pagers{
+                  float: left;
+                  width: 100%;
+                  li{
+                    float: left;
+                    margin-left: 21px;
+                    text-transform: lowercase;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .microlenders-tooltip-area {
+      width: 14px;
+      height: 14px;
+      float: right;
+      width: 14px;
+      text-decoration: none !important;
+      .microlenders-tooltip-desc {
+        font-size: 12px;
+        line-height: 15px;
+        display: none;
+        padding: 8px;
+        position: relative;
+        width: 155px;
+        z-index: 1001;
+        overflow: visible;
+        background: #e2e2e2;
+        font-family: Helvetica, sans-serif;
+        border: 1px solid #6885A2;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        margin: 5px 10px 0 0;
+        right: 180px;
+        top: -10px;
+        text-transform: initial;
+      }
+    }
+  }
+}
+
+
+/***************************************************************
+***   RURAL EXPORTING PAGE STYLES   **** **** ****
+******************************************** **** **** **** ****/
+
+body.page-rural-exporting{
+  #block-system-main{
+    .ajax-container{
+      float: left;
+      background-color: #eff2f5;
+      width: 100%;
+
+      .wizard-results-wrapper.has-sidebar-true{
+        float: left;
+        margin-top: 10px;
+        .wizard-results-header-container{
+          width: 100%;
+          margin: 0;
+          .wizard-results-header-resultcounts-container{
+            float: left;
+            width: 94%;
+            background-color: #ffffff;
+            margin-bottom: 0;
+            padding: 15px 3%;
+            .wizard-results-header-resultcount{
+            }
+          }
+
+        }
+
+        .wizard-result-sections-container{
+          background-color: #ffffff;
+          margin-left: 0;
+          width: 66%;
+          padding: 3%;
+          .note-rural-exporting-container{
+            background-color: #ffffff;
+            width: 100%;
+            float: left;
+            #note-rural-exporting {
+              background-color: #FCF6DE;
+              padding: 20px;
+              position: relative;
+              .btn-close{
+                background:url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+                width: 21px;
+                height: 24px;
+                position: absolute;
+                left: 95%;
+                bottom: 35%;
+              }
+            }
+          }
+          .wizard-collapsible-section-container {
+            float: left;
+            width: 100%;
+            margin: 5px 0;
+            background-color: #E9E9E9;
+            border: 1px solid #E9E9E9;
+
+            &.collapsed{
+              .wizard-collapse-arrow{
+                display: none;
+              }
+            }
+            &.uncollapsed{
+              margin-bottom: 50px;
+
+              .wizard-expand-arrow{
+                display: none;
+              }
+            }
+            .wizard-collapsible-section-header {
+              padding: 15px 0;
+              float: left;
+              width: 100%;
+              cursor: pointer;
+              input.wizard-collapsible-section-number-marker {
+                background: transparent url(/sites/all/themes/bizusa/images/icons/circle-teal.png) no-repeat center;
+                height: 40px;
+                width: 40px;
+                margin-left: 4%;
+                color: #204669;
+              }
+              .wizard-collapsible-section-title {
+                float: left;
+                width: 60%;
+                .wizard-collapsible-section-title-allllayouts {
+                  color: #6885A2;
+                  cursor: pointer;
+                  font-family: "latoblack_italic", sans-serif;
+                  font-size: 18px;
+                  font-weight: normal;
+                  line-height: 20px;
+                  margin: 10px;
+                }
+              }
+              img {
+                cursor: pointer;
+                float: right;
+                margin-right: 4%;
+                margin-top: 15px;
+              }
+
+            }
+            .wizard-collapsible-section-contents {
+              background-color: #ffffff;
+              clear: both;
+              margin: 1% 0 0;
+              padding: 4% 7% 4% 8%;
+              width: 85%;
+              float: left;
+              position: relative;
+              .yawizard-pagedresults-pagers{
+                float: left;
+                width: 100%;
+                li {
+                  display: block;
+                  float: left;
+                  padding: 8px 9px;
+                  font-size: 14px;
+                  color: #333;
+                }
+                .pager-pageto-prev a {
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url(/sites/all/themes/bizusa/images/pager-previous.png) no-repeat;
+                  text-indent: -2222222px;
+                }
+                .pager-current a {
+                  color: #b7b7b7;
+                }
+                .pager-pageto-next a {
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url(/sites/all/themes/bizusa/images/pager-next.png) no-repeat;
+                  text-indent: -2222222px;
+                }
+                .pager-pageto-last, .pager-pageto-first {
+                  display: none;
+                }
+              }
+            }
+          }
+
+
+        }
+        .wizard-sidebars-container{
+          width: 25%;
+          padding: 0;
+          background-color: #eff2f5;
+          .share-export-email-container{
+            float: right;
+            width: 100%;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            .exportexcelWidget{
+              float: left;
+              width: 30px;
+              height: 23px;
+              padding: 16px 10px;
+              position: relative;
+              z-index: 9;
+              .exportexcelWidget-toggler{
+                background: url("/sites/all/themes/bizusa/images/icons/excel.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+                width: 26px;
+                height: 26px;
+                margin-top: 0;
+                float: left;
+              }
+              #exportexcelWidget-popup{
+                position: absolute;
+                top: 49px;
+                right: 0px;
+                display: block;
+                height: 66px;
+                width: 225px;
+                padding-top: 15px;
+                background: transparent url(/sites/all/themes/bizusa/images/shareTipTop.png) no-repeat 188px 6px;
+                .exportexcelWidget-popup-body{
+                  background-color: #ffffff;
+                  width: 220px;
+                  float: left;
+                  box-shadow: 0px 0px 10px 1px #F1F1F1;
+                  a.exportexcel-group{
+                    display: block;
+                    height: 27px;
+                    float: left;
+                    padding: 20px 3% 10px 3%;
+                    width: 94%;
+                    text-indent: 50px;
+                    &.exportexcel-download{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+                      border-bottom: 1px solid #E9E9E9;
+                    }
+                    &.exportexcel-email{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+                    }
+                  }
+                }
+              }
+            }
+            #shareWidget{
+              >a{
+                background: #ffffff url(/sites/all/themes/bizusa/images/icons/shareArrow-teal.png) no-repeat 72px center;
+                color: #204669;
+                height: 55px;
+                line-height: 55px;
+                span{
+                  background-color: #97E8C1;
+                }
+              }
+              .sharewidget-popup{
+                top: 49px;
+              }
+            }
+          }
+          .wizard-sidebar{
+            margin-bottom: 10px;
+            width: 100%;
+            float: left;
+            .wizard-sidebar-top-section{
+              width: 100%;
+              background-color: #E2E2E2;
+              .wizard-sidebar-title{
+                font: 13px 'latoblack', sans-serif;
+                width: 84%;
+                padding: 20px 8%;
+                font-size: 13px;
+                text-transform: uppercase;
+                color: #5C5C5C;
+                margin-left: 0;
+
+              }
+            }
+            .wizard-sidebarresults-results-container{
+              padding: 15px 3%;
+              background-color: #ffffff;
+              width: 94%;
+              float: left;
+              .dialhelp, .resource-centers-header{
+                .dial-img, .resource-center-img {
+                  float: left;
+                  margin-right: 5px;
+                  display: inline-block;
+                }
+                .dial-text, .resource-center-text {
+                  display: inline-block;
+                  line-height: 25px;
+                  font-family: latoblack;
+                  font-size: 13px;
+                  letter-spacing: -0.5px;
+                }
+              }
+
+
+              .sharewidget-popup-body{
+                display: none;
+              }
+
+
+
+              .begex-useac-askingforzip {
+                padding: 0px 15px 0px 30px;
+                .begex-useac-askingforzip-input-container{
+                  input[type=text] {
+                    width: 90px;
+                    border: 1px solid #eff2f5 !important;
+                    margin-right: 5px;
+                  }
+                }
+              }
+              .begex-useac-viewcontainer {
+                float: left;
+                padding: 0px 15px;
+                .view-content{
+                  .views-row{
+                    margin: 0;
+                  }
+                }
+                .view-footer{
+                  #exportanchor {
+                    width: 100px;
+                    margin-left: 15px;
+                  }
+                }
+              }
+
+              .sharewidget-popup-body{
+                a.email {
+                  background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll center 10px #FFFFFF;
+                }
+              }
+              .view-content{
+                .views-row-odd, .views-row-even{
+                  text-align: left;
+                  float: left;
+                  .views-field-field-vend-phone-number, .views-field-field-vend-fax-number{
+                    .field-content{
+                      display: inline;
+                    }
+                  }
+                }
+              }
+            }
+
+
+          }
+        }
+      }
+    }
+  }
+}
+
+/*****************************
+***   SUBSCRIBE  ***
+******************************/
+
+body.page-subscribe{
+  .region-content{
+    width: 100%;
+    .block-system{
+      #quick_subscribe_new{
+        margin: 0;
+        padding: 0;
+        border: 0;
+        ol.form{
+          padding: 0;
+          margin: 0;
+          float: left;
+          width: 100%;
+          form#subscribeSubmit{
+            float: left;
+            width: 100%;
+            li.email_fields{
+              float: left;
+              width: 50%;
+              .long{
+                margin: 0;
+                padding: 0 5%;
+                width: 90%;
+                cursor: text;
+                font-size: 14px;
+              }
+              label{
+                width: 200px;
+                text-align: left;
+                line-height: 40px;
+                margin-bottom: 0;
+                float: left;
+                img{
+                  margin-top: 12px;
+                }
+              }
+            }
+            .button_panel{
+              float: left;
+              width: 100%;
+              margin-top: 20px;
+              input{
+                text-transform: uppercase;
+                &:hover{
+                  background-color: darken(#F75B49, 10%)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .pagepath-receive-email .contentlandingpage-sharecontentlinks{
+    display: none;
+  }
+}
+
+
+
+/******************************************************************************************
+****		RESULTS PAGE STYLES FOR DISASTER ASSISTANCE, FIND GREEN OPPORTUNITIES,		***
+****		TAXES AND CREDITS, HIRING EMPLOYEES, FIND REGULATIONS, BEGIN EXPORT			***
+*******************************************************************************************/
+body.page-disaster-assistance{
+  .widget-type-image.wiztag-splashimage{
+    margin-right: -64px;
+    clear: both;
+  }
+}
+body.page-disaster-assistance, body.page-find-green-opportunities,
+body.page-taxes-and-credits, body.page-jobcenter-wizard, body.page-browseregulations, body.page-find-opportunities, body.page-begin-exporting, body.page-expand-exporting{
+  .ajax-container{
+    float: left;
+    background-color: #eff2f5;
+    width: 100%;
+    .wizard-results-wrapper{
+      float: left;
+      width: 100%;
+      &.has-sidebar-false{
+        .wizard-result-sections-container{
+          width:90%;
+        }
+      }
+      .wizard-results-header-container{
+        float: left;
+        margin: 10px 0 0 0;
+        width: 100%;
+        .wizard-results-header-resultcounts-container{
+          float: left;
+          width: 66%;
+          background-color: #ffffff;
+          margin-bottom: 0;
+          padding: 23px 3%;
+          .wizard-results-header-resultcount{
+            display: block;
+            float: left;
+            padding-left: 0;
+            margin-bottom: 10px;
+            margin-right: 15px;
+            font-size: 13px;
+            line-height: 20px;
+            img{
+              float: left;
+              margin-right: 5px;
+            }
+            .wizard-results-header-resultcount-sum{
+              font-family: "latoblack_italic",sans-serif;
+            }
+          }
+        }
+
+        .share-export-email-container{
+          float: right;
+          width: 25%;
+          background-color: #ffffff;
+          margin-bottom: 10px;
+          .exportexcelWidget{
+            float: left;
+            width: 30px;
+            height: 23px;
+            padding: 16px 10px;
+            position: relative;
+            z-index: 9;
+            .exportexcelWidget-toggler{
+              background: transparent url(/sites/all/themes/bizusa/images/icons/excel.png) no-repeat scroll left top;
+              width: 26px;
+              height: 26px;
+              margin-top: 0;
+              float: left;
+            }
+            #exportexcelWidget-popup{
+              position: absolute;
+              top: 49px;
+              right: 0px;
+              display: block;
+              height: 66px;
+              width: 225px;
+              padding-top: 15px;
+              background: transparent url(/sites/all/themes/bizusa/images/shareTipTop.png) no-repeat 188px 6px;
+              .exportexcelWidget-popup-body{
+                background-color: #ffffff;
+                width: 220px;
+                float: left;
+                box-shadow: 0px 0px 10px 1px #F1F1F1;
+                a.exportexcel-group{
+                  display: block;
+                  height: 27px;
+                  float: left;
+                  padding: 20px 3% 10px 3%;
+                  width: 94%;
+                  text-indent: 50px;
+                  &.exportexcel-download{
+                    background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+                    border-bottom: 1px solid #E9E9E9;
+                  }
+                  &.exportexcel-email{
+                    background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+                  }
+                }
+              }
+            }
+          }
+          #shareWidget{
+            >a{
+              background: #ffffff url(/sites/all/themes/bizusa/images/icons/shareArrow-teal.png) no-repeat 72px center;
+              color: #204669 !important;
+              height: 55px;
+              line-height: 55px;
+              span{
+                background-color: #97E8C1 !important;
+              }
+            }
+            .sharewidget-popup{
+              top: 49px !important;
+            }
+          }
+        }
+
+      }
+      .wizard-result-sections-container{
+        margin-right:3%;
+        margin-left: 0;
+        float:left;
+        background-color: #ffffff;
+        width: 72%;
+        .wizard-result-section{
+          padding: 25px 10px;
+          width: 95%;
+          float: left;
+          .wizard-result-section-icon-container{
+            width: 80px;
+            text-align: center;
+            margin: 0 10px;
+            float: left;
+            word-wrap: break-word;
+            word-break: break-all;
+          }
+          .wizard-result-section-title{
+            font:normal 30px "latoblack",sans-serif;
+            margin-top: 0px;
+            text-transform: capitalize;
+            color: #5C5C5C;
+            margin-bottom: 5px;
+          }
+          .yawizard-pagedresults-mastercontainer{
+            .yawizard-pagedresults-page{
+              width: 100%;
+              .yawizard-pagedresults-result{
+                float: left;
+                width: 100%;
+                .wizard-result-section-result{
+                  margin-left: 15%;
+                  margin-bottom: 20px;
+                  float: left;
+                  .wizard-result-title{
+                    text-transform: uppercase;
+                    a{
+                      font-size: 17px;
+                      color: #6885A2;
+                    }
+                  }
+                  .wizard-result-snippet{
+                    font:normal 15px/20px "latoregular",sans-serif;
+                    color: #797979;
+                    margin-bottom: 0px;
+                    word-break: break-word;
+                  }
+                  .wizard-result-tags-container {
+                    margin-top: 10px;
+                    float: left;
+                    width: 100%;
+                    .wizard-result-tag{
+                      text-transform: uppercase;
+                      font-family: latoblack;
+                      font-size: 12px;
+                      background-color: #eff2f5;
+                      float: left;
+                      margin-right: 10px;
+                      padding: 5px 10px;
+                    }
+                  }
+                }
+              }
+              .yawizard-pagedresults-pagers{
+                margin-left: 13%;
+                width: 87%;
+                li{
+                  display: block;
+                  float: left;
+                  padding: 8px 9px;
+                  font-size: 14px;
+                  color: #333;
+                }
+                .pager-pageto-first,
+                .pager-pageto-last{
+                  display: none;
+                }
+                .pager-pageto-prev a{
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url('../images/pager-previous.png') no-repeat;
+                  text-indent: -2222222px;
+                }
+                .pager-current a{
+                  color: #b7b7b7;
+                }
+                .pager-pageto-next a{
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  background: transparent url('../images/pager-next.png') no-repeat;
+                  text-indent: -2222222px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .wizard-sidebars-container{
+        width:25%;
+        padding:0;
+        float:RIGHT;
+        background-color: #eff2f5;
+        margin-top:10px;
+        .wizard-sidebar{
+          margin-bottom: 10px;
+          width: 100%;
+          float: left;
+          hr{
+            display: none;
+          }
+          .wizard-health-sidebar-title{
+            font: 13px 'latoblack', sans-serif;
+            width: 84%;
+            padding: 20px 8%;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #5C5C5C;
+            margin-left: 0;
+            background-color: #E2E2E2;
+          }
+
+          .jobcenters-top-section, .ptac-top-section{
+            width: 100%;
+            margin-bottom: 0;
+            .jobcenters-icon{
+              display: none;
+            }
+            .vendors-title, .ptac-title{
+              font: 13px 'latoblack', sans-serif;
+              width: 84%;
+              padding: 30px 8%;
+              font-size: 13px;
+              text-transform: uppercase;
+              color: #5C5C5C;
+              margin-left: 0;
+              background-color: #E2E2E2;
+            }
+          }
+          .vendors-top-section, .begex-exportlocations-top-section, .exportlocations-top-section {
+            font: 14px 'latoblack', sans-serif;
+            width: 94%;
+            padding: 30px 3%;
+            text-transform: uppercase;
+            color: #5C5C5C;
+            margin-left: 0;
+            background-color: #E2E2E2;
+            .useacs-icon{
+              display: none;
+            }
+          }
+          .exportlocations-top-section {
+            width: 84%;
+            padding: 30px 8%;
+          }
+          .begex-exportlocations-top-section {
+            padding: 30px 8%;
+            width: 84%;
+          }
+          .begex-useac-askingforzip {
+            background-color: #fff;
+            padding: 0 8%;
+            width: 84%;
+            .begex-useac-askingforzip-inputokbutton-container{
+              input[type=text] {
+                width: 90px;
+                border: 1px solid #eff2f5 !important;
+                margin-right: 5px;
+              }
+            }
+          }
+          .wizard-sidebarresults-results-container, .jobcenterajax-container, .contextual-links-region, .view{
+            float: left;
+            padding: 15px 8%;
+            background-color: #ffffff;
+            width: 84%;
+
+            .view-content{
+              float: left;
+              .views-row-odd, .views-row-even{
+                text-align: left;
+                float: left;
+                .views-field-field-vend-phone-number, .views-field-field-vend-fax-number{
+                  .field-content{
+                    display: inline;
+                  }
+                }
+              }
+            }
+
+            .jobcenteroffice-results-container{
+              margin: 5px 15px;
+              .jobcenteroffice-result {
+                margin-bottom: 15px;
+                float: left;
+
+                .jobcenteroffice-result-city {
+                  float: left;
+                }
+
+              }
+            }
+          }
+
+          .wizard-health-sidebar-desc{
+            padding: 20px 3%;
+            background-color: #ffffff;
+            float: left;
+            width: 94%;
+            .yawizard-pagedresults-mastercontainer{
+              .yawizard-pagedresults-results-container{
+                margin: 5px 15px;
+                .yawizard-pagedresults-result{
+                  margin-bottom: 25px;
+                  .sidebar-article-result{
+                    .wizard-result-title{
+                      text-transform: uppercase;
+                      font-size: 13px;
+                    }
+                    .wizard-result-snippet{
+                      .readmore{
+                        text-transform: capitalize;
+                        color: #f75b49 !important;
+                      }
+                    }
+                  }
+                }
+              }
+              .yawizard-pagedresults-pagers{
+                float: left;
+                width: 100%;
+                margin-left: 15px;
+                li{
+                  float: left;
+                  margin-left: 21px;
+                  a{
+                    text-transform: lowercase;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+body.page-begin-exporting{
+  .expevents-lightbox-content, .useac-colorbox-content{
+    padding: 0 15px;
+  }
+  .ajax-container{
+    .results-welcome-top-message{
+      background-color: #FCF6DE;
+      padding: 10px;
+      margin: 10px 0 0 0;
+      .btn-close{
+        background: url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+        width: 20px;
+        height: 20px;
+        position: relative;
+        left: 15px;
+        top: -15px;
+        float: right;
+      }
+    }
+    .wizard-results-wrapper{
+      margin-top: 10px;
+      .wizard-results-header-container {
+        float: right;
+        margin: 0px 0 0 0;
+        width: 25%;
+        .wizard-results-header-resultcounts-container{
+          display: none;
+        }
+        .share-export-email-container{
+          width: 100%;
+        }
+      }
+      .wizard-result-sections-container{
+        width: 66%;
+        padding: 0 28px;
+        .wizard-result-section{
+          padding: 25px;
+          .wizard-result-section-icon-container{
+            display: none;
+          }
+          .wizard-result-section-title{
+            width: 100%;
+            .top5{
+              display: none;
+            }
+          }
+          .wizard-result-section-subtitle {
+            margin-bottom: 20px;
+            float: left;
+          }
+          .yawizard-pagedresults-mastercontainer{
+            .yawizard-pagedresults-page{
+              .yawizard-pagedresults-result{
+                .wizard-result-section-result {
+                  margin-left: 0px;
+                  margin-bottom: 20px;
+                  float: left;
+                  .wizard-result-icon-container {
+                    width: 60px;
+                    float: left;
+                    text-align: center;
+                  }
+                  .wizard-result-titlesnippettags {
+                    margin-left: 65px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/***************************************************************
+***   JQUERY CALENDAR   **** **** ****
+******************************************** **** **** **** ****/
+#ui-datepicker-div{
+  font-family: "latoregular",sans-serif;
+  &.ui-corner-all,
+  .ui-corner-all{
+    border-radius: 0;
+  }
+  a{
+    font-family: "latoregular",sans-serif;
+    background-image: none;
+  }
+  .ui-datepicker-header{
+    font-weight: normal;
+    background:none;
+    border:none;
+    background-color: #6885A2;
+    color: #fff;
+    font-family: "latoblack",sans-serif;
+    text-transform: uppercase;
+    font-size: 15px;
+    .ui-icon {
+      background-image: url("../images/icons/ui-icons_cccccc_256x240.png");
+    }
+    a{
+      cursor: pointer;
+      &:hover{
+        background-color: #6885A2;
+        border-color:#6885A2;
+      }
+    }
+  }
+}
+
+
+/**********************
+	***   SEARCH PAGE   ***
+	**********************/
+
+body.page-search{
+  .item-list{
+    ul.search-sticky-filters-container{
+      list-style-type: none;
+      float:left;
+      margin-bottom:10px;
+      li{
+        float: left;
+        background-color: #fff;
+        padding: 5px;
+        margin:5px;
+        a{
+          text-indent: -99999px;
+          background: url(../images/icon-close.png) no-repeat 0 0;
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          margin-right: 3px;
+        }
+      }
+    }
+  }
+}
+
+
+/***************************************************************************************
+***   BUSINESS NEWS PAGE, WHATS NEW, EXPORT NEWS & PAGE ANNOUNCEMENTS AND RESOURCES  ***
+***************************************************************************************/
+
+body.page-business-news,
+body.page-whats-new,
+body.page-export-news,
+body.page-annoucements-and-resources,
+body.page-rural-export-initiative-news{
+  &.no-sidebars{
+    .wrapper{
+      .region-content{
+        width: 100%;
+        .block-system{
+          .view{
+            .view-content{
+              width: 68%;
+            }
+            .view-filters{
+              #edit-field-latest-news-source-tid-wrapper{
+                .form-item{
+                  .dk_container{
+                    outline: none;
+                    margin: 10px 0px 10px 10px;
+                    a{
+                      height: inherit;
+                      line-height: 16px;
+                      font-family: "latoblack",sans-serif;
+                      font-weight: normal;
+                      font-size: 11px;
+                      text-transform: uppercase;
+                      border:1px solid #fff;
+                      background-color: #6784a3;
+                      color: #fff;
+                      padding:10px;
+                    }
+                    &.dk_open .dk_options{
+                      z-index: 1000;
+                      width: 90%;
+                      overflow: auto;
+                      overflow-x: hidden;
+                      max-height: 315px;
+                      right: inherit;
+                      .dk_options_inner{
+                        li a{
+                          font-size: 12px;
+                          line-height: 25px;
+                          text-transform: none;
+                          background-color: #6784a3;
+                          font-family: "latoregular",sans-serif;
+                          &:hover{
+                            color: #fff;
+                            text-decoration: none;
+                            background-color: darken(#6784a3, 10%)
+                          }
+                        }
+                      }
+                    }
+                  }
+                  select{
+                    width: 80%;
+                    outline: 0;
+                  }
+                }
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .wrapper{
+    #titleWrapper{
+      .title{
+        h1{
+          font-size: 28px;
+          letter-spacing: -1.5px;
+        }
+      }
+    }
+    .region-content{
+      width: 68%;
+      .block-system{
+        //border: 1px solid;
+        width: 100%;
+        .view{
+          //border: 1px solid;
+          .view-content{
+            .views-row{
+              .views-field{
+                .field-content{
+                  a{
+                    font-weight: normal;
+                    display: block;
+                    width: 94%;
+                    padding: 15px 3%;
+                    background-color: #fff;
+                    margin-bottom: 3px;
+                    &:hover{
+                      background-color: #839BB3;
+                      color: #fff;
+                    }
+                  }
+                  p{
+                    margin:0;
+                    padding: 0;
+                    padding: 3px 3% 20px 3%;
+                    font-size: 12px;
+                    font-family: "latoitalic",sans-serif;
+                  }
+                }
+              }
+            }
+          }
+          .view-footer{
+            p{
+              a{
+                display: none;
+                background-color: #839BB3;
+                color: #fff;
+                padding:10px;
+                text-transform: uppercase;
+                font-weight: normal;
+                font-size: 12px;
+                &:hover{
+                  background-color: darken(#839BB3, 10%)
+                }
+              }
+            }
+          }
+          .item-list{
+            .pager{
+              margin-top: 10px;
+              float: left;
+              a{
+                font-size: 15px;
+              }
+              li{
+                float: left;
+              }
+              .pager-first{
+                display: none;
+
+              }
+              .pager-current{
+                font-family: 'latoregular',sans-serif;
+                color: #A8A8A8;
+                font-size: 15px;
+              }
+              .pager-next a{
+                display: block;
+                width: 21px;
+                height: 21px;
+                text-indent: -9999999px;
+                background: url("../images/pager-next.png") no-repeat transparent;
+              }
+              .pager-previous a{
+                display: block;
+                width: 21px;
+                height: 21px;
+                background: url("../images/pager-previous.png") no-repeat transparent;
+                text-indent: -9999999px;
+              }
+              .pager-ellipsis{
+                font-size: 25px;
+                line-height: 0px;
+                margin: 0px;
+              }
+              .pager-last.last{
+                display:none;
+              }
+            }
+          }
+        }
+      }
+    }
+    .region-sidebar-first,
+    .view-rural-export-initiatives-news{
+      float: right;
+      width: 30%;
+      .block-views,
+      .view-filters{ //added for rural_export_initiative_news
+        form{
+          .views-exposed-form{
+            .views-exposed-widgets{
+              #edit-date-filter-wrapper{
+                .views-widget{
+                  margin-bottom: 20px;
+                }
+              }
+              input[type="submit"]{
+                text-transform: uppercase;
+                background-color: #F75B49;
+                &:hover{
+                  background-color: darken(#F75B49, 10%)
+                }
+              }
+
+              .views-exposed-widget{
+                float: left;
+                width: 100%;
+                padding: 0px;
+                margin-bottom: 2px;
+                label[for="edit-date-filter"],
+                label[for="edit-field-news-source-tid"],
+                label[for="edit-field-latest-news-source-tid"],
+                label[for="edit-field-exportnews-agency-tid"]{
+                  background-color: #e2e2e2;
+                  background-position: 15px 50%;
+                  font-size: 12px;
+                  letter-spacing: -.5px;
+                  padding: 20px 0 20px 30px;
+                  font-family: "latoblack",sans-serif;
+                  font-weight: normal;
+                  cursor: pointer;
+                  text-transform: uppercase;
+                  color: #3b3b3b;
+                  //background-image: url("/sites/all/themes/bizusa/images/icons/block-collapsed.png");
+                  background-repeat: no-repeat;
+                  background-position: 95%;
+                  &.active{
+                    //background-image: url("/sites/all/themes/bizusa/images/icons/block-expanded.png");
+                    background-position: 95%;
+                  }
+                }
+                .views-widget{
+                  background-color: #fff;
+                  float: left;
+                  width: 100%;
+                  #edit-date-filter-value-wrapper{
+                    width: 100%;
+                    float: left;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                  }
+                  .container-inline-date{
+                    margin-left: 3%;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                    margin-bottom: 10px;
+                    margin-top: 10px;
+                    float: left;
+                    width: 97%;
+                    .form-item{
+                      float: left;
+                      &.form-type-date-select{
+                        width: 97%;
+                        margin-right: 3%;
+                      }
+                      label{
+                        font-weight: normal;
+                        font-size: 14px;
+                        padding-bottom: 5px;
+                        font-family: latoblack;
+                      }
+                      .date-padding{
+                        width: 100%;
+                        .form-item{
+                          .hasDatepicker{
+                            width: 220px;
+                            border: 1px solid #eff2f5;
+                          }
+                          .dk_container{
+                            outline: none;
+                            a{
+                              height: inherit;
+                              line-height: 35px;
+                              font-family: "latoblack",sans-serif;
+                              font-weight: normal;
+                              font-size: 11px;
+                              text-transform: uppercase;
+                              border:1px solid #fff;
+                              background-color: #6784a3;
+                              color: #fff;
+                            }
+                            &.dk_open .dk_options{
+                              z-index: 1000;
+                              overflow: auto;
+                              overflow-x: hidden;
+                              max-height: 315px;
+                              .dk_options_inner{
+                                li a{
+                                  font-size: 12px;
+                                  line-height: 25px;
+                                  text-transform: none;
+                                  background-color: #6784a3;
+                                  font-family: "latoregular",sans-serif;
+                                  &:hover{
+                                    color: #fff;
+                                    text-decoration: none;
+                                    background-color: darken(#6784a3, 10%)
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          .date-month{
+                            select{
+                              width: 70px;
+                              outline: 0;
+                            }
+                          }
+                          .date-day{
+                            select{
+                              width: 40px;
+                            }
+                          }
+                          .date-year{
+                            select{
+                              width: 40px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .form-item{
+                    .form-checkboxes{
+                      float: left;
+                      width: 100%;
+                      border-bottom: 20px solid #EFF2F5;
+                      a.bef-toggle{
+                        display: none;
+                      }
+                      .bef-checkboxes{
+                        padding: 10px 0;
+                        background-color: #fff;
+                        float: left;
+                        width: 100%;
+                        .form-item{
+                          float: left;
+                          clear: both;
+                          margin-bottom: 10px;
+                          margin-left: 3%;
+                          width: 97%;
+                          .prettycheckbox{
+                            float: left;
+                            a{
+
+                              margin-top: 3px;
+                              margin-left: 5px;
+
+                            }
+                            label{
+                              margin: 0;
+                            }
+                          }
+                          label{
+                            display: block;
+                            float: left;
+                            font-size: 12px;
+                            font-weight: normal;
+                            line-height: 18px;
+                            width: 79%;
+                            margin-left: 3%;
+                            cursor: pointer;
+                            &:hover{
+                              text-decoration: underline;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .view-rural-export-initiatives-news{ //added for rural_export_initiative_news
+      float: none;
+      width: inherit;
+      .view-filters{
+        float: right;
+        width: 30%;
+      }
+    }
+  }
+}
+
+
+/**************************
+***  LINK TO US PAGE   ****
+***************************/
+
+body.page-link-to-us{
+  .region.region-content{
+    background-color: #fff;
+    width: 100%;
+    .block{
+      &.block-system{
+        .linktous-master-page-container{
+          .linktous-nonmobile-container{
+            .readmore-trigger, .readless-trigger{
+              font-family: "latoblack", sans-serif;
+              font-size: 13px;
+              font-weight: normal;
+              letter-spacing: -0.5px;
+              font-style: italic;
+            }
+            #readmore-content2, #readmore-content3{
+              float: left;
+              margin-bottom: 20px;
+              ol{
+                margin-bottom: 0;
+              }
+            }
+            .bodycontent-linktous{
+              padding-left: 4%;
+              padding-right: 4%;
+              float: left;
+              width: 92%;
+              .textarea-copypaste-container{
+                width: 100%;
+                .textarea-copypaste-welcomemessage{
+                  float: left;
+                  clear: both;
+                  margin-top: 5%;
+                }
+              }
+              .basic-logo-large, .basic-logo-go-small, .basic-logo-small{
+                width: 33%;
+              }
+            }
+            .bodycontent-linktous.tableofcontents{
+              padding-right: 2%;
+              width: 64%;
+              margin-bottom: 15px;
+            }
+            .link-to-us-index{
+              width: 26%;
+              padding: 0 2% 10px 2%;
+              float: right;
+              h2{
+                background-color: #E2E2E2;
+                color: #515151;
+                font-family: "latoblack",sans-serif;
+                font-size: 12px;
+                font-weight: normal;
+                height: 50px;
+                letter-spacing: -0.5px;
+                line-height: 50px;
+                margin: 0;
+                padding: 0 0 0 5%;
+                text-transform: uppercase;
+              }
+              ul{
+                margin: 0;
+                padding: 5px 0 0 5%;
+                border:1px solid #E2E2E2;
+                li{
+                  list-style: none;
+                  a{
+                    font-family: "latoblack",sans-serif;
+                    font-size: 13px;
+                    font-weight: normal;
+                    letter-spacing: -0.5px;
+                    line-height: 18px;
+                  }
+                }
+              }
+            }
+            padding: 4% 0%;
+            input[type="button"]{
+              background-color: #6885A2;
+              text-transform: uppercase;
+              font-weight: normal;
+              font-family: "latoblack",sans-serif;
+              font-size: 9px;
+              padding: 10px 10px;
+              display: block;
+              height: auto;
+              margin: 2px;
+              float: left;
+              //clear: both;
+              cursor: pointer;
+              border: none;
+              color: #fff;
+              &:hover{
+                background-color: darken(#6885A2, 10%)
+              }
+            }
+            a{
+              font-family: "latoregular",sans-serif;
+              font-weight: bold;
+              &:hover{
+                text-decoration: underline;
+              }
+            }
+            h2{
+              font-weight: normal;
+            }
+            h4{
+              font:normal 18px/24px "latoblack",sans-serif;
+              color: #6885A2;
+              margin-bottom: 10px;
+              text-transform: uppercase;
+            }
+            b{
+              font-weight: bold;
+              font-family: "latoregular",sans-serif;
+            }
+            p{
+              font:normal 14px/19px "latoregular",sans-serif;
+            }
+            ol,ul{
+              padding-left: 30px;
+              font:normal 14px/19px "latoregular",sans-serif;
+              li{
+                padding-bottom: 10px;
+              }
+            }
+            .wizard-section-container{
+              float: left;
+              padding: 2% 4% 3% 4%;
+              width: 92%;
+              margin-bottom: 2%;
+              background-color: #97e8c1;
+              .wizard-section{
+                float: left;
+                width: 150px;
+                padding: 20px;
+                //height: 100px;
+                margin-top: 10px;
+                margin-right: 10px;
+                min-height: 80px;
+                a{
+                  color: #fff;
+                }
+
+                &.my-current-wizard-widget-selection,
+                &:hover{
+                  background-color: #6885A2;
+                  cursor: pointer;
+                  a{
+                    color: #fff;
+                    text-decoration: none;
+                  }
+                }
+                //border: 1px solid;
+                .linktous-wizard-icon-container{
+                  img{
+                    padding-left: 40%;
+                    padding-bottom: 2%;
+                    height:33px;
+                  }
+                }
+                .wizard-welcomemessage-title{
+                  label{
+                    float: right;
+                    width: 100%;
+                    font-weight: normal;
+                    text-align: center;
+                    a{
+                      font:normal 16px/18px "latoblack_italic",sans-serif;
+                    }
+                  }
+                  .linktous-wizardwidget-check{
+                    float: left;
+                    .prettycheckbox{
+                      float: left;
+                      a{
+
+                        margin-top: 3px;
+                        margin-left: 5px;
+
+                      }
+                      label{
+                        margin: 0;
+                      }
+                    }
+                  }
+                }
+                .linktous-wizard-icon-container{
+                  height: 33px;
+                  margin-bottom: 10px;
+                }
+              }
+              #start-a-business{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/start-a-business.png') no-repeat center;
+                }
+              }
+              #access-financing{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/access-financing.png') no-repeat center;
+                }
+              }
+              #begin-exporting{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/begin-exporting.png') no-repeat center;
+                }
+              }
+              #expand-exporting{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/expand-exporting.png') no-repeat center;
+                }
+              }
+              #jobcenter-wizard{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/jobcenter-wizard.png') no-repeat center;
+                }
+              }
+              #find-opportunities{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/find-opportunities.png') no-repeat center;
+                }
+              }
+              #veterans{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/veterans.png') no-repeat center;
+                }
+              }
+              #disaster-assistance{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/disaster-assistance.png') no-repeat center;
+                }
+              }
+              #healthcare{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/healthcare.png') no-repeat center;
+                }
+              }
+              #taxes-and-credits{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/taxes-and-credits.png') no-repeat center;
+                }
+              }
+              #select-usa{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/select-usa.png') no-repeat center;
+                }
+              }
+              #export{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/export.png') no-repeat center;
+                }
+              }
+              #browseregulations{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/browseregulations.png') no-repeat center;
+                }
+              }
+              #find-green-opportunities{
+                .linktous-wizard-icon-container{
+                  background: transparent url('../images/wizard-images/small/find-green-opportunities.png') no-repeat center;
+                }
+              }
+            }
+          }
+          a.btp{
+            text-align: right;
+            display: block;
+            clear: both;
+            width: 100%;
+            padding: 15px 0px;
+            float: left;
+            font: normal 16px/20px "latoblack_italic",sans-serif;
+          }
+          form{
+            float: left;
+            clear: both;
+            width: 100%;
+            margin-bottom: 40px;
+            .find-widget{
+              .find-widget-header{
+                font-family:"latoblack",sans-serif;
+                background-color: #6885a2;
+                padding: 20px;
+                color:#fff;
+                font-size: 18px;
+                text-transform: uppercase;
+                font-weight: normal;
+              }
+              .floatleft{
+                float: left;
+                width: 75%;
+                .select-country-list,
+                .select-state-list,
+                .select-industry-list{
+                  float: left;
+                  .dk_container{
+                    outline: 0;
+                    select{
+                      width: 500px !Important;
+                    }
+                    a.dk_toggle{
+                      width: 500px !Important;
+                      background: url("../images/bluearrow.png") no-repeat transparent;
+                      background-position: 97%;
+                      background-color: #f2f2f2;
+                      color: #6885a2;
+                      font-weight: normal;
+                      padding: 0px 16px;
+                      margin: 10px 0px 10px 0px;
+                      height: 54px;
+                      text-transform: uppercase;
+                      font-family: "latoblack",sans-serif;
+                      &:hover{
+                        text-decoration: none;
+                      }
+                    }
+                    .dk_options{
+                      ul.dk_options_inner{
+                        background-color: #fff;
+                        padding-left: 0px;
+                        margin: 12px 0px;
+                        font: normal 13px/15px "latoregular",sans-serif;
+                        z-index: 1;
+                        border:1px solid #f2f2f2;
+                        height: 350px;
+                        overflow: auto;
+                        li{
+                          padding: 0px;
+                          a{
+                            font-weight: normal;
+                            white-space:normal; 														border-bottom: 1px solid #f2f2f2;
+                            padding: 5px 15px;
+                            display: block;
+                            height: 100%;
+                            line-height: 22px;
+                            &:hover{
+                              text-decoration: none;
+                            }
+
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                .find-widget-text{
+                  float: left;
+                  clear: both;
+                  text-align: center;
+                  width: 100%;
+                  font-family: "latoblack_italic",sans-serif;
+                  font-size: 18px;
+                }
+                #txtwidgetsearchbox{
+                  width: 97%;
+                  padding: 1%;
+                  margin-top: 10px;
+                  border:1px solid #ccc;
+                  font-size: 18px;
+                }
+              }
+              .floatright{
+                float: right;
+                width: 25%;
+                input[type="button"]{
+                  background-color: #6885A2;
+                  text-transform: uppercase;
+                  font-weight: normal;
+                  font-family: "latoblack",sans-serif;
+                  font-size: 12px;
+                  padding: 18px 20px;
+                  display: block;
+                  height: auto;
+                  margin: 10px;
+                  float: left;
+                  clear: both;
+                  cursor: pointer;
+                  &:hover{
+                    background-color: darken(#6885A2, 10%)
+                  }
+                }
+              }
+              .textarea-copypaste-container-fbo{
+                float: left;
+                width: 100%;
+                clear:both;
+                margin-top: 20px;
+                .textarea-copypaste-welcomemessage{
+                  margin-bottom: 10px;
+                }
+                .textarea-copypaste{
+                  width: 100%;
+                  textarea{
+                    width: 100%;
+                  }
+                }
+              }
+
+            }
+          }
+          .linktous-legacywidget-codearea{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+/******************Tag terms for Program and Services**************/
+
+.tag-search-link
+{
+  font: 14px "latoregular", sans-serif;
+}
+
+/********************************
+***   GOOGLE TRANSLATOR   ****
+*********************************/
+
+#navigation #block-system-main-menu ul li #google_translate{
+  .sitewide-googletranslate-mastercontainer{
+    display: block;
+    position: absolute;
+    width: auto;
+    height:39px;
+    right: -20px;
+    overflow: hidden;
+    background-color: rgba(255,255,255,0.9);
+    padding: 10px 7px 10px 10px;
+    min-width: 290px;
+    border: 1px solid #ccc;
+    top: 60px;
+    .sitewide-googletranslate-leftside{
+      float: left;
+      .sitewide-googletranslate-googleicon-container{
+        padding-right: 10px;
+        float: left;
+        height: 45px;
+        img{
+          width: 15px;
+          height: 15px;
+          margin-top: 10px;
+        }
+      }
+      .sitewide-googletranslate-label{
+        float: left;
+        line-height: 38px;
+        font-family: "latoblack",sans-serif;
+        text-transform: uppercase;
+      }
+    }
+    .sitewide-googletranslate-rightside{
+      float: left;
+      margin-left: 20px;
+      input.sitewide-googletranslate-busa-translate-language-indicator{
+        position: absolute;
+        color: white;
+        line-height: 38px;
+        padding-left: 20px;
+        font-weight: bold;
+        margin-right: 5px;
+        background-color: #6885A2 !important;
+        background-image: url('/sites/all/themes/bizusa/images/translate-selectlanguage.png');
+        width: 175px;
+        cursor: pointer;
+        height: 45px;
+        text-align: left;
+        font-weight: normal !important;
+        font-family: "latoblack",sans-serif;
+        text-transform: uppercase;
+        border: none;
+        top:7px;
+        right: 0px;
+      }
+      div{
+        #googleTranslateApiPreContainer{height: 5px;}
+        #googleTranslateApiPostContainer{height: 5px;}
+      }
+
+    }
+
+  }
+  .sitewide-googletranslate-optionsmastercontainer{
+    z-index: 1;
+    position: absolute;
+    background-color: #f75b49;
+    font-weight: normal;
+    top:112px;
+    right:-14px;
+    height: 300px;
+    overflow: auto;
+    width: 175px;
+    .sitewide-googletranslate-optioncontainer{
+      padding: 0px;
+      a{
+        line-height: 20px;
+        padding: 5px 30px 5px 20px;
+        border-bottom: 1px solid #F98477;
+        font-weight: normal;
+        display: block;
+        outline: 0;
+        &:hover{
+          background-color: #fff;
+          color:#f75b49;
+        }
+      }
+    }
+  }
+
+}
+
+
+#google_translate_element {
+  position: absolute;
+  left: -1000px !important;
+  top: -1000px !important;
+}
+.sitewide-googletranslate-ui-globe {
+  background-image: url('/sites/all/themes/bizusa/images/translate-globe.png');
+  width: 30px;
+  height: 30px;
+  display: block;
+  background-repeat: no-repeat;
+}
+.sitewide-googletranslate-ui-globe:hover {
+  background-image: url('/sites/all/themes/bizusa/images/translate-globe-60.png');
+}
+#goog-gt-tt {
+  display: none;
+}
+.goog-te-banner-frame {
+  display: none;
+}
+
+/********************************
+***   TRAINING MATERIALS PORTAL   ****
+*********************************/
+body.page-training-materials-portal{
+  .wrapper{
+    #titleWrapper{
+      .title{
+        h1{
+          font-size: 28px;
+          letter-spacing: -1.5px;
+        }
+      }
+    }
+    .region-content{
+      width:100%;
+      .block-system{
+        #training-materials-portal-page{
+          background-color: #fff;
+          float: left;
+          width: 100%;
+          .training-materials-message{
+            font-family: "latoblack_italic",sans-serif;
+            font-weight: normal;
+            font-size: 14px;
+            color: #b0b0b0;
+            text-align: center;
+            padding-top: 25px;
+          }
+          .training-materials-main-links-container{
+            float: left;
+            clear: both;
+            width: 90%;
+            margin: 20px 5%;
+            a.main-links-item{
+              display: block;
+              float: left;
+              width: 17%;
+              margin-left: 12%;
+              img{
+                width: 100%;
+                margin: 0 auto;
+                display: block;
+                margin-bottom: 10px;
+              }
+              p{
+                margin: 0;
+                padding: 0;
+                font-weight: normal;
+                font-family: "latoblack",sans-serif;
+                font-size: 17px;
+                color:#6885a2;
+                letter-spacing: -1px;
+                text-align: center;
+              }
+            }
+          }
+          .view-all{
+            float: left;
+            width: 100%;
+            margin: 20px 0px;
+            a{
+              display: block;
+              text-align: left;
+              color: #6885a2;
+              font-weight: normal;
+              font-size: 12px;
+              text-transform: uppercase;
+              width: 10%;
+              padding: 15px 10px 15px 2%;
+              margin: 0 auto;
+              background: url("../images/training/viewall-right.png") no-repeat #eff2f5;
+              background-position: 85%;
+            }
+          }
+        }
+        .training-materials-portal-dualarea{
+          float: left;
+          width: 100%;
+          background-color: #6885a2;
+          border-top: 5px solid #365273;
+          color: #fff;
+          .dualarea-left{
+            float: left;
+            width: 50%;
+            border-right: 2px dotted #dae1e8;
+            .dualarea-title{
+              width: 80px;
+              margin: 0% 10%;
+              margin-top: 14%;
+              float: left;
+              img{
+                margin-left: 10px;
+                margin-bottom: 5px;
+              }
+              p{
+                margin: 0;
+                padding: 0;
+                font-family: "latoblack_italic",sans-serif;
+                font-size: 18px;
+                color: #97e8c1;
+                font-weight: normal;
+                text-align: center;
+                line-height: 18px;
+              }
+            }
+            ul{
+              width: 50%;
+              float: left;
+              margin: 5% 0;
+              padding: 0;
+              li{
+                list-style: none;
+                width: 100%;
+                margin-bottom: 3px;
+                a{
+                  color: #fff;
+                  font-family: "latoblack_italic",sans-serif;
+                  font-weight: normal;
+                  font-size: 14px;
+                  background-color: #839bb3;
+                  width: 90%;
+                  display: block;
+                  padding: 18px 5%;
+                }
+              }
+            }
+          }
+          .dualarea-right{
+            float: right;
+            width: 48%;
+            .right-message{
+              font-family: "latoblack_italic",sans-serif;
+              font-size: 14px;
+              color: #eff2f5;
+              font-weight: normal;
+              padding: 8% 10% 3% 10%;
+            }
+            h2{
+              margin: 0;
+              padding: 0;
+              font-family: "latoblack_italic",sans-serif;
+              font-size: 18px;
+              color: #97e8c1;
+              font-weight: normal;
+              padding: 2% 10%;
+            }
+            input.auto-fill-zip-code{
+              background-color: #fff;
+              cursor: text;
+              color: #999999;
+              font-size: 14px;
+              font-weight: normal;
+              width: 140px;
+              font-family: "latoblack_italic",sans-serif;
+              margin-left: 10%;
+            }
+            input.resevents-titlebar-controle-go{
+              text-transform: uppercase;
+              font-size: 14px;
+              &:hover{
+                background-color: darken(#F75B49, 10%)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+body.page-training-materials{
+  .view-Training-materials{
+    > .view-filters{
+      float:left;
+      clear:both;
+      width:100%;
+      ul.training-materials-filter-list{
+        float:left;
+        list-style-type: none;
+        margin:0px;
+        padding:0px;
+        li{
+          float:left;
+          background-color:#fff;
+          margin-right:8px;
+          a{
+            display:block;
+            padding:20px 20px 20px 50px;
+            background: url("/sites/all/themes/bizusa/images/train-chat-grey.png") no-repeat scroll 10px 14px transparent;
+          }
+        }
+        li a:hover,
+        li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-chat-green.png');
+        }
+        li + li a{
+          background-image: url('/sites/all/themes/bizusa/images/train-online-training-grey.png');
+        }
+        li + li a:hover,
+        li + li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-online-training-green.png');
+        }
+        li + li + li a{
+          background-image: url('/sites/all/themes/bizusa/images/train-video-grey.png');
+        }
+        li + li + li a:hover,
+        li + li +li a.training-materials-filter-btn-active{
+          background-image: url('/sites/all/themes/bizusa/images/train-video-green.png');
+        }
+        li + li + li + li{display:none;}
+      }
+      .ctools-auto-submit-full-form{
+        float:right;
+      }
+    }
+    .view-content .views-table thead th{padding:20px 10px;}
+    .view-content .views-table thead th.views-field-field-agency{padding-right:30px;}
+    .view-empty{
+      width: 960px;
+      margin-top: 60px;
+      height: 200px;
+      background: #FFF;
+      p{
+        padding:30px;
+      }
+    }
+  }
+  #edit-field-searchtags-value-wrapper > div > div > fieldset > legend{
+    cursor: pointer;
+  }
+  .contextual-links-region{
+    position: inherit;
+  }
+}
+
+/************************************************
+***   TRAINING MATERIALS - NODE TYPE   ****
+************************************************/
+body.node-type-training-materials{
+  .wrapper{
+    #titleWrapper{
+      .title{
+        h1{
+          font-size: 28px;
+          letter-spacing: -1.5px;
+        }
+      }
+    }
+    .region-content{
+      width: 100%;
+      .block-system{
+        .node-training-materials{
+          float: left;
+          width: 100%;
+          .training-materials-maincontent{
+            float: left;
+            width: 70%;
+            .flowplayer-container{
+              margin-bottom: 15px;
+              .flowplayer{
+                width: 100% !important;
+              }
+            }
+          }
+          .training-materials-sidebar{
+            float: left;
+            width: 30%;
+            .training-materials-related-videos{
+              float: left;
+              width: 96%;
+              margin-left: 4%;
+              h3{
+                background-color: #E2E2E2;
+                color: #5C5C5C;
+                font: 13px 'latoblack',sans-serif;
+                margin: 0;
+                padding: 15px 4%;
+                text-transform: uppercase;
+              }
+              ul.raining-materials-related-videolist{
+                margin: 0;
+                padding: 0;
+                li{
+                  list-style: none;
+                  padding: 5px 4%;
+                  border-bottom: 1px solid #ccc;
+                  &.current_video{
+                    background-color: #F0F0F0;
+                    a{
+                      color: #B8B8B8;
+                    }
+                  }
+                  a{
+                    font-size: 12px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/******************* FBO OPEN WIDGET ***********************************/
+body.page-fboopen-widget{
+  .region-content{
+    .block-system-main{
+      #sidebar{
+        .fbopen-search-form{
+          .form-advanced-options{
+            .checkbox{
+              margin-top: 0px;
+              padding-left: 0px;
+              float: left;
+              .has-pretty-child{
+                .prettycheckbox {
+                  float: left;
+                  a.checked {
+                    position: relative;
+                    top: 1px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**********************
+Expand Exporting Wizard
+**********************/
+body.page-expand-exporting{
+  .wizard-result-section-icon-container{
+    width: 60px;
+    text-align: center;
+    margin: 0 20px 0 0;
+    float: left;
+  }
+  .ajax-container{
+    .wizard-results-wrapper{
+      .wizard-result-sections-container{
+        .wizard-result-section{
+          .yawizard-pagedresults-mastercontainer{
+            .yawizard-pagedresults-page{
+              margin-bottom: 0px;
+              .yawizard-pagedresults-result{
+                .wizard-result-section-result{
+                  margin-left: 100px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #colorbox{
+    width: 415px !important;
+    //  height: 210px !important;
+    overflow: visible !important;
+
+    #cboxWrapper{
+      width: 415px !important;
+      // height: 210px !important;
+      #cboxContent{
+        background: url("/sites/all/themes/bizusa/images/logo.png") no-repeat 10px 20px #ebebeb;
+        width: 415px !important;
+        position: relative;
+        left: 50%;
+        #cboxLoadedContent{
+          background-color: #ffffff;
+          border-top: 1px solid #ccc;
+          margin-top: 80px;
+          width: 400px !important;
+          .useac-colorbox-content{
+            padding: 15px;
+          }
+          .occupationlookup-container-inner {
+            width: 400px;
+            margin: 2%;
+            float: left;
+            .occupationlookup-instructions{
+              margin-bottom: 20px;
+
+            }
+            .occupationlookup-input-container {
+              margin-bottom: 15px;
+              .occupationlookup-form-text-input{
+                width: 200px;
+                margin-right: 10px;
+                border: 1px solid gray;
+              }
+            }
+            .occupationlookup-results-container{
+              .occupationlookup-result {
+                margin-bottom: 10px;
+                .occupationlookup-result-title{
+                  font-family: latoblack;
+                  color: #6885A2;
+                }
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+
+}
+/**********************
+Veterans Wizard
+**********************/
+body.page-veterans{
+  .slide-id-1{
+    .questions{
+      .widget-type-label {
+          width: 100%;
+      }
+    }
+  }
+  .question-container, .wiztag-disabledveteranletterifyouareclaimingservicedisabledveteranstatus {
+    float: left;
+  }
+  .wizard-result-section-icon-container{
+    width: 60px;
+    text-align: center;
+    margin: 0 20px 0 0;
+    float: left;
+  }
+  .wiztag-veteran_proof{
+    width: 100%;
+  }
+
+  .uses-ajax{
+    background-color: #eff2f5;
+
+  }
+  .ajax-container{
+    float: left;
+    background-color: #eff2f5;
+
+    .wizard-results-wrapper.has-sidebar-true{
+      float: left;
+      margin-top: 10px;
+      .wizard-results-header-container{
+        width: 100%;
+        margin: 0;
+        .wizard-results-header-resultcounts-container{
+          float: left;
+          width: 94%;
+          background-color: #ffffff;
+          margin-bottom: 0;
+          padding: 0 3%;
+          .wizard-results-header-resultcount{
+            display: none;
+          }
+        }
+
+      }
+      .wizard-result-sections-container{
+        background-color: #ffffff;
+        margin-left: 0;
+        width: 72%;
+        .note-veteran-container{
+          width: 100%;
+          float: left;
+          background-color: #ffffff;
+          #note-veteran {
+            background-color: #FCF6DE;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 15px;
+            div:first-child{
+              width: 100%;
+            }
+            .btn-close{
+              background:url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px -5px no-repeat;
+              width: 21px;
+              height: 28px;
+              position: absolute;
+              left: 98%;
+              bottom: 92%;
+            }
+          }
+        }
+        .wizard-results-welcomemsg-container{
+          float: left;
+          background-color: #EFF2F5;
+          margin: 15px;
+          .wizard-results-welcomemsg{
+            float: left;
+            background-color: #EFF2F5;
+            padding: 15px;
+            &.wizard-results-welcomemsg-disclaimer{
+              padding: 0;
+            }
+            .wizard-startabiz-icon, .wizard-growbiz-icon{
+              display: block;
+              width: 30px;
+              float: left;
+              margin-right: 10px;
+            }
+            .wizard-startabiz-right, .wizard-growbiz-right, .wizard-franchise-right{
+              margin-left: 45px;
+              .wizard-startabiz-title, .wizard-growbiz-title, .wizard-franchise-title{
+                padding: 5px 0 7px 0;
+              }
+            }
+          }
+      }
+        .wizard-result-section{
+          float: left;
+          padding: 0;
+          margin: 20px;
+          border: 1px solid #E9E9E9;
+          width: 94%;
+          .wizard-result-section-title{
+              width: 94%;
+              padding: 15px 3%;
+              margin-bottom: 0;
+              cursor: pointer;
+              position: relative;
+              text-transform: none;
+              background-color: #E9E9E9;
+              .wizard-result-section-number{
+                background: transparent url(/sites/all/themes/bizusa/images/icons/circle-teal.png) no-repeat center;
+                height: 40px;
+                width: 40px;
+                color: #204669;
+                display: inline-block;
+                text-align: center;
+                span{
+                  font-size: 13px;
+                }
+              }
+              .actual-title {
+                vertical-align: middle;
+                color: #6885A2;
+                cursor: pointer;
+                font-family: "latoblack_italic", sans-serif;
+                font-size: 20px;
+                font-weight: normal;
+                line-height: 20px;
+                margin: 10px;
+              }
+              .wizard-result-section-slidingindicator {
+                position: absolute;
+                right: 15px;
+              }
+          }
+          .yawizard-pagedresults-mastercontainer{
+            margin-left:80px;
+            padding-top: 20px;
+            padding-right: 10px;
+            float: left;
+
+          }
+          .wizard-backtotop-anchor{
+            display: none !important;
+          }
+        }
+      }
+
+       .wizard-sidebars-container{
+          width: 25%;
+          padding: 0;
+          background-color: #eff2f5;
+          .share-export-email-container{
+            float: right;
+            width: 100%;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            .exportexcelWidget{
+              float: left;
+              width: 30px;
+              height: 23px;
+              padding: 16px 10px;
+              position: relative;
+              z-index: 9;
+              .exportexcelWidget-toggler{
+                background: transparent url(/sites/all/themes/bizusa/images/icons/excel.png) no-repeat scroll left top;
+                width: 26px;
+                height: 26px;
+                margin-top: 0;
+                float: left;
+              }
+              #exportexcelWidget-popup{
+                position: absolute;
+                top: 49px;
+                right: 0px;
+                display: block;
+                height: 66px;
+                width: 225px;
+                padding-top: 15px;
+                background: transparent url(/sites/all/themes/bizusa/images/shareTipTop.png) no-repeat 188px 6px;
+                .exportexcelWidget-popup-body{
+                  background-color: #ffffff;
+                  width: 220px;
+                  float: left;
+                  box-shadow: 0px 0px 10px 1px #F1F1F1;
+                  a.exportexcel-group{
+                    display: block;
+                    height: 27px;
+                    float: left;
+                    padding: 20px 3% 10px 3%;
+                    width: 94%;
+                    text-indent: 50px;
+                    &.exportexcel-download{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/download.png") no-repeat scroll 10px 10px;
+                      border-bottom: 1px solid #E9E9E9;
+                    }
+                    &.exportexcel-email{
+                      background: url("/sites/all/themes/bizusa/images/share-btn/mail.png") no-repeat scroll 10px 10px;
+                    }
+                  }
+                }
+              }
+            }
+            #shareWidget{
+              >a{
+                background: #ffffff url(/sites/all/themes/bizusa/images/icons/shareArrow-teal.png) no-repeat 72px center;
+                color: #204669 !important;
+                height: 55px;
+                line-height: 55px;
+                span{
+                  background-color: #97E8C1;
+                }
+              }
+              .sharewidget-popup{
+                top: 49px;
+              }
+            }
+          }
+
+         .wizard-sidebar{
+           margin-bottom: 10px;
+           width: 100%;
+           float: left;
+           .wizard-sidebar-top-section{
+             width: 100%;
+             background-color: #E2E2E2;
+             .wizard-sidebar-title{
+               font: 13px 'latoblack', sans-serif;
+               width: 84%;
+               padding: 20px 8%;
+               font-size: 13px;
+               text-transform: uppercase;
+               color: #5C5C5C;
+               margin-left: 0;
+
+             }
+           }
+           .wizard-sidebarresults-results-container{
+             padding: 15px 3%;
+             background-color: #ffffff;
+             width: 94%;
+             float: left;
+             .dialhelp{
+               margin-bottom: 25px;
+             }
+             .dialhelp, .sidebar-subheader{
+               .dial-img, .subheader-img {
+                 float: left;
+                 margin-right: 5px;
+                 display: inline-block;
+               }
+               .dial-text {
+                 display: inline-block;
+                 line-height: 25px;
+                 font-family: latoblack;
+                 font-size: 14px;
+                 letter-spacing: -0.5px;
+               }
+               .subheader-text {
+                 font-family: latoblack;
+                 font-size: 14px;
+                 letter-spacing: -0.5px;
+               }
+             }
+
+
+             .sharewidget-popup-body{
+               display: none;
+             }
+             .entered-zipcode {
+               padding: 0px 15px 0px 30px;
+               .enter-zip{
+                   width: 60px;
+                   border: 1px solid #eff2f5 !important;
+                   margin-right: 5px;
+               }
+             }
+             .loadingspinner{
+               float: left;
+               img{
+                 margin-left: 35%;
+                 margin-top: 15px;
+               }
+             }
+             .sidebar-results {
+               float: left;
+               padding: 0px 15px;
+               margin-top: 20px;
+
+               .view-footer{
+                 .sabw-sbdc-viewall {
+                   width: 100px;
+                   margin-left: 15px;
+                   margin-top: 15px;
+                   text-align: center;
+                   display: block;
+                   border: 0;
+                   border-radius: 0;
+                   background-color: #15567B;
+                   color: white;
+                   padding: 15px;
+                   text-decoration: none;
+                 }
+               }
+             }
+
+             .view-content{
+               .views-row-odd, .views-row-even{
+                 text-align: left;
+                 float: left;
+                 .views-field-field-vend-phone-number, .views-field-field-vend-fax-number{
+                   .field-content{
+                     display: inline;
+                   }
+                 }
+               }
+             }
+           }
+
+
+         }
+    }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.edit-field-blog-category-value-business-assistance{
+  background-color: red;
+}
+body.pagepath-blog{
+  .option{
+    padding-left: 35px;
+    margin-left: -35px;
+  }
+}
+
+
+
+/**********************************
+***   MICRO SITE   ***
+**********************************/
+body.page-micro-site{
+  .region-content {
+    background-color: #ffffff;
+    width: 94%;
+    padding: 3%;
+    .mapcontainer-tablet{
+      display: none;
+    }
+
+    .stateslist-container {
+      float: left;
+      width: 94%;
+      padding: 3%;
+      ul{
+        padding-left: 0;
+        float: left;
+        margin-left: 0;
+        padding-left: 0;
+        -webkit-column-count: 5; /* Chrome, Safari, Opera */
+        -moz-column-count: 5; /* Firefox */
+        column-count: 5;
+        width: 100%;
+        li{
+          list-style: none;
+          margin-bottom: 10px;
+        }
+        &.states-list-has-no-css3{
+          float: left;
+          margin-right: 2%;
+          width: 18%;
+
+        }
+      }
+
+    }
+  }
+  /**********************************
+  ***   MICRO SITE LANDING PAGE  ***
+  **********************************/
+  &.page-micro-site-state-resource-landing, &.page-micro-site-ownership-landing{
+
+    .region-content {
+      background-color: #eff2f5;
+      width: 100%;
+      padding: 0;
+      .microsite-sections-container{
+        background-color: #ffffff;
+        margin-left: 0;
+        width: 66%;
+        float: left;
+        margin-right: 3%;
+        padding: 3%;
+        .sections-message{
+          margin-bottom: 20px;
+        }
+        .microsite-section, .has-border-above{
+          margin-top: 30px;
+          padding-top: 30px;
+          border-top: 1px solid #eff2f5;
+          float: left;
+          width: 100%;
+        }
+
+
+
+        .microsite-section-title{
+          font-family: 'latoblack', sans-serif;
+          font-size: 21px;
+          margin-bottom: 20px;
+        }
+        .views-row{
+          margin-bottom: 25px;
+          .views-field{
+            .field-content{
+              p{
+                margin: 5px 0;
+              }
+            }
+          }
+        }
+        .item-list{
+          width: 100%;
+          .pager{
+            margin-top: 10px;
+            float: left;
+            a{
+              font-size: 15px;
+            }
+            li{
+              float: left;
+            }
+            .pager-first{
+              display: none;
+
+            }
+            .pager-current{
+              font-family: 'latoregular',sans-serif;
+              color: #A8A8A8;
+              font-size: 15px;
+            }
+            .pager-next a{
+              display: block;
+              width: 21px;
+              height: 21px;
+              text-indent: -9999999px;
+              background: url("../images/pager-next.png") no-repeat transparent;
+            }
+            .pager-previous a{
+              display: block;
+              width: 21px;
+              height: 21px;
+              background: url("../images/pager-previous.png") no-repeat transparent;
+              text-indent: -9999999px;
+            }
+            .pager-ellipsis{
+              font-size: 25px;
+              line-height: 0px;
+              margin: 0px;
+            }
+            .pager-last.last{
+              display:none;
+            }
+          }
+        }
+
+      }
+      .microsite-sidebars-container{
+        width: 25%;
+        padding: 0;
+        background-color: #eff2f5;
+        float: left;
+        .microsite-sidebar{
+          margin-bottom: 10px;
+          width: 100%;
+          float: left;
+          .microsite-sidebar-title-container{
+            width: 100%;
+            background-color: #E2E2E2;
+            .microsite-sidebar-title{
+              font: 13px 'latoblack', sans-serif;
+              width: 84%;
+              padding: 20px 8%;
+              font-size: 13px;
+              text-transform: uppercase;
+              color: #5C5C5C;
+              margin-left: 0;
+            }
+            background: url(/sites/all/themes/bizusa/images/icons/block-collapsed.png) no-repeat 97% #E2E2E2;
+
+            &.expanded{
+              background: url(/sites/all/themes/bizusa/images/icons/block-expanded.png) no-repeat 97% #E2E2E2;
+            }
+
+          }
+          .microsites-sidebarresults-results-container{
+            padding: 15px 8%;
+            background-color: #ffffff;
+            width: 84%;
+            float: left;
+            a{
+              font-family: latoregular;
+              display: block;
+            }
+            .views-row{
+              margin-bottom: 20px;
+              .date-display-single{
+                color: #f75b49;
+              }
+            }
+            .viewmore{
+              background: url("/sites/all/themes/bizusa/images/icons/viewall.png")G no-repeat scroll 90% 49% rgba(0,0,0,0);
+              float: right;
+              color: #6885a2;
+              font-family: 'latoblack', sans-serif;
+              font-size: 12px;
+              background-color: #EFF2F5;
+              padding: 10px 15px 10px 15px;
+              cursor: pointer;
+              width: 60px;
+              text-align: center;
+            }
+
+          }
+          &.sidebar-resource-centers{
+            .microsites-sidebarresults-results-container{
+              min-height: 130px;
+              .begex-useac-askingforzip-input-container{
+                border: 1px solid #ccc;
+                margin-right: 5px;
+              }
+            }
+          }
+          &.sidebar-top-web-resources{
+            .microsites-sidebarresults-results-container{
+              a{
+                margin-bottom: 10px;
+              }
+              .view-empty-top-web{padding: 15px 0;}
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+/******************************
+***   SEARCH RESULTS PAGE   ***
+******************************/
+body.page-search-site{
+  .grants-search-messages-container{
+    margin: 10px 0px;
+    background-color: #FCF6DE;
+    padding: 10px 40px 10px 20px;
+    position: relative;
+
+    input{
+      display:block;
+      width: 21px;
+      height: 24px;
+      position: absolute;
+      left: 95%;
+      top: 10px;
+      border:none;
+      text-indent: -99999px;
+      cursor: pointer;
+      background: url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px 0px no-repeat;
+    }
+  }
+}
+
+/********************************
+***   FBO OPEN SEARCH PAGE   ****
+*********************************/
+
+body.page-fboopen-widget{
+	.region-content{
+		width: 100%;
+	}
+  .container{
+    background-color: #fff;
+    float:left;
+    clear:both;
+    width:959px;
+    padding:35px;
+  }
+
+  #fboopen-bizusa-logo{
+    margin-right: 10px;
+  }
+  .fboopen-content-container{
+    background: -webkit-linear-gradient(#6D90A9, #395682, #395682, #567091); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#6D90A9, #395682, #395682, #567091); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#6D90A9, #395682, #395682, #567091); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#6D90A9, #395682, #395682, #567091);
+    width: 230px;
+    padding: 10px 5px;
+    cursor: pointer;
+  }
+  .fboopen-content{
+    width: 196px;
+    background: -webkit-linear-gradient(#FFFFFF, #DFDFDF); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#FFFFFF, #DFDFDF); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#FFFFFF, #DFDFDF); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#FFFFFF,#DFDFDF);
+    border-bottom: 5px solid #74D932;
+    border-radius: 10px;
+    padding: 10px 15px 15px 15px;
+    text-align: center;
+    box-shadow: #233F72 0 0 20px;
+  }
+  #fbo-open-results{
+    color: #6188A5;
+    font-family: latoblack;
+  }
+  .fbo-goImg {
+    display: block;
+    margin-top: -18px;
+    margin-left: 95px;
+    margin-bottom: -10px;
+  }
+
+
+}
+
+//**** FBO Open Widget - Add Opportunity Page ****//
+
+body.page-fboopen-widget-add-opportunity{
+  .region-content{
+    background-color: #fff;
+    #block-system-main{
+      padding: 0%;
+      .welcomemessage{
+      	background-color: #6885a2;
+	    color: #fff;
+	    display: block;
+	    padding: 20px;
+      }
+      #opportunity-content-container{
+        float: left;
+        padding: 0% 3% 3% 3%;
+        .required-description{
+        	display: block;
+        	margin-top: 25px;
+        	margin-bottom: 25px;
+        	font-size: 16px;
+        	font-family: "latoitalic",sans-serif;
+        }
+        .row-container{
+          width: 100%;
+          float: left;
+          margin-bottom: 25px;
+          .leftcol{
+            float: left;
+            width: 20%;
+            display: block;
+            margin-right: 3%;
+            padding-top: 0px;
+            label{
+              font-weight: normal;
+              font-family: "latoblack",sans-serif;
+              color: #6885a2;
+              font-size: 14px;
+            }
+          }
+          .rightcol{
+            float: left;
+            display: block;
+            width: 77%;
+            input[type="text"],
+            input[type="input"]{
+              border: solid 1px #ccc;
+              width: 200px;
+              cursor: text;
+              background-color: #fff;
+              color: #757575;
+              font-family: "latoregular",sans-serif;
+            }
+            textarea{
+            	border: solid 1px #ccc;
+            	width: 200px;
+            	padding: 16px;
+            	font-size: 12px;
+            	color: #757575;
+              	font-family: "latoregular",sans-serif;
+            }
+            input[type="radio"]{
+              width: 25px;
+              height: 15px;
+              margin-top: 10px;
+              background-color: transparent;
+            }
+            .help-text{
+            	display: block;
+            	float: left;
+            	width: 100%;
+            	margin-top: 2px;
+            	a{
+            		font-family: "latoblack_italic",sans-serif;
+            		font-size: 12px;
+            		font-weight: normal;
+            	}
+
+            }
+            .prettyradio{
+            	float: left;
+            }
+            .labelforradio{
+              float: left;
+              display: inline-block;
+              margin-right: 20px;
+              margin-top: 7px;
+            }
+            #dk_container_sltStatelist {
+              width: 232px;
+              .dk_toggle{
+                width: 215px !important;
+                font-weight: normal;
+                font-family: "latoregular",sans-serif;
+                background: url(/sites/all/themes/bizusa/images/carrot-down-gray.png) 94% 50% no-repeat #fff;
+                color: #797979;
+                border: solid 1px #ccc;
+              }
+              .dk_options {
+                border: 1px solid gray;
+                left: 1px;
+                height: 200px;
+                overflow: auto;
+                a{
+                  font-family: "latoregular",sans-serif;
+                }
+              }
+            }
+          }
+
+        }
+        #lbl_Disclaimer{
+          float: left;
+          margin-bottom: 25px;
+        }
+        #actionButtons{
+          float: right;
+          margin-top: 15px;
+          width: 35%;
+          input{
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+  #colorbox #cboxWrapper #cboxContent{
+  	background: url("/sites/all/themes/bizusa/images/logo.png") no-repeat 10px 20px #EBEBEB;
+  	min-height: auto; //for ie
+  	min-height: initial;
+  	#cboxLoadedContent{
+  		border-top: 1px solid #CCCCCC;
+  		margin-top: 85px;
+  		min-height: auto; //for ie
+  		min-height: initial;
+  		min-width: auto; //for ie
+  		min-width: initial;
+  		height:auto !important; //for ie
+  		height: initial !important;
+  		display: block;
+  		float: left;
+  		padding: 24px 10px 30px 10px;
+  		font-family: "latoitalic",sans-serif;
+  		font-size: 16px;
+  		background-color: #fff;
+  	}
+  }
+
+}
+
+/****************************************************
+***   MODAL WINDOW - SIGN UP TO RECEIVE UPDATES  ****
+****************************************************/
+
+
+
+body #colorbox #cboxWrapper #cboxContent #cboxLoadedContent #gov-delivery-colorbox{
+	float: left;
+	width: 100%;
+	.businessusalogo{
+		width: 100%;
+		height: 85px;
+		display: block;
+		background: url("/sites/all/themes/bizusa/images/logo.png") no-repeat 10px 20px #EBEBEB;
+		border-bottom: 1px solid #CCCCCC;
+	}
+	h2{
+		font-family: "latoblack",sans-serif;
+	    font-size: 14px;
+	    font-weight: normal;
+	    margin-left: 24px;
+	}
+	#email-subscribe-colorbox{
+		border: 1px solid #ccc;
+		cursor:text;
+		height: 34px;
+		width: 58%;
+		margin-left: 24px;
+	}
+	#submit-email{
+		height: 37px;
+		font-size: 12px;
+	}
+	#subscribe-no-thanks{
+		padding: 0;
+		text-align: center;
+		margin-top: 10px;
+		font-weight: normal;
+		a{
+			font-family: "latoblack_italic",sans-serif;
+			font-size: 14px;
+		}
+	}
+}
+
+#email-subscribe-colorbox{
+	width: 66%;
+}
+
+#subscribe-no-thanks{
+	padding-top: 2em;
+	padding-bottom: 2em;
+	float: left;
+	width: 100%;
+}
+#navigation #block-system-main-menu ul li.email-updates{
+  a{
+    display: block;
+    height: 38px;
+    width: 5px;
+    margin: 24px 0 0 17px;
+    text-indent: -9999px;
+    background: url("/sites/all/themes/bizusa/images/mail_icon.png") no-repeat;
+  }
+  &:hover{
+    background: transparent;
+  }
+}
+#navigation #block-system-main-menu ul li.browsealoud{
+  #_ba__link{
+    display: block;
+    height: 38px;
+    width: 5px;
+    margin: 8px 53px 0 0px;
+    padding-left: 0;
+    img{
+      width: 23px;
+    }
+  }
+  &:hover{
+    background: transparent;
+  }
+  display: none;
+}
+#__ba_panel{
+  display: none;
+}
+body.page-give-feedback{
+    .long{
+        width: 90%;
+    }
+    #create-parature-ticket{
+        border: none;
+    }
+    ol.form{
+      form#parature-feedback{
+          width: 100%;
+      }
+    }
+    #parature-details{
+      height: 150px;
+    }
+}
+
+/****************************************
+	***   SBIR Certification Tool PAGE   ****
+	*****************************************/
+
+body.page-sbir-certification-tool, .sbir-certification-tool-mastercontainer-wrapper {
+  .sbir-certification-tool-mastercontainer{
+    background-color: #fff;
+    float:left;
+    clear:both;
+  }
+  .sbir-certification-tool-welcomemessage{
+    background-color: #6885a2;
+    color: #fff;
+    display: block;
+    padding: 20px;
+    a{
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+
+  .sbir-certification-tool-contentcontainer{
+    float: left;
+  }
+  .roweven, .rowodd{
+    display: block;
+    width: 100%;
+    float: left;
+  }
+  .rowodd{
+    background-color: #F9F9F9;
+    height: auto;
+  }
+  .cell1{
+    display: block;
+    padding: 3%;
+    font-size: 16px;
+    font-family: latoblack;
+    color: #6885a2;
+  }
+  .cell2{
+    display: block;
+    float: left;
+    padding: 3%;
+    #question-profit {
+      margin-bottom: 20px;
+    }
+    #question-profit, #question-location {
+      min-height: 58px;
+    }
+  }
+  .cell3{
+    text-align: center;
+    padding: 3% 0;
+    float: left;
+    #result-profit{
+      margin-bottom: 20px;
+    }
+    #result-profit, #result-location{
+      min-height: 58px;
+      float: left;
+      width: 100%;
+    }
+    img{
+      height: 33px;
+      padding: 0 30px;
+    }
+    label{
+      font-size: 12px;
+      text-transform: uppercase;
+      font-family: "latoblack_italic",sans-serif;
+    }
+    #profit-holder, #location-holder {
+      float: left;
+      width: 100%;
+    }
+  }
+
+  #eligibility-message{
+    margin-top: 25px;
+    float: left;
+    #success_message{
+      float: left;
+      img{
+        float: left;
+        margin-top: 12px;
+        margin-right: 10px;
+      }
+      p{
+        float: left;
+      }
+
+    }
+    #fail_message{
+      float: left;
+      img{
+        float: left;
+        margin-top: 12px;
+        margin-right: 10px;
+      }
+      p{
+        float: left;
+      }
+
+    }
+    .btn-Continue{
+      cursor: pointer;
+      a{
+        color: #fff;
+        padding: 20px;
+        background-color: #f75b49;
+      }
+    }
+  }
+
+  .downarrow{
+    display: none;
+  }
+
+  .radiobutton,
+  {
+    height: 20px;
+    position: relative;
+    top: 5px;
+  }
+  .options{
+    padding-right: 10px;
+  }
+  .btn-next{
+    background-color: #6885a2;
+    color: #fff;
+    font-family: 'latoblack', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 15px 25px;
+    float: right;
+  }
+
+  label{
+    font-weight: normal;
+  }
+
+  .ptacLightBoxWrapper,
+  .vendorLightBoxWrapper,
+  .jobLightBoxWrapper {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 25px;
+    width:500px;
+  }
+
+  .ptacLightBox-logo-innerwrapper,
+  .vendorLightBox-logo-innerwrapper,
+  .jobLightBox-logo-innerwrapper{
+    float:left;
+    margin: 15px 0px 0px 15px;
+    width:250px;
+  }
+  .kill-ptacLightBox,
+  .kill-vendorLightBox,
+  .kill-jobLightBox{
+    position:absolute;
+    right:20px;
+    top:20px;
+    cursor: pointer;
+    font:12px Bitter-Regular,Times,serif;
+    background-color:#15567B;
+    color:whiteSmoke;
+    font-weight:bold;
+    padding: 1em;
+  }
+  .kill-ptacLightBox img,
+  .kill-vendorLightBox img,
+  .kill-jobLightBox img{
+    width: 35px;
+    margin: 0px;
+    margin-right: 10px;
+  }
+  .ptacLightBox-logo,
+  .vendorLightBox-logo,
+  .jobLightBox-logo{
+    background-color:#ebebeb;
+    position:relative;
+    overflow: auto !important;
+    border-bottom: 1px solid #808080;
+    height: 80px;
+  }
+  .ptacLightBox-msg-area,
+  .vendorLightBox-msg-area,
+  .jobLightBox-msg-area{
+    font-weight:normal;
+    padding:10px 24px;
+  }
+  .ptacLightBox-msg-area p,
+  .vendorLightBox-msg-area p,
+  .jobLightBox-msg-area p{
+    padding-top:5px;
+  }.ptacLightBox-logo-innerwrapper,
+   .vendorLightBox-logo-innerwrapper,
+   .jobLightBox-logo-innerwrapper{
+     float:left;
+     margin: 15px 0px 0px 15px;
+     width:250px;
+   }
+  .kill-ptacLightBox,
+  .kill-vendorLightBox,
+  .kill-jobLightBox{
+    position:absolute;
+    right:20px;
+    top:20px;
+    cursor: pointer;
+    font:12px Bitter-Regular,Times,serif;
+    background-color:#15567B;
+    color:whiteSmoke;
+    font-weight:bold;
+    padding: 1em;
+  }
+  .kill-ptacLightBox img,
+  .kill-vendorLightBox img,
+  .kill-jobLightBox img{
+    width: 35px;
+    margin: 0px;
+    margin-right: 10px;
+  }
+  .ptacLightBox-logo,
+  .vendorLightBox-logo,
+  .jobLightBox-logo{
+    background-color:#ebebeb;
+    position:relative;
+    overflow: auto !important;
+    border-bottom: 1px solid #808080;
+    height: 80px;
+  }
+  .ptacLightBox-msg-area,
+  .vendorLightBox-msg-area,
+  .jobLightBox-msg-area{
+    font-weight:normal;
+    padding:10px 24px;
+  }
+  .ptacLightBox-msg-area p,
+  .vendorLightBox-msg-area p,
+  .jobLightBox-msg-area p{
+    padding-top:5px;
+  }
+
+  #cboxOverlay{
+    cursor: pointer;
+    display: block;
+    background: #000;
+    opacity: 0.4;
+    position: fixed;
+    width: 100%;
+    height: 300%;
+  }
+
+  #colorbox {
+    padding-bottom: 38px;
+    padding-right: 0px;
+    top: 180px;
+    left: 804px;
+    position: absolute;
+    width: 298px;
+    height: 119px;
+    opacity: 1;
+    cursor: auto;
+    display: block;
+    background: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+  #cboxContent {
+    float: left;
+    width: 298px;
+    height: 119px;
+    background: #fff;
+    overflow: visible;
+    margin-bottom: 28px;
+    float:none;
+    position: relative;
+  }
+
+  #cboxLoadedContent{
+    height: 325px;
+    width: 436px;
+    overflow: visible;
+  }
+
+  #cboxLoadingOverlay {
+    background: #e6e6e6;
+  }
+  #cboxLoadingOverlay, #cboxLoadingGraphic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  #cboxTitle {
+    left: 0;
+    height: 38px;
+    color: #313131;
+    padding: 0 140px 0 15px;
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0;
+    display: block;
+    float: left;
+  }
+
+  #cboxClose {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: url(/sites/all/themes/bizusa/images/sbir-images/controls.png) 0px 0px no-repeat;
+    width: 25px;
+    height: 25px;
+    text-indent: -9999px;
+    opacity: 1;
+    cursor: pointer;
+  }
+  #cboxMiddleRight {
+    width: 0;
+    height: 119px;
+    float: left;
+  }
+
+  #cboxError {
+    padding: 50px;
+    border: 1px solid #ccc;
+  }
+
+  #colorbox div {
+    overflow: visible;
+  }
+
+  #cboxWrapper {
+    height: 157px;
+    width: 298px;
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+    -moz-border-radius-bottomleft: 9px;
+    -moz-border-radius-bottomright: 9px;
+    -webkit-border-bottom-left-radius: 9px;
+    -webkit-border-bottom-right-radius: 9px;
+  }
+  #colorbox, #cboxOverlay, #cboxWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    overflow: visible !important;
+  }
+
+  #cboxTopLeft, #cboxTopRight{
+    float: left;
+  }
+  #cboxTopCenter{
+    float: left;
+    width: 298px;
+  }
+
+  #cboxMiddleLeft{
+    float: left;
+    height: 119px;
+    width: 0;
+  }
+  #cboxMiddleLeft, #cboxBottomLeft {
+    clear: left;
+  }
+
+
+}
+.sbir-certification-tool-mastercontainer-wrapper {
+
+  #eligibility-message{
+    .btn-Continue {
+      margin-top: 25px;
+      margin-bottom: 35px;
+      margin-right: 15px;
+    }
+  }
+
+}
+
+
+/****************************************************
+***   Grow you Business StylesS  ****
+****************************************************/
+body.page-resource-grow-your-business{
+  #titleWrapper {
+    overflow: visible;
+  }
+}
+
+/* Editor Role Styles */
+body.role-Editor{
+  #edit-field-associated-search-term, #edit-field-assoc-wiz-terms,
+  #edit-field-progserv-latitude, #edit-field-progserv-longitude,
+  #edit-field-tagged-terms, #edit-field-pending-tags,
+  #edit-field-deleted-tags, #edit-field-progserv-wizterms{
+    display: none;
+  }
+}

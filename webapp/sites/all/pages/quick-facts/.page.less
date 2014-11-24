@@ -1,0 +1,148 @@
+/****************************
+***   QUICK FACTS PAGE   ****
+****************************/
+
+body.no-sidebars.page-quick-facts {
+  .wrapper {
+    #contentArea {
+      .region.region-content {
+        background: none;
+      }
+    }
+  }
+  .view-quick-facts {
+    .view-filters {
+      padding-right: 0px;
+      .views-exposed-form {
+        .views-exposed-widgets {
+          #edit-submit-quick-facts {
+            height: 40px;
+            width: 65px;
+            padding: 0px 10px;
+            margin: 0px;
+            border: none;
+            float: left;
+            background-color: #f75b49;
+            color: #fff;
+            font-family: 'latoblack', sans-serif;
+            cursor: pointer;
+          }
+          #edit-field-publishrange-value-wrapper {
+            background: #FFFFFF;
+            padding: 0;
+            width: 100%;
+            label {
+              display: none;
+            }
+            button {
+              width: 100%;
+              cursor: pointer;
+              font-size: 13px;
+              line-height: 13px;
+              text-transform: uppercase;
+              color: #5C5C5C;
+              border: none;
+              background: url('/sites/all/themes/bizusa/images/icons/block-collapsed.png') no-repeat 97% #e2e2e2;
+              padding: 20px;
+              text-align: left;
+              margin: 0px;
+              font-weight: normal;
+              font-family: "latoblack", sans-serif;
+            }
+            .views-operator {
+              display: none;
+            }
+            .views-widget {
+              padding: 15px;
+            }
+          }
+        }
+        .container-inline-date {
+          .form-item {
+            margin-right: 2px;
+            .dk-select {
+              width: 85px;
+              height: 33px;
+              .dk-selected {
+                border: none;
+                padding-right: 0px;
+                width: 85px;
+                height: 33px;
+                &:before,
+                &:after {
+                  content: none;
+                }
+              }
+              .dk-select-options {
+                border: 1px solid #6784a3;
+                width: 85px;
+                li {
+                  font-size: 12px;
+                  line-height: 25px;
+                  text-transform: none;
+                  background-color: #6784a3;
+                  font-family: "latoregular", sans-serif;
+                  border-bottom: 1px solid #FFFFFF;
+                  color: #FFFFFF;
+                  width: 85px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .view-content {
+      padding-left: 0px;
+      .views-row {
+        background: #FFFFFF;
+        margin-bottom: 5px;
+        .views-field {
+          padding: 15px;
+          .field-content {
+            margin-top: 0px;
+            a {
+              text-decoration: none;
+            }
+          }
+        }
+
+        & > div:nth-child(2) {
+          padding-left: 15px;
+        }
+
+        &:hover {
+          background: #6885a2;
+          color: #FFFFFF;
+          .views-field {
+            .field-content {
+              a {
+                color: #FFFFFF;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1025px) {
+  body.no-sidebars.page-quick-facts {
+    .wrapper {
+      #contentArea {
+        .region.region-content {
+          width: 100%;
+          padding: 0;
+          .view-quick-facts {
+            .view-content,
+            .view-filters {
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

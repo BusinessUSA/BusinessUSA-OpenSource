@@ -1,0 +1,1158 @@
+<?php
+/*
+	Version 0
+
+*/
+
+function swimlane_pages_init() {
+    
+}
+
+/**
+ * Implements hook_menu()
+ */
+function swimlane_pages_menu() {
+
+    $items = array();
+    
+    /* ADMINISTRATIVE MENU HOOKS */
+    $items['admin/swimlanepages/add/page'] = array(
+        'title' => 'Add new SwimLane page',
+        'description' => "Add a new SwimLane Page",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_new_page'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/add/section'] = array(
+        'title' => 'Add new SwimLane Section',
+        'description' => "Add a new SwimLane Section",
+        'page callback' => 'swimlane_pages_new_section_menucallback',
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/section'] = array(
+        'title' => 'Edit SwimLane Section',
+        'description' => "Edit a SwimLane Section",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editsection_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/section-order'] = array(
+        'title' => 'Edit SwimLane Section Order',
+        'description' => "Edit order of SwimLane Sections",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editsectionorder_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/section-block'] = array(
+        'title' => 'Edit SwimLane Section-Block',
+        'description' => "Edit a SwimLane Section-Block",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editsectionblock_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/section-block-order'] = array(
+        'title' => 'Edit SwimLane Section-Block Order',
+        'description' => "Edit order of Blocks within a SwimLane Section",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editsectionblockorder_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/add/section-block'] = array(
+        'title' => 'Add new SwimLane Section-Block',
+        'description' => "Add a new SwimLane Section-Block",
+        'page callback' => 'swimlane_pages_new_sectionblock_menucallback',
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/footer'] = array(
+        'title' => 'Edit SwimLane Footer Section',
+        'description' => "Edit a SwimLane Footer Section",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editmainsettings_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/add/footerblock'] = array(
+        'title' => 'Add new SwimLane Section-Block',
+        'description' => "Add a new SwimLane Section-Block",
+        'page callback' => 'swimlane_pages_new_footerblock_menucallback',
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/edit/footerblock'] = array(
+        'title' => 'Edit SwimLane Footer-Block',
+        'description' => "Edit a SwimLane Footer-Block",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('swimlane_pages_editfooterblock_form'),
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    $items['admin/swimlanepages/reset'] = array(
+        'title' => 'Reset a SwimLane Page',
+        'description' => "Reset a SwimLane Page to the default startting page",
+        'page callback' => 'swimlane_pages_reset',
+        'access callback' => true,
+        'type' => MENU_CALLBACK,
+    );
+    
+    /* SWIMLANE PAGE HOOKS */
+    $swimlanePagePaths = variable_get('swimlane_pages_paths', array());
+    foreach ( $swimlanePagePaths as $swimlanePagePath ) {
+        $swimlanePagePath = trim($swimlanePagePath, '/');
+        $swimlanePageSettings = swimlane_pages_getSettings($swimlanePagePath);
+        if ( $swimlanePageSettings !== false ) {
+            if ( empty($swimlanePageSettings['title']) || strval($swimlanePageSettings['title']) === '' ) {
+                $swimlanePageSettings['title'] = '<none>';
+            } else {
+                $swimlanePageSettings['title'] = strval($swimlanePageSettings['title']);
+            }
+            error_log("swimlane_pages module is registering the Drupal-menu path of $swimlanePagePath with the title of \"{$swimlanePageSettings['title']}\" ");
+            dsm("swimlane_pages module is registering the Drupal-menu path of $swimlanePagePath with the title of \"{$swimlanePageSettings['title']}\" ");
+            $items[$swimlanePagePath] = array(
+                'title' => $swimlanePageSettings['title'],
+                'description' => "Menu hook for {$swimlanePagePath}",
+                'page callback' => 'swimlane_pages_renderpage',
+                'page arguments' => array($swimlanePagePath),
+                'access callback' => true,
+                'type' => MENU_CALLBACK,
+            );
+        }
+    }
+    
+    error_log("swimlane_pages module has finished registering Drupal-menu paths");
+    
+    return $items;
+}
+
+function swimlane_pages_theme() {
+    $themes = array();
+    $themes['swimlane_page'] = array(
+        'template' => 'swimlane_page',
+        'variables' => array()
+    );
+    $themes['swimlane_pages_editsectionblockorder_form'] = array(
+        'render element' => 'form',
+    );
+    $themes['swimlane_pages_editsectionorder_form'] = array(
+        'render element' => 'form',
+    );
+    return $themes;
+}
+
+
+/**
+ * Implementation of hook_preprocess_HOOK().
+ */
+function swimlane_pages_preprocess_swimlane_page(&$variables) {
+
+    drupal_add_css( drupal_get_path('module', 'swimlane_pages') . '/swimlane_page.css' );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function swimlane_pages_renderpage($registeredUri) {
+
+    $pageSettings = swimlane_pages_getSettings($registeredUri);
+    //dsm($pageSettings);
+    if ( $pageSettings === false ) {
+        return 'Failure in swimlane_pages_renderpage()';
+    } else {
+        return theme('swimlane_page', $pageSettings);
+    }
+}
+
+function swimlane_pages_new_sectionblock_menucallback() {
+    
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Parameter validation - sectionId
+    if ( !isset($_REQUEST['sectionId']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing sectionId parameter in request.');
+    }
+    $sectionId = intval($_REQUEST['sectionId']);
+    
+    // Save a new default block
+    $pageSettings['sections'][$sectionId]['blocks'][] = array(
+        'title' => 'Place a title for this block here',
+        'snippet' => 'Type a snippet for this block here.',
+        'url' => 'http://business.usa.gov/about-us',
+    );
+    swimlane_pages_setSettings($pageuri, $pageSettings);
+    
+    // Redirect the user to edit this newly created block
+    drupal_goto(
+        'admin/swimlanepages/edit/section-block', 
+        array( 
+            'query' => array(
+                'pageuri' => $pageuri,
+                'sectionId' => $sectionId,
+                'blockId' => count($pageSettings['sections'][$sectionId]['blocks']) - 1,
+            )
+        )
+    );
+    
+}
+
+function swimlane_pages_editsectionblockorder_form($form, $form_state) {
+
+  swimlane_pages_requireProperPrivilages(true);
+    
+  // Parameter validation - pageuri
+  if ( empty($_REQUEST['pageuri']) ) {
+      while (@ob_end_clean());
+      exit('Error - Missing pageuri parameter in request.');
+  }
+  $pageuri = $_REQUEST['pageuri'];
+  $pageSettings = swimlane_pages_getSettings($pageuri);
+  //dsm($pageSettings);
+    
+  // Parameter validation - sectionId
+  if ( !isset($_REQUEST['sectionId']) ) {
+      while (@ob_end_clean());
+      exit('Error - Missing sectionId parameter in request.');
+  }
+  $sectionId = intval($_REQUEST['sectionId']);
+
+  // Handel form submission
+  if ( !empty($_REQUEST['op']) && $_REQUEST['op'] === 'Save Changes' ) {
+    $newBlocks = array();
+    foreach ( $_REQUEST['example_items'] as $key => $itemData ) {
+      $newBlocks[] = $pageSettings['sections'][$sectionId]['blocks'][$key];
+    }
+    $pageSettings['sections'][$sectionId]['blocks'] = $newBlocks;
+    swimlane_pages_setSettings($pageuri, $pageSettings);
+    drupal_goto($pageuri);
+  }
+  
+  // Identify that the elements in 'example_items' are a collection, to
+  // prevent Form API from flattening the array when submitted.
+  $form['example_items']['#tree'] = TRUE;
+
+  // Iterate through each database result.
+  foreach ($pageSettings['sections'][$sectionId]['blocks'] as $blockId => $block) {
+
+    // Create a form entry for this item.
+    //
+    // Each entry will be an array using the the unique id for that item as
+    // the array key, and an array of table row data as the value.
+    $form['example_items'][$blockId] = array(
+      
+      // We'll use a form element of type '#markup' to display the item name.
+      'name' => array(
+        '#markup' => check_plain($block['title']),
+      ),
+      
+      // The 'weight' field will be manipulated as we move the items around in
+      // the table using the tabledrag activity.  We use the 'weight' element
+      // defined in Drupal's Form API.
+      'weight' => array(
+        '#type' => 'weight',
+        '#title' => t('Weight'),
+        '#default_value' => $blockId,
+        '#delta' => 10,
+        '#title_display' => 'invisible',
+      ),
+    );
+  }
+
+  // Now we add our submit button, for submitting the form results.
+  //
+  // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
+  // but is included as a Form API recommended practice.
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Changes'),
+  );
+  
+  return $form;
+}
+
+function swimlane_pages_editsectionorder_form($form, $form_state) {
+
+  swimlane_pages_requireProperPrivilages(true);
+    
+  // Parameter validation - pageuri
+  if ( empty($_REQUEST['pageuri']) ) {
+      while (@ob_end_clean());
+      exit('Error - Missing pageuri parameter in request.');
+  }
+  $pageuri = $_REQUEST['pageuri'];
+  $pageSettings = swimlane_pages_getSettings($pageuri);
+  //dsm($pageSettings);
+
+  // Handel form submission
+  if ( !empty($_REQUEST['op']) && $_REQUEST['op'] === 'Save Changes' ) {
+    
+    dsm($_REQUEST);
+    
+    $newSections = array();
+    foreach ( $_REQUEST['example_items'] as $key => $itemData ) {
+      $newSections[] = $pageSettings['sections'][$key];
+    }
+    $pageSettings['sections'] = $newSections;
+    
+    swimlane_pages_setSettings($pageuri, $pageSettings);
+    drupal_goto($pageuri);
+  }
+  
+  // Identify that the elements in 'example_items' are a collection, to
+  // prevent Form API from flattening the array when submitted.
+  $form['example_items']['#tree'] = TRUE;
+
+  // Iterate through each database result.
+  foreach ($pageSettings['sections'] as $sectionId => $section) {
+
+    // Create a form entry for this item.
+    //
+    // Each entry will be an array using the the unique id for that item as
+    // the array key, and an array of table row data as the value.
+    $form['example_items'][$sectionId] = array(
+      
+      // We'll use a form element of type '#markup' to display the item name.
+      'name' => array(
+        '#markup' => check_plain($section['title']),
+      ),
+      
+      // The 'weight' field will be manipulated as we move the items around in
+      // the table using the tabledrag activity.  We use the 'weight' element
+      // defined in Drupal's Form API.
+      'weight' => array(
+        '#type' => 'weight',
+        '#title' => t('Weight'),
+        '#default_value' => $sectionId,
+        '#delta' => 10,
+        '#title_display' => 'invisible',
+      ),
+    );
+  }
+
+  // Now we add our submit button, for submitting the form results.
+  //
+  // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
+  // but is included as a Form API recommended practice.
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Changes'),
+  );
+  
+  return $form;
+}
+
+function theme_swimlane_pages_editsectionblockorder_form($variables) {
+  $form = $variables['form'];
+
+  // Initialize the variable which will store our table rows.
+  $rows = array();
+
+  // Iterate over each element in our $form['example_items'] array.
+  foreach (element_children($form['example_items']) as $id) {
+
+    // Before we add our 'weight' column to the row, we need to give the
+    // element a custom class so that it can be identified in the
+    // drupal_add_tabledrag call.
+    //
+    // This could also have been done during the form declaration by adding
+    // '#attributes' => array('class' => 'example-item-weight'),
+    // directy to the 'weight' element in tabledrag_example_simple_form().
+    $form['example_items'][$id]['weight']['#attributes']['class'] = array('example-item-weight');
+
+    // We are now ready to add each element of our $form data to the $rows
+    // array, so that they end up as individual table cells when rendered
+    // in the final table.  We run each element through the drupal_render()
+    // function to generate the final html markup for that element.
+    $rows[] = array(
+      'data' => array(
+        
+        // Add our 'name' column.
+        drupal_render($form['example_items'][$id]['name']),
+        
+        // Add our 'weight' column.
+        drupal_render($form['example_items'][$id]['weight']),
+      ),
+      
+      // To support the tabledrag behaviour, we need to assign each row of the
+      // table a class attribute of 'draggable'. This will add the 'draggable'
+      // class to the <tr> element for that row when the final table is
+      // rendered.
+      'class' => array('draggable'),
+    );
+  }
+
+  // We now define the table header values.  Ensure that the 'header' count
+  // matches the final column count for your table.
+  $header = array(t('Name'), t('Weight'));
+
+  // We also need to pass the drupal_add_tabledrag() function an id which will
+  // be used to identify the <table> element containing our tabledrag form.
+  // Because an element's 'id' should be unique on a page, make sure the value
+  // you select is NOT the same as the form ID used in your form declaration.
+  $table_id = 'example-items-table';
+
+  // We can render our tabledrag table for output.
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+
+  // And then render any remaining form elements (such as our submit button).
+  $output .= drupal_render_children($form);
+
+  // We now call the drupal_add_tabledrag() function in order to add the
+  // tabledrag.js goodness onto our page.
+  //
+  // For a basic sortable table, we need to pass it:
+  // - the $table_id of our <table> element,
+  // - the $action to be performed on our form items ('order'),
+  // - a string describing where $action should be applied ('siblings'),
+  // - and the class of the element containing our 'weight' element.
+  drupal_add_tabledrag($table_id, 'order', 'sibling', 'example-item-weight');
+
+  return $output;
+}
+
+
+function theme_swimlane_pages_editsectionorder_form($variables) {
+  $form = $variables['form'];
+
+  // Initialize the variable which will store our table rows.
+  $rows = array();
+
+  // Iterate over each element in our $form['example_items'] array.
+  foreach (element_children($form['example_items']) as $id) {
+
+    // Before we add our 'weight' column to the row, we need to give the
+    // element a custom class so that it can be identified in the
+    // drupal_add_tabledrag call.
+    //
+    // This could also have been done during the form declaration by adding
+    // '#attributes' => array('class' => 'example-item-weight'),
+    // directy to the 'weight' element in tabledrag_example_simple_form().
+    $form['example_items'][$id]['weight']['#attributes']['class'] = array('example-item-weight');
+
+    // We are now ready to add each element of our $form data to the $rows
+    // array, so that they end up as individual table cells when rendered
+    // in the final table.  We run each element through the drupal_render()
+    // function to generate the final html markup for that element.
+    $rows[] = array(
+      'data' => array(
+        
+        // Add our 'name' column.
+        drupal_render($form['example_items'][$id]['name']),
+        
+        // Add our 'weight' column.
+        drupal_render($form['example_items'][$id]['weight']),
+      ),
+      
+      // To support the tabledrag behaviour, we need to assign each row of the
+      // table a class attribute of 'draggable'. This will add the 'draggable'
+      // class to the <tr> element for that row when the final table is
+      // rendered.
+      'class' => array('draggable'),
+    );
+  }
+
+  // We now define the table header values.  Ensure that the 'header' count
+  // matches the final column count for your table.
+  $header = array(t('Name'), t('Weight'));
+
+  // We also need to pass the drupal_add_tabledrag() function an id which will
+  // be used to identify the <table> element containing our tabledrag form.
+  // Because an element's 'id' should be unique on a page, make sure the value
+  // you select is NOT the same as the form ID used in your form declaration.
+  $table_id = 'example-items-table';
+
+  // We can render our tabledrag table for output.
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+
+  // And then render any remaining form elements (such as our submit button).
+  $output .= drupal_render_children($form);
+
+  // We now call the drupal_add_tabledrag() function in order to add the
+  // tabledrag.js goodness onto our page.
+  //
+  // For a basic sortable table, we need to pass it:
+  // - the $table_id of our <table> element,
+  // - the $action to be performed on our form items ('order'),
+  // - a string describing where $action should be applied ('siblings'),
+  // - and the class of the element containing our 'weight' element.
+  drupal_add_tabledrag($table_id, 'order', 'sibling', 'example-item-weight');
+
+  return $output;
+}
+
+function swimlane_pages_editsectionblock_form($form, $form_state) {
+
+    //dsm($_REQUEST);
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Parameter validation - sectionId
+    if ( !isset($_REQUEST['sectionId']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing sectionId parameter in request.');
+    }
+    $sectionId = intval($_REQUEST['sectionId']);
+    
+    // Parameter validation - blockId
+    if ( !isset($_REQUEST['blockId']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing blockId parameter in request.');
+    }
+    $blockId = intval($_REQUEST['blockId']);
+    
+    // Handel form submission
+    if ( !empty($_REQUEST['op']) ) {
+        if ( strtolower($_REQUEST['op']) === 'save' ) {
+            $pageSettings['sections'][$sectionId]['blocks'][$blockId]['title'] = $_REQUEST['blocktitle'];
+            $pageSettings['sections'][$sectionId]['blocks'][$blockId]['snippet'] = $_REQUEST['blocksnippet'];
+            $pageSettings['sections'][$sectionId]['blocks'][$blockId]['url'] = $_REQUEST['blocklink'];
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+        if ( strtolower($_REQUEST['op']) === 'delete' ) {
+            // Remove the array element
+            unset( $pageSettings['sections'][$sectionId]['blocks'][$blockId] );
+            // Reset the keys in the array [to incrementally increase, starting from 0]
+            $pageSettings['sections'][$sectionId]['blocks'] = array_values( $pageSettings['sections'][$sectionId]['blocks'] );
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+    }
+    
+    // Return form for editing this section-block
+    $form = array();
+    $form['blocktitle'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Block title:',
+        '#default_value' => $pageSettings['sections'][$sectionId]['blocks'][$blockId]['title'],
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['blocksnippet'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Block snippet:',
+        '#default_value' => $pageSettings['sections'][$sectionId]['blocks'][$blockId]['snippet'],
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['blocklink'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Block link URL:',
+        '#default_value' => $pageSettings['sections'][$sectionId]['blocks'][$blockId]['url'],
+        '#description' => 'This field dictates what URL this block\'s title should link to. <b>External-links must start with http:// or https://</b>',
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    $form['delete'] = array(
+        '#type' => 'submit',
+        '#value' => t('Delete'),
+    );
+    return $form;
+    
+}
+
+function swimlane_pages_new_footerblock_menucallback() {
+
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Save a new default block
+    $pageSettings['foot']['blocks'][] = array(
+        'title' => 'Place a title for this block here',
+        'url' => 'http://business.usa.gov/about-us',
+        'img' => 'http://business.usa.gov/sites/all/themes/bizusa/images/swim_lane_images/start_a_Business1.jpg',
+    );
+    swimlane_pages_setSettings($pageuri, $pageSettings);
+    
+    // Redirect the user to edit this newly created block
+    drupal_goto(
+        'admin/swimlanepages/edit/footerblock', 
+        array( 
+            'query' => array(
+                'pageuri' => $pageuri,
+                'blockId' => count($pageSettings['foot']['blocks']) - 1,
+            )
+        )
+    );
+    
+}
+
+function swimlane_pages_editfooterblock_form($form, $form_state) {
+
+    //dsm($_REQUEST);
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Parameter validation - blockId
+    if ( !isset($_REQUEST['blockId']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing blockId parameter in request.');
+    }
+    $blockId = intval($_REQUEST['blockId']);
+    
+    // Handel form submission
+    if ( !empty($_REQUEST['op']) ) {
+        if ( strtolower($_REQUEST['op']) === 'save' ) {
+            $pageSettings['foot']['blocks'][$blockId]['title'] = $_REQUEST['blocktitle'];
+            $pageSettings['foot']['blocks'][$blockId]['url'] = $_REQUEST['blocklink'];
+            if ( isset($_FILES['files']['error']['blockimg']) && $_FILES['files']['error']['blockimg'] === 0 ) {
+                @mkdir('sites/default/files/swimlane_pages_uploads');
+                $dest = 'sites/default/files/swimlane_pages_uploads/' . time() . '.' . pathinfo($_FILES['files']['name']['blockimg'], PATHINFO_EXTENSION);
+                if ( move_uploaded_file($_FILES['files']['tmp_name']['blockimg'], $dest) ) {
+                    $pageSettings['foot']['blocks'][$blockId]['img'] = '/' . $dest;
+                } else {
+                    drupal_set_message('There was an error while uploading the file. Please contact your system-administrator about this error.', 'warning');
+                }
+            }
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+        if ( strtolower($_REQUEST['op']) === 'delete' ) {
+            // Remove the array element
+            unset( $pageSettings['foot']['blocks'][$blockId] );
+            // Reset the keys in the array [to incrementally increase, starting from 0]
+            $pageSettings['foot']['blocks'] = array_values($pageSettings['foot']['blocks']);
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+    }
+    
+    // Return form for editing this section-block
+    $form = array();
+    $form['blocktitle'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Block title:',
+        '#default_value' => $pageSettings['foot']['blocks'][$blockId]['title'],
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['blocklink'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Block link URL:',
+        '#default_value' => $pageSettings['foot']['blocks'][$blockId]['url'],
+        '#description' => 'This field dictates what URL this block\'s title should link to. <b>External-links must start with http:// or https://</b>',
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['blockimg'] = array(
+        '#type' => 'file',
+        '#title' => 'Image:',
+        '#size' => 100,
+        '#required' => false,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    $form['delete'] = array(
+        '#type' => 'submit',
+        '#value' => t('Delete'),
+    );
+    return $form;
+    
+}
+
+function swimlane_pages_new_page() {
+
+    swimlane_pages_requireProperPrivilages(true);
+    
+    if ( !empty($_REQUEST['pageuri']) ) {
+        $pageuri = $_REQUEST['pageuri'];
+        $pageuri = trim($pageuri, '/');
+        $pageSettings = swimlane_pages_getSettings($pageuri);
+        //dsm($pageSettings);
+        
+        $swimlanePagePaths = variable_get('swimlane_pages_paths', array());
+        $swimlanePagePaths[] = $pageuri;
+        variable_set('swimlane_pages_paths', $swimlanePagePaths);
+        swimlane_pages_reset($pageuri, false);
+        variable_set('menu_rebuild_needed', true);
+        menu_rebuild();
+        variable_set('menu_rebuild_needed', true);
+        drupal_goto(
+            'admin/swimlanepages/edit/footer',
+            array( 
+                'query' => array(
+                    'pageuri' => $pageuri,
+                )
+            )
+        );
+        exit();
+    }
+    
+    // Return form for editing this section-block
+    $form = array();
+    $form['pageuri'] = array(
+        '#type' => 'textfield',
+        '#title' => 'URL-path of new Swimlain Page::',
+        '#default_value' => '',
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    return $form;
+
+}
+
+function swimlane_pages_new_section_menucallback() {
+
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Save a new default section
+    $pageSettings['sections'][] = array(
+        'title' => 'Type a Section Title Here',
+        'url' => 'http://www.google.com/',
+        'blocks' => array(
+            array(
+                'title' => 'Place a title for this block here',
+                'snippet' => 'Type a snippet for this block here.',
+                'url' => 'http://business.usa.gov/about-us',
+            ),
+            array(
+                'title' => 'Place a title for this block here',
+                'snippet' => 'Type a snippet for this block here.',
+                'url' => 'http://business.usa.gov/about-us',
+            ),
+        )
+    );
+    swimlane_pages_setSettings($pageuri, $pageSettings);
+    
+    // Redirect the user to edit this newly created block
+    drupal_goto(
+        'admin/swimlanepages/edit/section', 
+        array( 
+            'query' => array(
+                'pageuri' => $pageuri,
+                'sectionId' => ( count($pageSettings['sections']) - 1 ),
+            )
+        )
+    );
+
+}
+
+function swimlane_pages_editsection_form($form, $form_state) {
+    
+    //dsm($_REQUEST);
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    
+    // Parameter validation - sectionId
+    if ( !isset($_REQUEST['sectionId']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing sectionId parameter in request.');
+    }
+    $sectionId = intval($_REQUEST['sectionId']);
+    
+    // Handel form submission
+    if ( !empty($_REQUEST['op']) ) {
+        if ( strtolower($_REQUEST['op']) === 'save' ) {
+            $pageSettings['sections'][$sectionId]['title'] = $_REQUEST['sectiontitle'];
+            $pageSettings['sections'][$sectionId]['url'] = $_REQUEST['sectionlink'];
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+        if ( strtolower($_REQUEST['op']) === 'delete' ) {
+            // Remove the array element
+            unset( $pageSettings['sections'][$sectionId] );
+            // Reset the keys in the array [to incrementally increase, starting from 0]
+            $pageSettings['sections'] = array_values( $pageSettings['sections'] );
+            swimlane_pages_setSettings($pageuri, $pageSettings);
+            drupal_goto( ltrim($pageuri, '/') );
+        }
+    }
+    
+    // Return form for editing this section
+    $form = array();
+    $form['sectiontitle'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Section title:',
+        '#default_value' => $pageSettings['sections'][$sectionId]['title'],
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['sectionlink'] = array(
+        '#type' => 'textfield',
+        '#title' => '"See More" link:',
+        '#default_value' => $pageSettings['sections'][$sectionId]['url'],
+        '#description' => 'This will be the target address the "See More" button links to for this section. <br/>'
+            .'If nothing in provided in this field, then the "See More" button will not appear for this section.',
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    $form['delete'] = array(
+        '#type' => 'submit',
+        '#value' => t('Delete'),
+    );
+    return $form;
+    
+}
+
+function swimlane_pages_editmainsettings_form($form, $form_state) {
+
+    //dsm($_REQUEST);
+    swimlane_pages_requireProperPrivilages(true);
+    
+    // Parameter validation - pageuri
+    if ( empty($_REQUEST['pageuri']) ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    $pageuri = $_REQUEST['pageuri'];
+    $pageSettings = swimlane_pages_getSettings($pageuri);
+    //dsm($pageSettings);
+    
+    // Handel form submission
+    if ( !empty($_REQUEST['op']) && strtolower($_REQUEST['op']) === 'save' ) {
+        //dsm($_REQUEST);
+        
+        $pageSettings['foot']['title'] = $_REQUEST['footertitle'];
+        $pageSettings['title'] = $_REQUEST['pagertitle'];
+        
+        for ( $x = 1 ; $x < 11 ; $x++ ) {
+            if ( !empty($_REQUEST['linktitle' . $x]) ) {
+                $pageSettings['subnav_header_links'][$x] = array(
+                    'text' => $_REQUEST['linktitle' . $x],
+                    'url' => $_REQUEST['linkurl' . $x]
+                );
+            } else {
+                if ( isset($pageSettings['subnav_header_links'][$x]) ) {
+                    unset($pageSettings['subnav_header_links'][$x]);
+                }
+            }
+        }
+        
+        swimlane_pages_setSettings($pageuri, $pageSettings);
+        //dsm($pageSettings);
+        variable_set('menu_rebuild_needed', true);
+        menu_rebuild();
+        variable_set('menu_rebuild_needed', true);
+        drupal_goto( ltrim($pageuri, '/') );
+    }
+    
+    // Return form for editing this section
+    $form = array();
+    $form['pagertitle'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Page Title:',
+        '#default_value' => ( empty($pageSettings['title']) ? '' : $pageSettings['title'] ),
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+    $form['footertitle'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Footer title',
+        '#default_value' => $pageSettings['foot']['title'],
+        '#size' => 100,
+        '#required' => TRUE,
+    );
+	$form['navlinks'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'Hovering-Navigation Menu Links',
+		'#collapsible' => 1,
+		'#collapsed' => 1
+    );
+    for ( $x = 1 ; $x < 11 ; $x++ ) {
+        $th = 'th';
+        switch ($x) {
+            case 1: $th = 'st'; break;
+            case 2: $th = 'nd'; break;
+            case 3: $th = 'rd'; break;
+            default: $th = 'th'; break;
+        }
+        $linkTitle = '';
+        if ( !empty($pageSettings['subnav_header_links'][$x]) ) {
+            $linkTitle = $pageSettings['subnav_header_links'][$x]['text'];
+        }
+        $linkUrl = '';
+        if ( !empty($pageSettings['subnav_header_links'][$x]) ) {
+            $linkUrl = $pageSettings['subnav_header_links'][$x]['url'];
+        }
+        $form['navlinks'][ 'link' . $x ] = array(
+            '#type' => 'fieldset',
+            '#title' => $x . $th . ' link in floating menu',
+            '#collapsible' => 1,
+            '#collapsed' => 0
+        );
+        $form['navlinks'][ 'link' . $x ]['linktitle' . $x] = array(
+            '#title' => 'Title:',
+            '#type' => 'textfield',
+            '#default_value' => $linkTitle,
+            '#size' => 50,
+        );
+        $form['navlinks'][ 'link' . $x ]['linkurl' . $x] = array(
+            '#title' => 'Link to URL:',
+            '#type' => 'textfield',
+            '#default_value' => $linkUrl,
+            '#size' => 50,
+        );
+    }
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    return $form;
+    
+}
+
+function swimlane_pages_getSettings($registeredUri) {
+    
+    $settingsStoragePath = 'sites/default/files/swimlane_pages_config/' . trim(strtok($registeredUri, '?'), '/') . '.settings.php-serialized';
+    
+    if ( !file_exists($settingsStoragePath) ) {
+        $msg = "Error - swimlane_pages_getSettings() could not find a settings file located "
+            ."at: {$settingsStoragePath}<br/>If you want, you can "
+            ."<a href=\"/admin/swimlanepages/reset?pageuri={$registeredUri}\">reset this "
+            ."page</a> to a default startting page.";
+        error_log($msg);
+        drupal_set_message($msg, "error");
+        return false;
+    } else {
+        $settingsStr = file_get_contents($settingsStoragePath);
+        if ( $settingsStr === false ) {
+            $msg = "Error - swimlane_pages_getSettings() failed to read anything from existing file {$settingsStoragePath}";
+            error_log($msg);
+            drupal_set_message($msg, "error");
+            return false;
+        } else {
+            $settingsObj = unserialize($settingsStr);
+            if ( $settingsObj === false ) {
+                $msg = "Error - swimlane_pages_getSettings() failed to unserialize data in {$settingsStoragePath}";
+                error_log($msg);
+                drupal_set_message($msg, "error");
+                return false;
+            } else {
+                return $settingsObj;
+            }
+        }
+    }
+}
+
+function swimlane_pages_setSettings($registeredUri, $settings) {
+    
+    swimlane_pages_requireProperPrivilages(true);
+    
+    $settingsStoragePath = 'sites/default/files/swimlane_pages_config/' . trim(strtok($registeredUri, '?'), '/') . '.settings.php-serialized';
+    $settingsStorageDir = pathinfo($settingsStoragePath, PATHINFO_DIRNAME);
+    @mkdir($settingsStorageDir, 0777, true);
+    
+    $serializedData = serialize($settings);
+    if ( $serializedData === false ) {
+        $msg = "Error - swimlane_pages_setSettings() failed to serialize data given to it.";
+        error_log($msg);
+        drupal_set_message($msg, "error");
+        return false;
+    } else {
+        file_put_contents($settingsStoragePath, $serializedData);
+        error_log("swimlane_pages_setSettings() has save settings to {$settingsStoragePath}");
+        return true;
+    }
+}
+
+function swimlane_pages_requireProperPrivilages($exitOnNoPriv = true) {
+    
+    $userHasProperPriv = true;
+    
+    global $user;
+    if ( empty($user) ) {
+        $userHasProperPriv = false;
+    } else {
+        if ( empty($user->roles) || !is_array($user->roles) || count($user->roles) === 0 ) {
+            $userHasProperPriv = false;
+        } else {
+            foreach ( $user->roles as $userRole ) {
+                if ( strpos($userRole, 'anonymous') !== false ) {
+                    $userHasProperPriv = false;
+                }
+            }
+        }
+    }
+    
+    if ( $userHasProperPriv ) {
+        return true;
+    } else {
+        if ( $exitOnNoPriv ) {
+            while (@ob_end_clean());
+            exit('You must be signed in with the proper role/user-account in order to execute this action.');
+        }
+        return false;
+    }
+}
+
+function swimlane_pages_reset($pageuri = '', $redirect = true) {
+    
+    swimlane_pages_requireProperPrivilages(true);
+    
+    if ( empty($_REQUEST['pageuri']) && $pageuri == '' ) {
+        while (@ob_end_clean());
+        exit('Error - Missing pageuri parameter in request.');
+    }
+    
+    if ( $pageuri === '' ) {
+        $pageuri = $_REQUEST['pageuri'];
+    }
+    
+    swimlane_pages_setSettings($pageuri, swimlane_pages_defaultStarttingPage());
+    if ( $redirect ) {
+        drupal_goto( ltrim($pageuri, '/') );
+    }
+}
+
+function swimlane_pages_defaultStarttingPage() {
+    return array(
+        'sections' => array(
+            array(
+                'title' => 'This is an example section title',
+                'url' => 'http://www.google.com/',
+                'blocks' => array(
+                    array(
+                        'title' => 'This is an example section-block',
+                        'url' => 'http://www.google.com/',
+                        'snippet' => 'This is an example section-block snippet.'
+                    ),
+                    array(
+                        'title' => 'This is another example section-block',
+                        'url' => 'http://www.google.com/',
+                        'snippet' => 'This is another example section-block snippet.'
+                    ),
+                ),
+            ),
+            array(
+                'title' => 'This is another example section title',
+                'url' => 'http://www.google.com/',
+                'blocks' => array(
+                    array(
+                        'title' => 'This is an example section-block',
+                        'url' => 'http://www.google.com/',
+                        'snippet' => 'This is an example section-block snippet.'
+                    ),
+                    array(
+                        'title' => 'This is another example section-block',
+                        'url' => 'http://www.google.com/',
+                        'snippet' => 'This is another example section-block snippet.'
+                    ),
+                    array(
+                        'title' => 'This is yet another example section-block',
+                        'url' => 'http://www.google.com/',
+                        'snippet' => 'This is another example section-block snippet.'
+                    ),
+                ),
+            )
+        ),
+        'foot' => array(
+            'title' => 'This is an example footer section',
+            'blocks' => array(
+                array(
+                    'img' => '/sites/all/themes/bizusa/images/swim_lane_images/start_a_Business1.jpg',
+                    'url' => 'http://www.google.com/',
+                    'title' => 'This is an example footer-block',
+                ),
+                array(
+                    'img' => '/sites/all/themes/bizusa/images/swim_lane_images/start_a_Business2.jpg',
+                    'url' => 'http://www.google.com/',
+                    'title' => 'This is another example footer-block',
+                ),
+                array(
+                    'img' => '/sites/all/themes/bizusa/images/swim_lane_images/start_a_Business3.jpg',
+                    'url' => 'http://www.google.com/',
+                    'title' => 'This is yet another example footer-block',
+                ),
+            )
+        ),
+        'subnav_header_links'=>array(
+            array(
+                "text"=>"Example nav link",
+                "url" => 'http://www.google.com/',
+            ),
+            array(
+                "text"=>"Another examp nav link",
+                "url" => "http://xkcd.com/",
+            ),
+            array(
+                "text"=>"Yet another ex nav link",
+                "url" => "http://slashdot.org/",
+            ),
+        )
+    );
+}
+
+
+
+
+
+
+
